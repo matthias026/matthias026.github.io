@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Die vier Institutionen der EU · Lernpfad</title>
+<style>
+:root{--bg:#eef3fa;--card:#fff;--ink:#1c2733;--mut:#5b6875;--navy:#1f3a8a;--ok:#2b8a4e;--bad:#c4432c;--line:#cfd9ec;
+--A:#1f3a8a;--B:#2f9fd8;--C:#14a38b;--D:#e8703a}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(90deg,#1f3a8a,#2f9fd8);color:#fff;padding:16px 20px 12px}
+header h1{margin:0;font-size:1.4rem;line-height:1.25}
+.top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.top input{padding:6px 10px;border:0;border-radius:6px;font:inherit;min-width:200px}
+.bar{flex:1;min-width:140px;height:10px;background:rgba(255,255,255,.4);border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width .4s}
+main{max-width:960px;margin:0 auto;padding:12px 16px 40px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+nav button{border:2px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font:inherit;font-size:.9rem;cursor:pointer;color:var(--ink)}
+nav button.on{border-color:var(--navy);background:var(--navy);color:#fff}
+nav button.done::after{content:" ✓";color:var(--ok);font-weight:700}
+nav button.on.done::after{color:#bff0cf}
+h2{color:var(--navy);margin:.2em 0 .3em;font-size:1.3rem}
+.afb{display:inline-block;background:#eef1f7;color:var(--mut);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;margin-bottom:6px}
+.hint{color:var(--mut);margin:0 0 12px}
+.q,.fc{background:var(--card);border-radius:10px;padding:12px 14px;margin:0 0 12px;border:1px solid var(--line)}
+.fc{border-left:8px solid var(--c)}
+.fc>button{all:unset;cursor:pointer;font-weight:700;display:block;width:100%}
+.fc>button b{display:inline-block;min-width:1.7em;height:1.7em;line-height:1.7em;text-align:center;border-radius:50%;background:var(--c);color:#fff;margin-right:6px;font-size:.85rem;padding:0 4px}
+.fc dl{margin:8px 0 0}
+.fc dt{font-weight:700;color:var(--c);margin-top:6px}
+.fc dd{margin:2px 0 0}
+.q p{margin:0 0 8px}
+.o{display:flex;flex-wrap:wrap;gap:6px}
+button{font:inherit}
+.o button,.tg button{border:2px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.o button:hover,.tg button:hover{border-color:var(--navy)}
+.o button.ok{border-color:var(--ok);background:#e3f4e8}
+.o button.bad{border-color:var(--bad);background:#fbe6e1}
+.o button.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tg{margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap}
+.tg button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+small{color:var(--mut);display:block;margin-top:6px}
+textarea{width:100%;margin-top:8px;font:inherit;padding:6px 8px;border:2px solid var(--line);border-radius:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.col{border:2px dashed var(--line);border-radius:10px;padding:8px;min-height:60px}
+.col h3{margin:0 0 6px;font-size:1rem;color:var(--navy)}
+.stm{border:2px solid var(--line);border-radius:8px;padding:6px 8px;margin:4px 0;cursor:pointer;background:#fff}
+.stm.A{border-color:var(--A)}.stm.B{border-color:var(--B)}.stm.C{border-color:var(--C)}.stm.D{border-color:var(--D)}
+.stm.ok{background:#e3f4e8;border-color:var(--ok)}.stm.bad{background:#fbe6e1;border-color:var(--bad)}
+.ch{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pri{background:var(--navy);color:#fff;border:0;border-radius:8px;padding:9px 16px;cursor:pointer;margin:4px 6px 4px 0}
+#pv{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 16px;margin-top:12px}
+#msg{color:var(--ok);font-weight:600;min-height:1.5em}
+#report{display:none}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+@media print{body>*{display:none!important}body>#report{display:block!important;font:12pt/1.4 sans-serif}}
+</style>
+</head>
+<body>
+<header>
+<h1>Die vier Institutionen der EU</h1>
+<div class="top"><input id="nm" placeholder="Dein Name" autocomplete="off"><div class="bar" title="Fortschritt"><i id="pg"></i></div></div>
+</header>
+<main>
+<nav id="nav"></nav>
+
+<section class="st">
+<span class="afb">AFB I</span>
+<h2>1 · Die vier Institutionen im Überblick</h2>
+<p class="hint">Klicke jede Institution an: Mitglieder, Aufgaben, Beschlussfassung.</p>
+<div id="c1"></div>
+</section>
+
+<section class="st" hidden>
+<span class="afb">AFB I</span>
+<h2>2 · Wer passt? Aussagen zuordnen</h2>
+<p class="hint">Ordne jede Aussage der richtigen Institution zu.</p>
+<div id="c2"></div>
+</section>
+
+<section class="st" hidden>
+<span class="afb">AFB II</span>
+<h2>3 · Situationen erkennen</h2>
+<p class="hint">Welche Institution handelt hier? Wähle die passende Institution.</p>
+<div id="c3"></div>
+</section>
+
+<section class="st" hidden>
+<span class="afb">AFB II</span>
+<h2>4 · Europäischer Rat oder Ministerrat?</h2>
+<p class="hint">Diese beiden Institutionen werden oft verwechselt. Sortiere die Aussagen in die richtige Spalte.</p>
+<div id="c4" class="two"></div>
+<p><button class="pri" onclick="chk4()">Prüfen</button></p>
+<small id="s4"></small>
+</section>
+
+<section class="st" hidden>
+<span class="afb">AFB III</span>
+<h2>5 · Konsens im Europäischen Rat: sinnvoll oder nicht?</h2>
+<p class="hint">Im Europäischen Rat müssen sich alle 27 Staats- und Regierungschefs einig sein (Konsens). Sortiere zuerst die Argumente, dann formuliere deine eigene Position.</p>
+<div id="c5"></div>
+</section>
+
+<section class="st" hidden>
+<h2>Sichern für OneNote</h2>
+<p class="hint">Deine Ergebnisse gehen sonst nach der Stunde verloren. Wähle einen Weg:</p>
+<button class="pri" onclick="pdf()">📄 Als PDF speichern (Drucken)</button>
+<button class="pri" onclick="copy()">📋 Kopieren</button>
+<button class="pri" onclick="dl()">💾 Als Datei sichern</button>
+<div id="msg" role="status"></div>
+<small><b>PDF:</b> Im Druckfenster als Ziel „Als PDF speichern“ wählen. In OneNote: Einfügen › Datei-Ausdruck oder Datei.<br>
+<b>Kopieren:</b> In OneNote an die gewünschte Stelle klicken und Strg+V drücken.<br>
+<b>Datei:</b> In OneNote: Einfügen › Datei anhängen.</small>
+<div id="pv"></div>
+</section>
+</main>
+<div id="report"></div>
+
+<script>
+const $=s=>document.querySelector(s),KEY='lernpfad_eu_v1';
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const S=Object.assign({name:'',seen:[],q2:{},q3:{},t4:{},t5:{},stance:''},load()||{});
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+
+const I=[
+{id:'A',c:'var(--A)',name:'Europäischer Rat',members:'27 Staats- und Regierungschefs + Kommissionspräsidentin; Vorsitz: eigener Präsident (aktuell Charles Michel, Belgien), gewählt für 2,5 Jahre.',tasks:'Legt die politischen Leitlinien und Prioritäten der EU fest. Ist Schiedsinstanz bei strittigen Fragen. Beschließt <b>keine</b> Gesetze.',dec:'Konsens (nur selten Mehrheit, z. B. bei Personalentscheidungen).'},
+{id:'B',c:'var(--B)',name:'Rat der EU (Ministerrat)',members:'27 Fachministerinnen und Fachminister, je nach Thema in 10 Formationen (z. B. Umwelt, Finanzen). Vorsitz wechselt alle 6 Monate.',tasks:'Beschließt zusammen mit dem Parlament die Gesetze der EU. Stimmt dem Haushalt zu, koordiniert die Politik der Länder, verhandelt internationale Abkommen.',dec:'Meist qualifizierte (doppelte) Mehrheit: 55 % der Staaten, die zugleich 65 % der EU-Bevölkerung vertreten. Bei heiklen Themen (z. B. Steuern) Einstimmigkeit.'},
+{id:'C',c:'var(--C)',name:'Europäische Kommission',members:'27 Mitglieder insgesamt – aus jedem Land eine Kommissarin/ein Kommissar, das Land der Präsidentin stellt keine zusätzliche Person. Aktuell Präsidentin Ursula von der Leyen (Deutschland). Amtszeit 5 Jahre, eingesetzt von Rat und Parlament.',tasks:'Schlägt als einzige Institution neue Gesetze vor (&bdquo;Motor der Integration&ldquo;). Führt EU-Politik aus, überwacht die Einhaltung des EU-Rechts (&bdquo;Hüterin der Verträge&ldquo;), verwaltet den Haushalt, vertritt die EU nach außen.',dec:'Das Kollegium der 27 entscheidet mit Mehrheit, in der Praxis meist im Konsens.'},
+{id:'D',c:'var(--D)',name:'Europäisches Parlament',members:'720 direkt gewählte Abgeordnete (seit der Europawahl 2024), Amtszeit 5 Jahre. Organisiert in Fraktionen, nicht nach Ländern.',tasks:'Beschließt zusammen mit dem Ministerrat die Gesetze der EU, entscheidet über den Haushalt, kontrolliert die Kommission (Misstrauensvotum), wählt die Kommissionspräsidentin.',dec:'Im Plenum meist einfache Mehrheit der abgegebenen Stimmen. Ein Misstrauensvotum gegen die Kommission braucht eine Zweidrittelmehrheit.'}];
+const byId=id=>I.find(i=>i.id==id);
+
+/* 1 Übersicht */
+function r1(){$('#c1').innerHTML=I.map(f=>`<div class="fc" style="--c:${f.c}"><button onclick="see('${f.id}')"><b>${f.id}</b>${f.name}</button>${S.seen.includes(f.id)?`<dl><dt>Mitglieder</dt><dd>${f.members}</dd><dt>Aufgaben</dt><dd>${f.tasks}</dd><dt>Beschlussfassung</dt><dd>${f.dec}</dd></dl>`:''}</div>`).join('')}
+function see(id){if(!S.seen.includes(id))S.seen.push(id);r1();upd()}
+
+/* 2 Aussagen zuordnen */
+const Q2R=[
+["Ihre Mitglieder sind die Staats- und Regierungschefs.",'A'],
+["Sie entscheidet meist mit qualifizierter Mehrheit.",'B'],
+["Nur sie darf neue EU-Gesetze vorschlagen.",'C'],
+["Ihre Mitglieder werden alle fünf Jahre direkt von den Bürgerinnen und Bürgern gewählt.",'D'],
+["Sie legt die politischen Leitlinien fest, beschließt aber keine Gesetze.",'A'],
+["Sie tagt in 10 verschiedenen Fachformationen.",'B'],
+["Sie wird als &bdquo;Hüterin der Verträge&ldquo; bezeichnet.",'C'],
+["Sie kann die Kommission mit Zweidrittelmehrheit stürzen (Misstrauensvotum).",'D']];
+const Q2=Q2R.map(([q,a])=>({q,a}));
+function rq2(){$('#c2').innerHTML=Q2.map((it,i)=>{const v=S.q2[i];return `<div class="q"><p>${it.q}</p><div class="o">${sh(I).map(f=>`<button class="${v===f.id?(f.id===it.a?'ok':'bad'):''}" onclick="ans2(${i},'${f.id}')">${f.id} · ${f.name}</button>`).join('')}</div>${v!==undefined?`<small>${v===it.a?'✓ Richtig!':'✗ Nicht ganz – versuch es noch einmal.'}</small>`:''}</div>`}).join('')}
+function ans2(i,v){S.q2[i]=v;rq2();upd()}
+
+/* 3 Situationen */
+const Q3R=[
+["Die Umweltministerinnen und -minister aller Mitgliedstaaten beraten über eine neue Klimaschutzverordnung.",'B'],
+["Die Kommissionspräsidentin schlägt ein neues Gesetz zum Schutz von Wanderarbeitnehmern vor.",'C'],
+["Die Staats- und Regierungschefs legen auf ihrem Gipfeltreffen fest, dass die EU-Erweiterung ein Schwerpunktthema der nächsten Jahre werden soll.",'A'],
+["Die Abgeordneten stimmen im Plenum über den EU-Haushalt für das nächste Jahr ab.",'D'],
+["Weil sich die Fachminister im Rat nicht einigen können, wird die strittige Frage an die Staats- und Regierungschefs weitergegeben.",'A'],
+["Ein Ausschuss befragt eine Kommissarin kritisch zu ihrer Arbeit.",'D']];
+const Q3=Q3R.map(([q,a])=>({q,a}));
+function rq3(){$('#c3').innerHTML=Q3.map((it,i)=>{const v=S.q3[i];return `<div class="q"><p>${it.q}</p><div class="o">${sh(I).map(f=>`<button class="${v===f.id?(f.id===it.a?'ok':'bad'):''}" onclick="ans3(${i},'${f.id}')">${f.id} · ${f.name}</button>`).join('')}</div>${v!==undefined?`<small>${v===it.a?'✓ Richtig!':'✗ Nicht ganz – versuch es noch einmal.'}</small>`:''}</div>`}).join('')}
+function ans3(i,v){S.q3[i]=v;rq3();upd()}
+
+/* 4 Rat vs Ministerrat */
+const T4R=[
+["Mitglieder sind die Staats- und Regierungschefs.",'A'],
+["Mitglieder sind die Fachministerinnen und Fachminister.",'B'],
+["Trifft sich mindestens zweimal pro Halbjahr zu Gipfeltreffen.",'A'],
+["Tagt in zehn verschiedenen Formationen, je nach Thema.",'B'],
+["Legt die politischen Leitlinien der EU fest, beschließt aber keine Gesetze.",'A'],
+["Beschließt gemeinsam mit dem Parlament die Gesetze der EU.",'B'],
+["Entscheidet im Konsens.",'A'],
+["Entscheidet meist mit qualifizierter (doppelter) Mehrheit.",'B']];
+let T4=null;
+function r4(){if(!T4)T4=sh(T4R.map((t,i)=>({t:t[0],a:t[1],i})));$('#c4').innerHTML=`<div class="col" id="colA"><h3>Europäischer Rat</h3></div><div class="col" id="colB"><h3>Rat der EU (Ministerrat)</h3></div>`+'';draw4()}
+function draw4(chk){const cA=$('#colA'),cB=$('#colB');cA.innerHTML='<h3>Europäischer Rat</h3>';cB.innerHTML='<h3>Rat der EU (Ministerrat)</h3>';
+T4.forEach(it=>{const cur=S.t4[it.i];const cls=chk?(cur===it.a?'ok':(cur?'bad':'')):'';const div=document.createElement('div');div.className='stm '+cls;div.textContent=it.t;div.onclick=()=>{if(chk)return;S.t4[it.i]=S.t4[it.i]==='A'?'B':'A';draw4();upd()};
+if(!(it.i in S.t4))S.t4[it.i]='A';
+(S.t4[it.i]==='A'?cA:cB).appendChild(div)});}
+function chk4(){draw4(1);const ok=T4.filter(it=>S.t4[it.i]===it.a).length;$('#s4').textContent=ok+' von 8 richtig zugeordnet. Klicke eine Aussage an, um sie zu verschieben.';upd()}
+
+/* 5 Pro & Contra */
+const ARG=[["Kein Mitgliedstaat kann gegen seinen Willen zu einer Entscheidung gezwungen werden.",'pro'],
+["Kleinere Staaten haben die gleiche Vetomacht wie große Staaten.",'pro'],
+["Entscheidungen werden von allen mitgetragen, das stärkt den Zusammenhalt.",'pro'],
+["Ein einzelner Staat kann eine wichtige Entscheidung für 26 andere Staaten blockieren.",'contra'],
+["Kompromisse dauern oft sehr lange, weil alle überzeugt werden müssen.",'contra'],
+["Bei dringenden Krisen kann die EU nicht schnell genug handeln.",'contra']];
+function r5(){$('#c5').innerHTML=`<div class="q"><p><b>Schritt 1:</b> Sortiere die Argumente. Ist es eher ein Vorteil oder ein Nachteil des Konsensprinzips?</p><div class="two" id="pc"></div></div>
+<div class="q"><p><b>Schritt 2:</b> Öffne dein OneNote-Kursnotizbuch. Notiere dort die Frage: <i>&bdquo;Sollte der Europäische Rat weiterhin im Konsens entscheiden, oder wäre eine Mehrheitsentscheidung (wie im Ministerrat) besser?&ldquo;</i> Schreibe dazu einen zusammenhängenden Text von etwa einer DIN-A4-Seite. Nutze mindestens ein Argument aus Schritt 1 und beziehe eine eigene Position.</p>
+<p><small>Formulierungshilfen für deinen Text in OneNote:</small></p>
+<div class="ch">${["Ich finde, dass…","Ein Vorteil ist…","Ein Nachteil ist…","weil…","Trotzdem…","Allerdings…"].map(s=>`<span class="stm" style="cursor:default;display:inline-block">${s}</span>`).join('')}</div></div>`;draw5()}
+function draw5(){const pro=$('#pc');pro.innerHTML='<div class="col" id="colP"><h3>Vorteil</h3></div><div class="col" id="colN"><h3>Nachteil</h3></div>';const cp=$('#colP'),cn=$('#colN');
+ARG.forEach((a,i)=>{if(!(i in S.t5))S.t5[i]='pro';const div=document.createElement('div');div.className='stm';div.textContent=a[0];div.onclick=()=>{S.t5[i]=S.t5[i]==='pro'?'contra':'pro';draw5();upd()};(S.t5[i]==='pro'?cp:cn).appendChild(div)})}
+
+/* Navigation */
+const T=['1 Überblick','2 Zuordnen','3 Situationen','4 Rat/Ministerrat','5 Pro & Contra','📤 Sichern'];
+function pcCorrect(){return ARG.filter((a,i)=>S.t5[i]===a[1]).length}
+function D(){return [S.seen.length==4,Object.keys(S.q2).length==8&&Q2.every((it,i)=>S.q2[i]===it.a),Object.keys(S.q3).length==6&&Q3.every((it,i)=>S.q3[i]===it.a),T4&&T4.every(it=>S.t4[it.i]===it.a),pcCorrect()==6]}
+function go(n){document.querySelectorAll('.st').forEach((e,i)=>e.hidden=i!=n);document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('on',i==n));if(n==5)$('#pv').innerHTML=rep();window.scrollTo(0,0)}
+function upd(){save();const d=D();document.querySelectorAll('#nav button').forEach((b,i)=>{if(i<5)b.classList.toggle('done',d[i])});$('#pg').style.width=d.filter(Boolean).length/5*100+'%'}
+
+/* Export */
+function rep(){const th='style="border:1px solid #999;padding:4px 8px;text-align:left"',row=(a,b)=>`<tr><td ${th}>${a}</td><td ${th}>${b}</td></tr>`;
+const q4ok=T4?T4.filter(it=>S.t4[it.i]===it.a).length:0;
+return `<h2>Die vier Institutionen der EU</h2><p><b>Name:</b> ${esc(S.name)||'–'} &nbsp; <b>Datum:</b> ${new Date().toLocaleDateString('de-DE')}</p>
+<table style="border-collapse:collapse">${row('1 Institutionen entdeckt',S.seen.length+' / 4')}${row('2 Aussagen zuordnen',Q2.filter((it,i)=>S.q2[i]===it.a).length+' / 8')}${row('3 Situationen erkannt',Q3.filter((it,i)=>S.q3[i]===it.a).length+' / 6')}${row('4 Rat vs. Ministerrat',q4ok+' / 8')}${row('5 Argumente sortiert',pcCorrect()+' / 6 (eigene Zuordnung)')}</table>
+<h3>Meine Position: Konsens im Europäischen Rat</h3><p><i>Der ausführliche Text zu dieser Frage steht im OneNote-Kursnotizbuch.</i></p>
+<h3>Die vier Institutionen im Überblick</h3>${I.map(f=>`<p><b>${f.id} – ${f.name}</b><br><i>Mitglieder:</i> ${f.members}<br><i>Aufgaben:</i> ${f.tasks}<br><i>Beschlussfassung:</i> ${f.dec}</p>`).join('')}`}
+function msg(t){$('#msg').textContent=t}
+function pdf(){$('#report').innerHTML=rep();window.print()}
+async function copy(){const h=rep(),t=document.createElement('div');t.innerHTML=h;$('#pv').innerHTML=h;
+try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([h],{type:'text/html'}),'text/plain':new Blob([t.textContent],{type:'text/plain'})})]);msg('Kopiert! In OneNote mit Strg+V einfügen.')}
+catch(e){try{const s=getSelection(),r=document.createRange();r.selectNodeContents($('#pv'));s.removeAllRanges();s.addRange(r);document.execCommand('copy');msg('Kopiert! In OneNote mit Strg+V einfügen.')}catch(x){msg('Kopieren nicht möglich. Bitte den Text unten markieren und mit Strg+C kopieren.')}}}
+function dl(){const h='<!DOCTYPE html><html lang="de"><meta charset="utf-8"><title>Ergebnisse</title><body style="font-family:sans-serif;max-width:800px;margin:20px auto">'+rep()+'</body></html>',a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h],{type:'text/html'}));a.download='EU_Institutionen_'+(S.name||'Ergebnisse').replace(/\W+/g,'_')+'.html';a.click();msg('Datei gespeichert. In OneNote über Einfügen › Datei anhängen.')}
+
+/* Start */
+$('#nav').innerHTML=T.map((t,i)=>`<button onclick="go(${i})">${t}</button>`).join('');
+$('#nm').value=S.name;$('#nm').oninput=e=>{S.name=e.target.value;save()};
+r1();rq2();rq3();r4();r5();go(0);upd();
+</script>
+</body>
+</html>
