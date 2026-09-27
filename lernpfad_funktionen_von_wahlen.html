@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lernpfad: Funktionen von Wahlen · Les fonctions des élections</title>
+<style>
+:root{--bg:#eef4e0;--card:#fff;--ink:#1c2733;--mut:#5b6875;--g:#7fae2c;--navy:#1f3a8a;--ok:#2b8a4e;--bad:#c4432c;--line:#cfdcb4}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--g);color:#fff;padding:16px 20px 12px}
+header h1{margin:0;font-size:1.45rem;line-height:1.25}
+header p{margin:2px 0 10px}
+.top{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.top input{padding:6px 10px;border:0;border-radius:6px;font:inherit;min-width:200px}
+.bar{flex:1;min-width:140px;height:10px;background:rgba(255,255,255,.4);border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width .4s}
+main{max-width:920px;margin:0 auto;padding:12px 16px 40px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+nav button{border:2px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font:inherit;font-size:.92rem;cursor:pointer;color:var(--ink)}
+nav button.on{border-color:var(--navy);background:var(--navy);color:#fff}
+nav button.done::after{content:" ✓";color:var(--ok);font-weight:700}
+nav button.on.done::after{color:#bff0cf}
+h2{color:var(--navy);margin:.2em 0 .3em;font-size:1.3rem}
+.hint{color:var(--mut);margin:0 0 12px}
+.q,.fc{background:var(--card);border-radius:10px;padding:12px 14px;margin:0 0 12px;border:1px solid var(--line)}
+.fc{border-left:8px solid var(--c)}
+.fc>button{all:unset;cursor:pointer;font-weight:600;display:block;width:100%}
+.fc>button b{display:inline-block;width:1.7em;height:1.7em;line-height:1.7em;text-align:center;border-radius:50%;background:var(--c);color:#fff;margin-right:6px;font-size:.9rem}
+.fc p{margin:8px 0 0}
+.q p{margin:0 0 8px}
+.o{display:flex;flex-wrap:wrap;gap:6px}
+button{font:inherit}
+.o button,.ch button,.m,.sp,.tg button{border:2px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.o button:hover,.ch button:hover,.tg button:hover{border-color:var(--navy)}
+.o button.ok,input.ok{border-color:var(--ok);background:#e3f4e8}
+.o button.bad,input.bad{border-color:var(--bad);background:#fbe6e1}
+.tg{margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap}
+.tg button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+small{color:var(--mut);display:block;margin-top:6px}
+input,select,textarea{font:inherit;padding:5px 8px;border:2px solid var(--line);border-radius:6px;max-width:100%}
+textarea{width:100%;margin-top:8px}
+#c5{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.m{min-height:64px;font-weight:600}
+.m.up{background:#eef4ff;border-color:var(--navy)}
+.m:disabled{background:#e3f4e8;border-color:var(--ok);color:var(--ink)}
+#c5 p{grid-column:1/-1;margin:2px 0}
+.pri{background:var(--navy);color:#fff;border:0;border-radius:8px;padding:9px 16px;cursor:pointer;margin:4px 6px 4px 0}
+.ch{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.o button.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.vg{margin:10px 0 2px;font-weight:600;color:var(--navy);font-size:.92rem}
+.v{text-align:left}
+.v small{margin:0;font-size:.74rem}
+#pv{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 16px;margin-top:12px}
+#msg{color:var(--ok);font-weight:600;min-height:1.5em}
+#report{display:none}
+:focus-visible{outline:3px solid #f0a91d;outline-offset:2px}
+@media print{body>*{display:none!important}body>#report{display:block!important;font:12pt/1.4 sans-serif}}
+</style>
+</head>
+<body>
+<header>
+<h1>Wahlen als Kernstück der Demokratie<br><small style="display:inline;color:#fff;font-weight:400">Les fonctions des élections · 6 Stationen</small></h1>
+<div class="top"><input id="nm" placeholder="Dein Name · Ton nom" autocomplete="off"><div class="bar" title="Fortschritt"><i id="pg"></i></div></div>
+</header>
+<main>
+<nav id="nav"></nav>
+
+<section class="st">
+<h2>1 · Die sechs Funktionen entdecken</h2>
+<p class="hint">Klicke jede Funktion an. Mit 🔊 hörst du den französischen Satz.</p>
+<div class="tg"><button data-m="de">Deutsch</button><button data-m="fr">Français</button><button data-m="both" class="on">Deutsch + Français</button></div>
+<div id="c1"></div>
+</section>
+
+<section class="st" hidden>
+<h2>2 · Welche Funktion passt? · Quelle fonction ?</h2>
+<p class="hint">Lies den französischen Satz und wähle die passende Funktion. Bei einem Fehler darfst du es noch einmal versuchen.</p>
+<div id="c2"></div>
+</section>
+
+<section class="st" hidden>
+<h2>3 · Die vier Ebenen der Wahl · Les quatre niveaux</h2>
+<p class="hint"><b>Schritt 1 · Étape 1 :</b> Ordne den deutschen Begriff dem passenden französischen Ausdruck zu.</p>
+<div id="c3a"></div>
+<p class="hint" style="margin-top:18px"><b>Schritt 2 · Étape 2 :</b> Auf welcher Ebene findet die Wahl statt?</p>
+<div id="c3"></div>
+</section>
+
+<section class="st" hidden>
+<h2>4 · Grundgesetz Artikel 20 (2) · Loi fondamentale</h2>
+<p class="hint">Ergänze die fehlenden Wörter (Groß-/Kleinschreibung und Akzente sind egal).</p>
+<div id="c4"></div>
+</section>
+
+<section class="st" hidden>
+<h2>5 · Memory Deutsch – Français</h2>
+<p class="hint">Finde die Paare: deutscher Begriff und französische Entsprechung.</p>
+<div id="c5"></div>
+<button class="pri" onclick="r5()" style="margin-top:10px">Neu mischen</button>
+</section>
+
+<section class="st" hidden>
+<h2>6 · Meine Meinung · Mon avis</h2>
+<p class="hint">Der Antrag der SV zur Juniorwahl: Entscheide dich für zwei Funktionen und begründe kurz.</p>
+<div id="c6"></div>
+</section>
+
+<section class="st" hidden>
+<h2>Sichern für OneNote</h2>
+<p class="hint">Deine Ergebnisse gehen sonst nach der Stunde verloren. Wähle einen Weg:</p>
+<button class="pri" onclick="pdf()">📄 Als PDF speichern (Drucken)</button>
+<button class="pri" onclick="copy()">📋 Kopieren</button>
+<button class="pri" onclick="dl()">💾 Als Datei sichern</button>
+<div id="msg" role="status"></div>
+<small><b>PDF:</b> Im Druckfenster als Ziel „Als PDF speichern“ wählen. In OneNote: Einfügen › Datei-Ausdruck oder Datei.<br>
+<b>Kopieren:</b> In OneNote an die gewünschte Stelle klicken und Strg+V (Mac: Cmd+V) drücken.<br>
+<b>Datei:</b> In OneNote: Einfügen › Datei anhängen.</small>
+<div id="pv"></div>
+</section>
+</main>
+<div id="report"></div>
+
+<script>
+const $=s=>document.querySelector(s),KEY='lernpfad_wahlen_v1';
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nz=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const S=Object.assign({name:'',seen:[],q2:{},q3:{},q3a:{},gap:{},mem:0,mv:0,fns:[],why:{}},load()||{});
+
+const F=[
+{c:'#14a38b',de:'Mitbestimmung',fr:'la participation',d:'Bürgerinnen und Bürger nehmen mit ihrer Stimme Einfluss.',ex:'Les citoyens influencent la politique avec leur voix.'},
+{c:'#e8703a',de:'Legitimation',fr:'la légitimation',d:'Gewählte dürfen für eine bestimmte Zeit entscheiden (Macht auf Zeit).',ex:'Les élus ont le droit de décider pendant une durée limitée.'},
+{c:'#2f9fd8',de:'Kontrolle / Machtkontrolle',fr:'le contrôle du pouvoir',d:'Eine Regierung kann weiterregieren oder abgewählt werden.',ex:'Le gouvernement peut être réélu ou remplacé.'},
+{c:'#1f3a8a',de:'Repräsentation',fr:'la représentation',d:'Vertreterinnen und Vertreter des ganzen Volkes treffen Entscheidungen.',ex:'Les députés décident pour tout le peuple.'},
+{c:'#8e3b8f',de:'Politische Orientierung',fr:"l'orientation politique",d:'Parteien zeigen vor der Wahl, wofür sie stehen.',ex:'Les partis montrent leurs idées avant l\'élection.'},
+{c:'#f0a91d',de:'Signalwirkung',fr:"l'effet de signal",d:'Das Wahlergebnis zeigt, welche Themen vielen Menschen wichtig sind.',ex:'Le résultat montre quels sujets sont importants pour beaucoup de gens.'}];
+const FL=F.map(f=>f.de+' – '+f.fr);
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const mk=(rows,opts)=>rows.map(([q,a])=>({q,a,o:sh(opts.map((t,v)=>({t,v})))}));
+const Q2R=[["Marie a 16 ans. Elle vote et donne son opinion.",0],["Les députés sont élus pour cinq ans. Après, il y a de nouvelles élections.",1],["Les électeurs n'aiment pas le gouvernement. Ils votent pour un autre parti.",2],["Les députés du Landtag décident pour tous les habitants de la NRW.",3],["Avant l'élection, les partis présentent leurs programmes.",4],["Un parti gagne beaucoup de voix avec le thème du climat.",5]].map(([q,a])=>['<span lang="fr">'+q+'</span>',a]);
+const Q2=mk(Q2R,FL);
+const EL=["Kommunale Ebene – niveau communal","Landesebene – niveau régional (Land)","Bundesebene – niveau fédéral","Europäische Ebene – niveau européen"];
+const Q3R=[["Wahl des Stadtrats · <span lang=fr>l'élection du conseil municipal</span>",0],["Wahl des Landtags NRW · <span lang=fr>l'élection du Landtag de NRW</span>",1],["Wahl des Bundestages · <span lang=fr>l'élection du Bundestag</span>",2],["Wahl des EU-Parlaments · <span lang=fr>l'élection du Parlement européen</span>",3]];
+const Q3=mk(Q3R,EL);
+const EF=["niveau communal","niveau régional","niveau fédéral","niveau européen"];
+const Q3A=mk([["Kommunale Ebene",0],["Landesebene",1],["Bundesebene",2],["Europäische Ebene",3]],EF);
+const G=[
+{t:"Alle {0} geht vom {1} aus. Sie wird vom Volke in {2} und Abstimmungen sowie durch besondere Organe der {3}, der vollziehenden Gewalt und der Rechtsprechung ausgeübt.",a:[["staatsgewalt"],["volke","volk"],["wahlen"],["gesetzgebung"]],w:"Wörter: Wahlen · Gesetzgebung · Volke · Staatsgewalt"},
+{t:"Tous les {0} de l'État émanent du {1}. Le peuple les exerce au moyen d'{2} et de votes et par des organes spéciaux investis des pouvoirs {3}, exécutif et judiciaire.",a:[["pouvoirs"],["peuple"],["elections"],["legislatif"]],w:"Mots : législatif · élections · peuple · pouvoirs"}];
+const P=[["Wahlakt","l'acte de vote"],["Wählerinnen und Wähler","les électeurs"],["Abgeordnete","les députés"],["Partei","le parti"],["Regierung","le gouvernement"],["Volk","le peuple"],["Wahlurne","l'urne"],["Stimme","la voix"]];
+
+const cnt=(it,k)=>it.filter((x,i)=>S[k][i]===x.a).length;
+const g4=()=>G.reduce((s,g,gi)=>s+g.a.filter((a,n)=>a.includes(nz(S.gap[gi+'_'+n]))).length,0);
+const D=()=>[S.seen.length==6,cnt(Q2,'q2')==6,cnt(Q3A,'q3a')==4&&cnt(Q3,'q3')==4,g4()==8,S.mem==8,S.fns.length==2&&S.fns.every(i=>(S.why[i]||'').length>15)];
+const T=['1 Entdecken','2 Zuordnen','3 Ebenen','4 Art. 20','5 Memory','6 Meinung','📤 Sichern'];
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='fr-FR';u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+
+/* Navigation & Fortschritt */
+function go(n){document.querySelectorAll('.st').forEach((e,i)=>e.hidden=i!=n);document.querySelectorAll('#nav button').forEach((b,i)=>b.classList.toggle('on',i==n));if(n==6)$('#pv').innerHTML=rep();window.scrollTo(0,0)}
+function upd(){save();const d=D();document.querySelectorAll('#nav button').forEach((b,i)=>{if(i<6)b.classList.toggle('done',d[i])});$('#pg').style.width=d.filter(Boolean).length/6*100+'%'}
+
+/* 1 Entdecken */
+let mode='both';
+function r1(){$('#c1').innerHTML=F.map((f,i)=>{const t=mode=='de'?f.de:mode=='fr'?f.fr:f.de+' · <i>'+f.fr+'</i>';return `<div class="fc" style="--c:${f.c}"><button onclick="see(${i})"><b>${i+1}</b>${t}</button>${S.seen.includes(i)?`<p>${mode=='fr'?'':f.d+'<br>'}<span lang="fr">${f.ex}</span> <button class="sp" onclick="speak(F[${i}].ex)" aria-label="Vorlesen">🔊</button></p>`:''}</div>`}).join('')}
+function see(i){if(!S.seen.includes(i))S.seen.push(i);r1();upd()}
+document.querySelectorAll('.tg button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('.tg button').forEach(x=>x.classList.toggle('on',x==b));r1()});
+
+/* 2+3 Quiz */
+function rq(id,items,key){$(id).innerHTML=items.map((it,i)=>{const v=S[key][i];return `<div class="q"><p>${it.q}</p><div class="o">${it.o.map(o=>`<button class="${v===o.v?(o.v===it.a?'ok':'bad'):''}" onclick="ans('${key}',${i},${o.v})">${o.t}</button>`).join('')}</div>${v!==undefined?`<small>${v===it.a?'✓ Richtig ! Bravo !':'✗ Nicht ganz. Réessaie !'}</small>`:''}</div>`}).join('')}
+function ans(k,i,j){S[k][i]=j;({q2:()=>rq('#c2',Q2,'q2'),q3a:()=>rq('#c3a',Q3A,'q3a'),q3:()=>rq('#c3',Q3,'q3')})[k]();upd()}
+
+/* 4 Lückentext */
+function r4(chk){$('#c4').innerHTML=G.map((g,gi)=>`<div class="q"><p>${g.t.replace(/\{(\d)\}/g,(m,n)=>{const k=gi+'_'+n,v=S.gap[k]||'';const c=chk?(g.a[n].includes(nz(v))?'ok':'bad'):'';return `<input class="${c}" value="${esc(v)}" data-k="${k}" oninput="S.gap[this.dataset.k]=this.value;upd()" size="13" autocomplete="off">`})}</p><small>${g.w}</small></div>`).join('')+'<button class="pri" onclick="r4(1)">Prüfen · Vérifier</button>'}
+
+/* 5 Memory */
+let M=[],fl=[],mv=0;
+function r5(){M=P.flatMap((p,i)=>[{t:p[0],i,l:'de'},{t:p[1],i,l:'fr'}]).sort(()=>Math.random()-.5);M.forEach(m=>m.s=0);fl=[];mv=0;dr5()}
+function dr5(){$('#c5').innerHTML=M.map((m,k)=>`<button class="m ${m.s?'up':''}" ${m.s==2?'disabled':''} onclick="fp(${k})">${m.s?m.t:'?'}</button>`).join('')+`<p>Züge: ${mv} · Paare: ${M.filter(m=>m.s==2).length/2} / 8</p>`}
+function fp(k){if(fl.length==2||M[k].s)return;M[k].s=1;fl.push(k);if(fl.length==2){mv++;const[a,b]=fl;if(M[a].i==M[b].i&&M[a].l!=M[b].l){M[a].s=M[b].s=2;fl=[];S.mem=M.filter(m=>m.s==2).length/2;S.mv=mv;dr5();upd()}else{dr5();setTimeout(()=>{M[a].s=M[b].s=0;fl=[];dr5()},900)}}else dr5()}
+
+/* 6 Antrag der SV */
+let lastTx=null;
+const V=[
+["Meinung äußern · donner son avis",[["je pense que…","ich denke, dass"],["à mon avis…","meiner Meinung nach"],["pour moi…","für mich"],["je trouve que…","ich finde, dass"],["selon nous…","unserer Ansicht nach"]]],
+["Begründen · justifier",[["parce que…","weil"],["car…","denn"],["grâce à…","dank"],["c'est pourquoi…","deshalb"],["donc…","also"]]],
+["Argumentieren · argumenter",[["mettre en avant","hervorheben"],["souligner","betonen"],["expliquer","erklären"],["convaincre","überzeugen"],["un argument fort","ein starkes Argument"]]],
+["Beurteilen · évaluer",[["c'est important pour…","das ist wichtig für"],["c'est utile","das ist nützlich"],["c'est moins important","das ist weniger wichtig"],["il est nécessaire de…","es ist notwendig, zu"]]],
+["Verbinden · relier",[["d'abord…","zuerst"],["ensuite…","dann"],["aussi…","auch"],["en plus…","außerdem"],["mais…","aber"],["par exemple…","zum Beispiel"]]],
+["Antrag und Schule · la demande et l'école",[["la SV","die SV"],["la direction","die Schulleitung"],["la demande","der Antrag"],["les élèves","die Schülerinnen und Schüler"],["l'école","die Schule"],["la Juniorwahl","die Juniorwahl"],["l'élection","die Wahl"],["voter","wählen"],["la démocratie","die Demokratie"],["apprendre","lernen"]]],
+["Die sechs Funktionen · les six fonctions",F.map(f=>[f.fr,f.de])]];
+function pick(i){const a=S.fns,k=a.indexOf(i);if(k>=0)a.splice(k,1);else{a.push(i);if(a.length>2)a.shift()}r6();upd()}
+function r6(){lastTx=null;$('#c6').innerHTML=`<div class="q"><p><b>Situation · La situation</b><br>Die SV möchte bei der Schulleitung beantragen, dass unsere Schule bei der nächsten Landtagswahl in NRW an der Juniorwahl teilnimmt, wenn 16-Jährige mitwählen dürfen. Die Juniorwahl ist ein Projekt zur politischen Bildung: Im Unterricht bereitet man die Wahl vor, danach wird an der Schule ein möglichst echter Wahlablauf simuliert.<br><span lang="fr">La SV (représentation des élèves) veut demander à la direction que l'école participe à la Juniorwahl pour les prochaines élections du Landtag en NRW. Les élèves préparent le vote en classe, puis l'école simule une vraie élection.</span></p></div>
+<div class="q"><p><b>Aufgabe · Tâche</b><br>Welche <b>zwei</b> Funktionen von Wahlen sollte die SV in ihrem Antrag besonders hervorheben? Begründet eure Auswahl kurz.<br><span lang="fr">Quelles deux fonctions des élections la SV devrait-elle mettre en avant dans sa demande ? Justifiez brièvement votre choix.</span></p><div class="o">${F.map((f,i)=>`<button class="${S.fns.includes(i)?'sel':''}" aria-pressed="${S.fns.includes(i)}" onclick="pick(${i})">${f.de} · ${f.fr}</button>`).join('')}</div><small>${S.fns.length} / 2 gewählt · choisies</small></div>
+${S.fns.map(i=>`<div class="q"><p><b>${F[i].de} · ${F[i].fr}</b><br><span lang="fr">Pourquoi cette fonction est-elle importante pour la demande de la SV ?</span></p><textarea rows="3" data-i="${i}" placeholder="1–2 phrases en français…" onfocus="lastTx=this" oninput="S.why[this.dataset.i]=this.value;upd()">${esc(S.why[i])}</textarea></div>`).join('')}
+<div class="q"><p><b>Hilfen · Aides</b><br><small>Wähle zuerst zwei Funktionen. Ein Klick fügt den Ausdruck in das zuletzt angeklickte Textfeld ein.</small></p>${V.map(([h,l])=>`<div class="vg">${h}</div><div class="ch">${l.map(([fr,de])=>`<button class="v" data-f="${esc(fr)}" onclick="ins(this.dataset.f)"><span lang="fr">${fr}</span><small>${de}</small></button>`).join('')}</div>`).join('')}</div>`}
+function ins(s){const t=lastTx&&document.body.contains(lastTx)?lastTx:document.querySelector('#c6 textarea');if(!t)return;t.value+=(t.value&&!/\s$/.test(t.value)?' ':'')+s+' ';S.why[t.dataset.i]=t.value;t.focus();upd()}
+
+/* Export */
+function rep(){const th='style="border:1px solid #999;padding:4px 8px;text-align:left"',row=(a,b)=>`<tr><td ${th}>${a}</td><td ${th}>${b}</td></tr>`;
+return `<h2>Lernpfad: Funktionen von Wahlen / Les fonctions des élections</h2><p><b>Name:</b> ${esc(S.name)||'–'} &nbsp; <b>Datum:</b> ${new Date().toLocaleDateString('de-DE')}</p>
+<table style="border-collapse:collapse">${row('1 Funktionen entdecken',S.seen.length+' / 6')}${row('2 Situationen zuordnen',cnt(Q2,'q2')+' / 6')}${row('3 Ebenen der Wahl','Begriffe '+cnt(Q3A,'q3a')+' / 4, Zuordnung '+cnt(Q3,'q3')+' / 4')}${row('4 Grundgesetz Art. 20 (2)',g4()+' / 8 Lücken')}${row('5 Memory',(S.mem||0)+' / 8 Paare'+(S.mv?', '+S.mv+' Züge':''))}</table>
+<h3>Grundgesetz Art. 20 (2) – meine Lösung</h3>${G.map((g,gi)=>'<p>'+g.t.replace(/\{(\d)\}/g,(m,n)=>'<u>'+esc(S.gap[gi+'_'+n]||'…')+'</u>')+'</p>').join('')}
+<h3>Antrag der SV zur Juniorwahl: Welche zwei Funktionen sollte die SV hervorheben?</h3>${S.fns.map(i=>`<p><b>${F[i].de} – ${F[i].fr}</b><br>${esc(S.why[i]).replace(/\n/g,'<br>')||'–'}</p>`).join('')||'<p>–</p>'}
+<h3>Wortschatz Deutsch – Français</h3><table style="border-collapse:collapse">${F.map(f=>row(f.de,f.fr)).join('')}${P.map(p=>row(p[0],p[1])).join('')}</table>`}
+function msg(t){$('#msg').textContent=t}
+function pdf(){$('#report').innerHTML=rep();window.print()}
+async function copy(){const h=rep(),t=document.createElement('div');t.innerHTML=h;$('#pv').innerHTML=h;
+try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([h],{type:'text/html'}),'text/plain':new Blob([t.textContent],{type:'text/plain'})})]);msg('Kopiert! In OneNote mit Strg+V einfügen.')}
+catch(e){try{const s=getSelection(),r=document.createRange();r.selectNodeContents($('#pv'));s.removeAllRanges();s.addRange(r);document.execCommand('copy');msg('Kopiert! In OneNote mit Strg+V einfügen.')}catch(x){msg('Kopieren nicht möglich. Bitte den Text unten markieren und mit Strg+C kopieren.')}}}
+function dl(){const h='<!DOCTYPE html><html lang="de"><meta charset="utf-8"><title>Ergebnisse</title><body style="font-family:sans-serif;max-width:800px;margin:20px auto">'+rep()+'</body></html>',a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h],{type:'text/html'}));a.download='Lernpfad_Wahlen_'+(S.name||'Ergebnisse').replace(/\W+/g,'_')+'.html';a.click();msg('Datei gespeichert. In OneNote über Einfügen › Datei anhängen.')}
+
+/* Start */
+$('#nav').innerHTML=T.map((t,i)=>`<button onclick="go(${i})">${t}</button>`).join('');
+$('#nm').value=S.name;$('#nm').oninput=e=>{S.name=e.target.value;save()};
+r1();rq('#c2',Q2,'q2');rq('#c3a',Q3A,'q3a');rq('#c3',Q3,'q3');r4();r5();r6();go(0);upd();
+</script>
+</body>
+</html>
