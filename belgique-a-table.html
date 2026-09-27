@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>À table en Belgique – Compréhension écrite</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--ink:#1c1d21;--mut:#5a5f69;--ln:#d8dbe1;--ok:#1a7f4b;--ko:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14151a;--card:#1f2128;--ink:#f0f0f3;--mut:#a7abb5;--ln:#363a46;--ok:#5fd39a;--ko:#ff8f85}}
+:root[data-theme="dark"]{--bg:#14151a;--card:#1f2128;--ink:#f0f0f3;--mut:#a7abb5;--ln:#363a46;--ok:#5fd39a;--ko:#ff8f85}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif}
+header{background:#111;color:#fff;padding:30px 20px 24px;border-bottom:8px solid;border-image:linear-gradient(90deg,#000 33.3%,#f6c700 33.3% 66.6%,#c8102e 66.6%) 1}
+header>div{max-width:1100px;margin:auto}
+h1{font:800 clamp(2rem,6vw,3.3rem)/1.05 "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 8px}
+header p{margin:0;color:#d5d7dc;max-width:60ch}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--ln);display:flex;gap:4px;overflow-x:auto;padding:0 12px;justify-content:center}
+nav button{font:700 1rem "Atkinson Hyperlegible",system-ui,sans-serif;background:none;border:0;border-bottom:5px solid transparent;color:var(--mut);padding:14px 16px 9px;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--c)}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #c8102e;outline-offset:2px}
+.p{display:grid;gap:24px;max-width:1100px;margin:0 auto;padding:22px 16px 48px}
+.p[hidden]{display:none}
+@media(min-width:900px){.p{grid-template-columns:minmax(300px,380px) 1fr;align-items:start}.txt{position:sticky;top:84px}}
+.txt{background:var(--card);border-top:8px solid var(--c);border-radius:4px;padding:6px 22px 22px;font-family:Georgia,"Times New Roman",serif;font-size:1.06rem;line-height:1.8}
+.txt h2{font:800 1.6rem "Bricolage Grotesque",system-ui,sans-serif;margin:16px 0 8px}
+.txt p{margin:0}
+.task{background:var(--card);border-left:5px solid var(--c);border-radius:4px;padding:16px 18px 18px;margin-bottom:18px}
+.task h3{margin:0 0 4px;font:700 1.15rem "Bricolage Grotesque",system-ui,sans-serif}
+.lv{display:block;font:700 .85rem "Atkinson Hyperlegible",system-ui,sans-serif;color:var(--mut);letter-spacing:.02em}
+ol{list-style:none;margin:10px 0 0;padding:0}
+li{padding:10px 10px 10px 12px;border-top:1px solid var(--ln)}
+li p{margin:0 0 6px}
+li.ok{box-shadow:inset 5px 0 var(--ok)}li.ko{box-shadow:inset 5px 0 var(--ko)}
+.s{display:block;font-style:normal;font-weight:700;font-size:.92rem;margin-top:4px}
+li.ok .s{color:var(--ok)}li.ko .s{color:var(--ko)}
+.o{display:flex;flex-wrap:wrap;gap:8px}
+.o.v{flex-direction:column;align-items:flex-start}
+label{border:1px solid var(--ln);border-radius:20px;padding:4px 14px 4px 10px;cursor:pointer}
+label:has(input:checked){background:var(--ink);color:var(--bg);border-color:var(--ink)}
+label input{margin-right:6px}
+select{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--mut);border-radius:4px;padding:3px 6px;max-width:100%}
+textarea{width:100%;min-height:64px;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--ln);border-radius:4px;padding:8px}
+.m{background:var(--bg);border-left:4px solid var(--ok);padding:8px 12px;margin-top:8px}
+.m[hidden]{display:none}
+.bar{display:flex;align-items:center;gap:14px;margin-top:12px}
+.chk{font:700 1rem "Atkinson Hyperlegible",system-ui,sans-serif;background:var(--ink);color:var(--bg);border:0;border-radius:4px;padding:10px 18px;cursor:pointer}
+.chk:disabled{opacity:.5;cursor:default}
+.sc{font-weight:700}
+</style>
+</head>
+<body>
+<header><div><h1>À table en Belgique</h1><p>Lis le texte, puis fais les exercices. Tu peux vérifier tes réponses autant de fois que tu veux. Après deux essais, la solution s’affiche.</p></div></header>
+<nav role="tablist" id="nav"></nav>
+<main id="main"></main>
+<script>
+const T=[
+{ic:"🍺",t:"La bière",c:"#d99000",x:"La Belgique est aussi connue pour ses nombreuses bières. Elles font partie de la culture et de l’histoire du pays. On trouve des brasseries dans plusieurs régions, et certaines sont très anciennes. Une brasserie est un lieu où l’on prépare la bière avec de l’eau, des céréales et d’autres ingrédients. Il existe différents types de bière, avec des goûts, des couleurs et des traditions variés. Dans les magasins et les restaurants, les bouteilles ont parfois des étiquettes très différentes. Certaines bières belges sont servies dans un verre spécial. Pour les adultes, la bière peut accompagner un repas dans certains restaurants. Mais c’est une boisson alcoolisée : les enfants et les adolescents ne doivent pas en boire. Les jeunes peuvent découvrir cette tradition en visitant un musée, en regardant les étiquettes ou en parlant de l’histoire des brasseries.",k:[
+{l:1,f:"ch",h:"Vrai ou faux ?",o:["Vrai","Faux"],i:[["La Belgique est connue pour ses nombreuses bières.",0],["On trouve des brasseries seulement dans une région.",1],["Toutes les bières ont le même goût.",1],["Les adolescents ne doivent pas boire de bière.",0]]},
+{l:1,f:"mt",h:"Relie chaque mot à son explication.",i:[["une brasserie","un lieu où l’on prépare la bière"],["une étiquette","le papier avec des informations sur la bouteille"],["une boisson alcoolisée","une boisson qui contient de l’alcool"],["un verre spécial","on y sert certaines bières belges"]]},
+{l:2,f:"qc",h:"Choisis la bonne réponse.",i:[["Avec quoi prépare-t-on la bière ?",["avec du lait, du sucre et du chocolat","avec de l’eau, des céréales et d’autres ingrédients","avec des pommes de terre et de l’huile"],1],["Que dit le texte sur les brasseries ?",["Elles sont toutes récentes.","Elles existent seulement à Bruxelles.","Il y en a dans plusieurs régions, et certaines sont très anciennes."],2],["Pourquoi les jeunes ne doivent-ils pas boire de bière ?",["Parce que c’est une boisson alcoolisée.","Parce qu’elle est trop chère.","Parce qu’elle a trop de couleurs."],0]]},
+{l:2,f:"gp",h:"Complète les phrases avec les mots de la liste. Attention : un mot est en trop.",b:["musée"],i:[["Les bières font partie de la ___ et de l’histoire du pays.","culture"],["Les bouteilles ont parfois des ___ très différentes.","étiquettes"],["Certaines bières belges sont servies dans un ___ spécial.","verre"],["Pour les adultes, la bière peut ___ un repas.","accompagner"]]},
+{l:3,f:"op",h:"Réponds avec tes propres mots, en phrases complètes.",i:[["Comment les jeunes peuvent-ils découvrir la tradition de la bière sans en boire ? Cite deux possibilités.","Ils peuvent visiter un musée, regarder les étiquettes ou parler de l’histoire des brasseries."],["Quelles différences existe-t-il entre les types de bière ?","Elles ont des goûts, des couleurs et des traditions variés."],["Le texte parle différemment des adultes et des jeunes. Explique pourquoi.","Pour les adultes, la bière peut accompagner un repas, mais c’est une boisson alcoolisée : les enfants et les adolescents ne doivent pas en boire."]]}
+]},
+{ic:"🍫",t:"Le chocolat",c:"#7a4327",x:"En Belgique, le chocolat est une spécialité très connue. Dans les villes comme Bruxelles, Bruges ou Liège, on voit beaucoup de magasins de chocolat. Les chocolatiers préparent des pralines, des tablettes et des petits sujets en chocolat. Une praline belge est souvent un chocolat avec une garniture, par exemple une crème, du caramel ou une noisette. Dans un magasin, les clients peuvent choisir leurs chocolats un par un dans une boîte. Le chocolat belge est aussi un cadeau populaire pour la famille ou les amis. Il existe du chocolat noir, au lait et blanc. Le chocolat noir a un goût plus fort. Pour faire du bon chocolat, il faut travailler avec soin et choisir de bons ingrédients. Les touristes aiment visiter les magasins et goûter à quelques spécialités belges.",k:[
+{l:1,f:"ch",h:"Vrai ou faux ?",o:["Vrai","Faux"],i:[["Le chocolat est une spécialité très connue en Belgique.",0],["On trouve des magasins de chocolat seulement à Bruxelles.",1],["Une praline belge est souvent un chocolat avec une garniture.",0],["Le chocolat blanc a un goût plus fort que le chocolat noir.",1]]},
+{l:1,f:"mt",h:"Relie chaque mot à son explication.",i:[["un chocolatier","une personne qui prépare des pralines et des tablettes"],["une garniture","une crème, du caramel ou une noisette dans une praline"],["un cadeau populaire","ce que beaucoup de gens offrent à la famille ou aux amis"],["le chocolat noir","le chocolat qui a un goût plus fort"]]},
+{l:2,f:"qc",h:"Choisis la bonne réponse.",i:[["Quelles villes le texte cite-t-il ?",["Bruxelles, Bruges et Liège","Bruxelles, Gand et Anvers","Bruges, Namur et Liège"],0],["Que peuvent faire les clients dans un magasin ?",["Ils peuvent préparer leur chocolat.","Ils peuvent choisir leurs chocolats un par un dans une boîte.","Ils peuvent seulement acheter des tablettes."],1],["Que faut-il pour faire du bon chocolat ?",["beaucoup de sucre","une grande boîte","du soin et de bons ingrédients"],2]]},
+{l:2,f:"gp",h:"Complète les phrases avec les mots de la liste. Attention : un mot est en trop.",b:["boîte"],i:[["Les chocolatiers préparent des pralines, des ___ et des petits sujets.","tablettes"],["Il existe du chocolat noir, au ___ et blanc.","lait"],["Le chocolat belge est un ___ populaire pour la famille ou les amis.","cadeau"],["Les ___ aiment visiter les magasins.","touristes"]]},
+{l:3,f:"op",h:"Réponds avec tes propres mots, en phrases complètes.",i:[["Nomme trois garnitures possibles pour une praline belge.","Une praline peut avoir une garniture de crème, de caramel ou de noisette."],["Qu’est-ce qui est important pour faire du bon chocolat ?","Il faut travailler avec soin et choisir de bons ingrédients."],["Tu es touriste à Bruxelles. Que peux-tu faire dans un magasin de chocolat ? Écris deux phrases.","Par exemple : Je choisis des chocolats un par un pour ma famille. Je goûte une praline belge."]]}
+]},
+{ic:"🍟",t:"Les frites",c:"#e0b000",x:"Les frites sont très populaires en Belgique. Beaucoup de Belges aiment les acheter dans une friterie, un petit restaurant spécialisé. À Bruxelles, on peut voir des friteries dans différents quartiers. Les frites sont faites avec des pommes de terre. On coupe les pommes de terre en longues parties, puis on les fait cuire dans de l’huile chaude. Elles deviennent dorées et croustillantes à l’extérieur, mais restent tendres à l’intérieur. Les clients commandent souvent une portion de frites dans un cornet ou une petite barquette. Ils peuvent choisir une sauce, par exemple de la mayonnaise ou du ketchup. Les frites peuvent accompagner un repas, mais elles ne remplacent pas une alimentation variée. Elles sont une spécialité simple et connue que les visiteurs aiment goûter pendant une promenade dans la ville.",k:[
+{l:1,f:"ch",h:"Vrai ou faux ?",o:["Vrai","Faux"],i:[["Les frites sont très populaires en Belgique.",0],["Une friterie est un grand supermarché.",1],["Les frites sont faites avec des pommes de terre.",0],["Les clients ne peuvent pas choisir de sauce.",1]]},
+{l:1,f:"mt",h:"Relie chaque mot à son explication.",i:[["une friterie","un petit restaurant spécialisé"],["croustillant","dur et sec à l’extérieur, pas mou"],["tendre","doux, pas dur"],["un cornet","un emballage pour une portion de frites"]]},
+{l:2,f:"qc",h:"Choisis la bonne réponse.",i:[["Où les Belges achètent-ils souvent des frites ?",["dans une boulangerie","dans une friterie","dans un musée"],1],["Comment sont les frites après la cuisson ?",["dorées et croustillantes à l’extérieur, tendres à l’intérieur","blanches et molles","noires et dures"],0],["Que dit le texte sur l’alimentation ?",["Les frites remplacent un repas complet.","On doit manger des frites tous les jours.","Les frites ne remplacent pas une alimentation variée."],2]]},
+{l:2,f:"od",h:"Mets les étapes dans le bon ordre (1 à 5).",i:["On coupe les pommes de terre en longues parties.","On fait cuire les pommes de terre dans de l’huile chaude.","Les frites deviennent dorées et croustillantes.","Le client commande une portion dans un cornet.","Il choisit une sauce, par exemple de la mayonnaise."]},
+{l:3,f:"op",h:"Réponds avec tes propres mots, en phrases complètes.",i:[["Pourquoi les visiteurs aiment-ils goûter les frites pendant une promenade dans la ville ?","Parce que c’est une spécialité simple et connue."],["Que veut dire : « Les frites ne remplacent pas une alimentation variée » ? Explique.","On ne doit pas manger seulement des frites ; il faut manger des aliments différents."],["Comment prépare-t-on les frites ? Explique en deux ou trois phrases.","On coupe les pommes de terre en longues parties, puis on les fait cuire dans de l’huile chaude. Elles deviennent dorées et croustillantes."]]}
+]},
+{ic:"🧇",t:"Les gaufres",c:"#c8102e",x:"À Bruxelles, les gaufres sont une spécialité très appréciée. On peut en acheter dans des cafés, des boulangeries ou de petits stands dans la rue. La gaufre de Bruxelles est légère, rectangulaire et souvent assez grande. Elle a des petits carrés et une pâte douce. Quand elle est chaude, son odeur est très agréable. On peut la manger nature, avec du sucre glace, des fruits ou un peu de chocolat. Les habitants et les touristes aiment faire une pause avec une gaufre après une visite de la ville. Il ne faut pas confondre la gaufre de Bruxelles avec la gaufre de Liège. Celle de Liège est plus petite, plus ronde et contient souvent des morceaux de sucre. Les deux spécialités sont belges, mais elles ont une forme et une recette différentes.",k:[
+{l:1,f:"ch",h:"Vrai ou faux ?",o:["Vrai","Faux"],i:[["À Bruxelles, les gaufres sont une spécialité très appréciée.",0],["On peut acheter des gaufres dans des cafés, des boulangeries ou des stands.",0],["La gaufre de Bruxelles est petite et ronde.",1],["Les gaufres de Bruxelles et de Liège sont deux spécialités belges.",0]]},
+{l:1,f:"mt",h:"Relie chaque mot à son explication.",i:[["un stand","un petit point de vente dans la rue"],["nature","sans rien dessus"],["le sucre glace","une poudre blanche et sucrée sur la gaufre"],["une pause","un moment pour se reposer"]]},
+{l:2,f:"qc",h:"Choisis la bonne réponse.",i:[["Comment est la gaufre de Bruxelles ?",["légère, rectangulaire et souvent assez grande","petite, ronde et dure","très sucrée et toujours froide"],0],["Avec quoi peut-on manger une gaufre de Bruxelles ?",["avec de la mayonnaise ou du ketchup","avec du sucre glace, des fruits ou un peu de chocolat","avec de la bière"],1],["Quand les gens aiment-ils manger une gaufre ?",["avant le petit-déjeuner","pendant un match de football","pour faire une pause après une visite de la ville"],2]]},
+{l:2,f:"ch",h:"Bruxelles, Liège ou les deux ? Choisis la bonne réponse.",o:["Bruxelles","Liège","Les deux"],i:[["Elle est rectangulaire.",0],["Elle est plus petite et plus ronde.",1],["C’est une spécialité belge.",2],["Elle contient souvent des morceaux de sucre.",1],["Elle a des petits carrés.",0]]},
+{l:3,f:"op",h:"Réponds avec tes propres mots, en phrases complètes.",i:[["Quelle est la différence entre la gaufre de Bruxelles et la gaufre de Liège ? Écris deux phrases.","La gaufre de Bruxelles est rectangulaire et assez grande. Celle de Liège est plus petite et plus ronde, avec souvent des morceaux de sucre."],["Comment peut-on manger une gaufre de Bruxelles ? Donne trois possibilités.","Nature, avec du sucre glace, avec des fruits ou avec un peu de chocolat."],["Pourquoi le texte dit-il : « Il ne faut pas confondre » les deux gaufres ?","Parce que les deux sont belges, mais elles ont une forme et une recette différentes."]]}
+]}
+];
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+const S=o=>`<select><option value="">…</option>${o.map(v=>`<option>${v}</option>`).join("")}</select>`;
+function task(k,id){
+ const I=k.i;let r;
+ if(k.f=="ch")r=I.map((q,j)=>`<li data-a="${q[1]}" data-s="${k.o[q[1]]}"><p>${q[0]}</p><div class="o">${k.o.map((o,m)=>`<label><input type="radio" name="${id}${j}" value="${m}">${o}</label>`).join("")}</div><em class="s"></em></li>`);
+ if(k.f=="qc")r=I.map((q,j)=>`<li data-a="${q[2]}" data-s="${q[1][q[2]]}"><p>${q[0]}</p><div class="o v">${q[1].map((o,m)=>`<label><input type="radio" name="${id}${j}" value="${m}">${o}</label>`).join("")}</div><em class="s"></em></li>`);
+ if(k.f=="mt"){const R=sh(I.map(q=>q[1]));r=I.map(q=>`<li data-a="${q[1]}" data-s="${q[1]}"><p>${q[0]} ${S(R)}</p><em class="s"></em></li>`)}
+ if(k.f=="gp"){const B=sh([...I.map(q=>q[1]),...k.b]);r=I.map(q=>`<li data-a="${q[1]}" data-s="${q[1]}"><p>${q[0].replace("___",S(B))}</p><em class="s"></em></li>`)}
+ if(k.f=="od"){const N=I.map((_,i)=>i+1);r=sh(I.map((s,i)=>[s,i+1])).map(q=>`<li data-a="${q[1]}" data-s="${q[1]}"><p>${S(N)} ${q[0]}</p><em class="s"></em></li>`)}
+ if(k.f=="op")r=I.map(q=>`<li><p>${q[0]}</p><textarea aria-label="Ta réponse"></textarea><div class="m" hidden><b>Réponse possible :</b> ${q[1]}</div></li>`);
+ const b=k.f=="op"?`<button class="chk" data-a>Voir des réponses possibles</button>`:`<button class="chk" data-a>Vérifier</button><span class="sc" aria-live="polite"></span>`;
+ return `<section class="task" data-f="${k.f}"><h3><span class="lv">Niveau ${k.l} ${"●".repeat(k.l)+"○".repeat(3-k.l)}</span>${k.h}</h3><ol>${r.join("")}</ol><div class="bar">${b}</div></section>`;
+}
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+T.forEach((t,i)=>{
+ nav.insertAdjacentHTML("beforeend",`<button role="tab" aria-selected="${i==0}" data-i="${i}" style="--c:${t.c}">${t.ic} ${t.t}</button>`);
+ main.insertAdjacentHTML("beforeend",`<div class="p" role="tabpanel" ${i?"hidden":""} style="--c:${t.c}"><article class="txt"><h2>${t.t}</h2><p>${t.x}</p></article><div>${t.k.map((k,j)=>task(k,"r"+i+j)).join("")}</div></div>`);
+});
+nav.onclick=e=>{const b=e.target.closest("button");if(!b)return;
+ nav.querySelectorAll("button").forEach(x=>x.setAttribute("aria-selected",x==b));
+ main.querySelectorAll(".p").forEach((p,i)=>p.hidden=i!=b.dataset.i);scrollTo(0,0)};
+main.onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;const s=b.closest(".task");
+ if(s.dataset.f=="op"){s.querySelectorAll(".m").forEach(m=>m.hidden=false);b.disabled=true;return}
+ s.dataset.t=(+s.dataset.t||0)+1;let ok=0;const L=s.querySelectorAll("li");
+ L.forEach(li=>{const c=li.querySelector("input:checked,select"),v=c?c.value:"",g=v===li.dataset.a;
+  ok+=g;li.className=g?"ok":"ko";
+  li.querySelector(".s").textContent=g?"✓ Juste":(s.dataset.t>1?"✗ Solution : "+li.dataset.s:"✗ Pas encore juste, regarde le texte.")});
+ s.querySelector(".sc").textContent=ok+" / "+L.length+(ok==L.length?" – Bravo !":"")};
+</script>
+</body>
+</html>
