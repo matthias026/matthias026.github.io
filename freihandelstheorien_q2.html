@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freihandelstheorien: Smith und Ricardo</title>
+<style>
+:root{--bg:#eef2f5;--ink:#1c2733;--card:#fff;--line:#c9d3dc;--sm:#0f6b73;--ri:#a85c0a;--ok:#1b7f3b;--no:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1,h2,h3{font-family:Georgia,serif;line-height:1.2}
+h1{font-size:1.9rem;margin:.6em 0 .2em}
+h2{font-size:1.4rem;margin:0 0 .3em}
+.bar{position:sticky;top:0;background:var(--ink);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;z-index:5;font-size:.95rem}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:18px 0}
+.afb{border-left:6px solid var(--sm)}.afb2{border-left-color:var(--ri)}.afb3{border-left-color:var(--ink)}
+.tag{font-size:.85rem;color:#52606d}
+.q{margin:14px 0;padding-top:10px;border-top:1px dashed var(--line)}
+button,select,input,textarea{font:inherit}
+button{background:var(--sm);color:#fff;border:0;border-radius:8px;padding:9px 14px;margin:3px 4px 3px 0;cursor:pointer;min-height:44px}
+button.alt{background:var(--ri)}button.ghost{background:#e4eaf0;color:var(--ink)}
+button:disabled{opacity:.55}
+select,input[type=number],input[type=text]{padding:8px;border:1px solid var(--line);border-radius:8px;min-height:42px;background:#fff;max-width:100%}
+input[type=number]{width:90px}
+textarea{width:100%;min-height:130px;padding:10px;border:1px solid var(--line);border-radius:8px}
+.fb{margin-top:6px;padding:8px 10px;border-radius:8px;display:none}
+.fb.ok{display:block;background:#e3f4e8;color:#0e4d23}.fb.no{display:block;background:#fbe7e5;color:#7a1a14}
+.good{outline:3px solid var(--ok)}.bad{outline:3px solid var(--no)}
+table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid var(--line);padding:6px 12px;text-align:center}th{background:#e4eaf0}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.res div{background:#f3f6f9;border-radius:8px;padding:10px}
+.pos{color:var(--ok);font-weight:700}.neg{color:var(--no);font-weight:700}
+.quote{border-left:4px solid var(--sm);padding-left:12px;color:#33414f}
+input[type=range]{width:100%;height:36px}
+label.c{display:block;margin:6px 0}
+@media(max-width:600px){.res{grid-template-columns:1fr}}
+</style></head><body>
+<div class="bar"><span>Freihandel: Smith und Ricardo</span><span id="sc">0 / 0 richtig</span></div>
+<main>
+<h1>Was erklären die klassischen Freihandelstheorien?</h1>
+<p>Bearbeite die Aufgaben mit den Materialien M6 a bis d. Die Teile A und B prüft die Seite sofort, Teil C schreibst du selbst und gleichst ihn danach mit einem Erwartungshorizont ab.</p>
+
+<section class="afb"><h2>A: Wissen aus den Materialien</h2><span class="tag">Anforderungsbereich I (Material M6 a bis d)</span>
+
+<div class="q"><h3>A1 Begriffe zuordnen</h3><p>Wähle zu jeder Beschreibung den passenden Begriff.</p><div id="match"></div>
+<button onclick="checkMatch()">Zuordnung prüfen</button><div class="fb" id="fbm"></div></div>
+
+<div class="q"><h3>A2 Lückentext: Wie schafft Freihandel Wohlstand? (M6 a)</h3>
+<p id="cloze"></p><button onclick="checkCloze()">Lücken prüfen</button><div class="fb" id="fbc"></div></div>
+
+<div class="q"><h3>A3 Fragen zu den Texten</h3><div id="mc"></div></div>
+</section>
+
+<section class="afb afb2"><h2>B: Anwenden</h2><span class="tag">Anforderungsbereich II</span>
+
+<div class="q"><h3>B1 Smith oder Ricardo?</h3><p>Welche Theorie erklärt den Handel im jeweiligen Fall?</p><div id="cases"></div></div>
+
+<div class="q"><h3>B2 Das Modell aus M6 d durchrechnen</h3>
+<table><tr><th>Produktion je Arbeitseinheit und Tag</th><th>Land A</th><th>Land B</th></tr>
+<tr><td>Stahl</td><td>4</td><td>12</td></tr><tr><td>Autos</td><td>6</td><td>8</td></tr></table>
+<p>Jedes Land hat 100 Arbeitseinheiten. Beide Länder zusammen stellen vor dem Handel in A 2 Stahl und 3 Autos, in B 9 Stahl und 2 Autos her.</p>
+<p><b>a)</b> Opportunitätskosten eines Autos in Land A (Einheiten Stahl): <input type="number" step="0.01" id="o1"></p>
+<p><b>b)</b> Opportunitätskosten eines Autos in Land B (Einheiten Stahl): <input type="number" step="0.01" id="o2"></p>
+<p><b>c)</b> Auf welches Gut spezialisiert sich Land A? <select id="sp"><option value="">wählen</option><option>Stahl</option><option>Autos</option></select></p>
+<p><b>d)</b> A stellt nur Autos her (6) und exportiert 3 zum Tauschverhältnis 1:1 (ein Auto gegen eine Einheit Stahl). B stellt nur Stahl her (12) und exportiert 3. Was haben die Länder danach?</p>
+<p>Land A: Stahl <input type="number" id="a1"> Autos <input type="number" id="a2"> &nbsp; Land B: Stahl <input type="number" id="b1"> Autos <input type="number" id="b2"></p>
+<button onclick="checkCalc()">Rechnung prüfen</button><div class="fb" id="fbk"></div>
+
+<h3 style="margin-top:20px">B3 Das Tauschverhältnis verändern</h3>
+<p>Beide Länder tauschen weiterhin 3 Autos gegen Stahl. Wähle, wie viel Stahl ein Auto kostet (Tauschverhältnis).</p>
+<input type="range" id="rate" min="0.4" max="1.8" step="0.01" value="1" oninput="rate()">
+<p>Tauschverhältnis: <b id="rv"></b> Einheiten Stahl je Auto</p>
+<div class="res"><div id="ra"></div><div id="rb"></div></div>
+<p id="rt"></p>
+<div class="q"><b>Auswertung:</b> Bei welchem Tauschverhältnis gewinnen beide Länder? <select id="rr"><option value="">wählen</option><option value="0">unter 0,67</option><option value="1">zwischen 0,67 und 1,5</option><option value="2">über 1,5</option></select>
+<button onclick="checkRange()">Prüfen</button><div class="fb" id="fbr"></div></div>
+</div></section>
+
+<section class="afb afb3"><h2>C: Beurteilen und Begründen</h2><span class="tag">Anforderungsbereich III</span>
+<div class="q"><h3>C1</h3><p>Land B ist bei beiden Gütern produktiver als Land A. Beurteile, ob sich für B der Handel mit A trotzdem lohnt. Begründe mit dem Modell aus M6 d und mit Ricardos Argument aus M6 c.</p>
+<textarea id="t1" placeholder="Dein Text …"></textarea>
+<button class="ghost" onclick="show('e1')">Erwartungshorizont einblenden</button>
+<div id="e1" hidden><p>Hake an, was dein Text enthält:</p>
+<label class="c"><input type="checkbox"> B hat bei beiden Gütern einen absoluten Vorteil, aber unterschiedlich große (Autos +33 %, Stahl +200 %).</label>
+<label class="c"><input type="checkbox"> Opportunitätskosten: B verzichtet für ein Auto auf 1,5 Stahl, A nur auf 0,67 Stahl.</label>
+<label class="c"><input type="checkbox"> B hat den komparativen Vorteil bei Stahl, A bei Autos.</label>
+<label class="c"><input type="checkbox"> Spezialisierung und Tausch erhöhen die Versorgung beider Länder (Wohlfahrtsgewinn).</label>
+<label class="c"><input type="checkbox"> Urteil: Der Handel lohnt sich für B, wenn das Tauschverhältnis zwischen 0,67 und 1,5 liegt.</label></div></div>
+<div class="q"><h3>C2</h3><p>Das Modell geht von zwei Ländern, zwei Gütern, Arbeit als einzigem Produktionsfaktor und fehlenden Transportkosten aus. Beurteile, wie gut sich damit der heutige Welthandel erklären lässt.</p>
+<textarea id="t2" placeholder="Dein Text …"></textarea>
+<button class="ghost" onclick="show('e2')">Erwartungshorizont einblenden</button>
+<div id="e2" hidden><p>Hake an, was dein Text enthält:</p>
+<label class="c"><input type="checkbox"> Mindestens zwei Modellannahmen werden genannt (z. B. Faktor Arbeit, Transportkosten, zwei Länder und Güter).</label>
+<label class="c"><input type="checkbox"> Es wird erklärt, warum die Annahmen die Wirklichkeit vereinfachen (z. B. Kapital, Boden, Wissen, Zölle).</label>
+<label class="c"><input type="checkbox"> Die Stärke wird benannt: Das Modell zeigt, warum Handel auch bei Überlegenheit eines Landes sinnvoll sein kann.</label>
+<label class="c"><input type="checkbox"> Es gibt ein begründetes Gesamturteil (zum Beispiel: gute Grundlogik, aber nur eine Annäherung).</label></div></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id),S={};
+const reg=(k)=>{S[k]=false},up=()=>{const v=Object.values(S);$('sc').textContent=v.filter(Boolean).length+' / '+v.length+' richtig'};
+const fb=(id,ok,t)=>{const e=$(id);e.className='fb '+(ok?'ok':'no');e.innerHTML=t};
+const show=id=>$(id).hidden=false;
+const num=v=>parseFloat(String(v).replace(',','.'));
+const near=(v,t,tol)=>Math.abs(num(v)-t)<=tol;
+
+/* A1 */
+const terms=['Absoluter Kostenvorteil','Komparativer Kostenvorteil','Nicht-Verfügbarkeit','Opportunitätskosten','Transformationskurve','Wohlfahrtsgewinn'];
+const defs=[
+['Ein Gut kann wegen fehlender Produktionsfaktoren (z. B. Klima, Rohstoffe) im Land nicht hergestellt werden.',2],
+['Ein Land stellt ein Gut mit geringeren Kosten her als ein anderes Land.',0],
+['Ein Land verzichtet bei einem Gut auf relativ weniger vom anderen Gut. Das gilt auch, wenn es bei allem produktiver ist.',1],
+['Die Menge eines Gutes, auf die man verzichtet, um eine Einheit mehr des anderen Gutes herzustellen.',3],
+['Sie begrenzt die Produktionsmöglichkeiten eines Landes.',4],
+['Die Gesamtproduktion beider Länder steigt durch Spezialisierung und Tausch.',5]];
+$('match').innerHTML=defs.map((d,i)=>`<div style="margin:8px 0">${d[0]}<br><select id="m${i}"><option value="">Begriff wählen</option>${terms.map((t,j)=>`<option value="${j}">${t}</option>`).join('')}</select></div>`).join('');
+defs.forEach((d,i)=>reg('m'+i));
+function checkMatch(){let n=0;defs.forEach((d,i)=>{const s=$('m'+i),ok=s.value==d[1];s.className=ok?'good':'bad';S['m'+i]=ok;if(ok)n++});up();fb('fbm',n==6,n+' von 6 richtig.'+(n<6?' Die markierten Felder kannst du noch einmal überdenken.':''))}
+
+/* A2 */
+const words=['absoluten Kostenvorteil','spezialisieren','exportieren','importieren','transferiert','Wohlfahrtsgewinn'];
+const ans=[0,1,2,3,4,5],bank=['absoluten Kostenvorteil','spezialisieren','exportieren','importieren','transferiert','Wohlfahrtsgewinn','Protektionismus'];
+const sel=i=>`<select id="c${i}"><option value="">…</option>${bank.map((w,j)=>`<option value="${j}">${w}</option>`).join('')}</select>`;
+$('cloze').innerHTML=`Hat ein Land bei einem Gut einen ${sel(0)}, lohnt es sich, sich darauf zu ${sel(1)} und einen Teil der Produktion zu ${sel(2)}. Das im Inland nur viel teurer herstellbare Gut wird ${sel(3)}. So werden Produktionsfaktoren aus den kostenmäßig unterlegenen Bereichen in Bereiche mit Kostenvorteilen ${sel(4)}. Die Gesamtproduktion steigt, was einen ${sel(5)} darstellt.`;
+ans.forEach(i=>reg('c'+i));
+function checkCloze(){let n=0;ans.forEach(i=>{const s=$('c'+i),ok=s.value==i;s.className=ok?'good':'bad';S['c'+i]=ok;if(ok)n++});up();fb('fbc',n==6,n+' von 6 Lücken stimmen.')}
+
+/* A3 */
+const mcs=[
+['Wann ist der internationale Austausch laut M6 a ohne weiteres vorteilhaft?',['Wenn ein Land alle Güter günstiger herstellt','Wenn Güter nur in einem Land vorkommen','Wenn Zölle erhoben werden'],1,'Bei Nicht-Verfügbarkeiten (z. B. Erdöl oder tropische Früchte) liegt der Vorteil auf der Hand.'],
+['Was ist Smiths Grundsatz im Beispiel vom Familienvater (M6 b)?',['Man stellt nichts selbst her, was man anderswo billiger kaufen kann','Jede Familie soll möglichst alles selbst herstellen','Ein Land soll nur importieren'],0,'Smith überträgt den Grundsatz von der Familie auf ein Königreich: Kauf, was das Ausland günstiger liefert.'],
+['Warum handeln Deutschland und Polen nach Ricardo (M6 c), obwohl Polen fast alles billiger herstellen könnte?',['Polen hat bei Autos Nachteile und bei Stahl keinen Vorteil','Die Produktivitätsrelationen der beiden Güter unterscheiden sich','Deutschland erhebt Schutzzölle'],1,'Polens Vorteil bei Stahl ist deutlich größer als bei Autos, deshalb spezialisiert sich Polen auf Stahl.'],
+['Welches Tauschverhältnis (Stahl je Auto) kann sich laut M6 d einspielen?',['Zwischen 0,67 und 1,5','Nur genau 1:1','Zwischen 1,5 und 3'],0,'Die Grenzen sind die Opportunitätskosten eines Autos in A (0,67) und in B (1,5).']];
+$('mc').innerHTML=mcs.map((m,i)=>{reg('q'+i);return `<div class="q"><b>${m[0]}</b><br>${m[1].map((o,j)=>`<button class="ghost" onclick="pick(${i},${j},this)">${o}</button>`).join('')}<div class="fb" id="fq${i}"></div></div>`}).join('');
+function pick(i,j,b){const ok=j==mcs[i][2];S['q'+i]=ok;up();[...b.parentNode.querySelectorAll('button')].forEach(x=>x.disabled=true);b.style.outline='3px solid '+(ok?'var(--ok)':'var(--no)');fb('fq'+i,ok,(ok?'Richtig. ':'Nicht ganz. ')+mcs[i][3])}
+
+/* B1 */
+const cs=[
+['Ein Schneider kauft seine Schuhe beim Schuhmacher, weil es billiger ist, als sie selbst zu machen.',0,'Das ist Smiths Beispiel (M6 b): Man nutzt, was man billiger kaufen kann.'],
+['Land X baut Weizen wegen des Klimas absolut billiger an, Land Y fördert Kohle absolut billiger. Beide tauschen.',0,'Jedes Land hat bei einem Gut einen absoluten Kostenvorteil (M6 a und b).'],
+['Polen produziert beide Güter billiger als Deutschland, aber bei Stahl ist der Vorsprung viel größer. Deutschland produziert Autos, Polen Stahl.',1,'Das ist das Theorem der komparativen Kostenvorteile (M6 c).'],
+['In Land B kostet ein Auto 1,5 Einheiten Stahl, in Land A nur 0,67. A spezialisiert sich auf Autos, obwohl B in beiden Gütern produktiver ist.',1,'Unterschiedliche Opportunitätskosten begründen den Handel, auch ohne absolute Vorteile (M6 d).']];
+$('cases').innerHTML=cs.map((c,i)=>{reg('k'+i);return `<div class="q">${c[0]}<br><button onclick="cs1(${i},0,this)">Smith</button><button class="alt" onclick="cs1(${i},1,this)">Ricardo</button><div class="fb" id="fk${i}"></div></div>`}).join('');
+function cs1(i,j,b){const ok=j==cs[i][1];S['k'+i]=ok;up();fb('fk'+i,ok,(ok?'Richtig. ':'Noch einmal überlegen: ')+(ok?cs[i][2]:'Achte darauf, ob absolute oder komparative Kostenunterschiede erklärt werden.'))}
+
+/* B2 */
+['o1','o2','sp','calc','rng'].forEach(reg);
+function checkCalc(){
+ const a=near($('o1').value,0.67,0.02),b=near($('o2').value,1.5,0.02),c=$('sp').value=='Autos';
+ const d=near($('a1').value,3,.01)&&near($('a2').value,3,.01)&&near($('b1').value,9,.01)&&near($('b2').value,3,.01);
+ [['o1',a],['o2',b],['sp',c]].forEach(([k,v])=>{$(k).className=v?'good':'bad';S[k]=v});
+ ['a1','a2','b1','b2'].forEach(k=>$(k).className=d?'good':'bad');S.calc=d;up();
+ const h=[];if(!a)h.push('a) Rechne 4 : 6.');if(!b)h.push('b) Rechne 12 : 8.');if(!c)h.push('c) A verzichtet für Autos auf weniger Stahl.');
+ if(!d)h.push('d) A: 6 − 3 = 3 Autos und 3 Stahl. B: 12 − 3 = 9 Stahl und 3 Autos.');
+ fb('fbk',h.length==0,h.length?h.join('<br>'):'Alles richtig. Beide Länder stehen besser da: A hat 1 Stahl mehr, B 1 Auto mehr.')}
+function rate(){const r=num($('rate').value),f=x=>x.toFixed(2).replace('.',','),g=(x)=>`<span class="${x>=0?'pos':'neg'}">${x>=0?'+':''}${f(x)}</span>`;
+ $('rv').textContent=f(r);
+ const da=3*r-2,db=4.5-3*r;
+ $('ra').innerHTML=`<b>Land A</b><br>Autos: 3 (vorher 3)<br>Stahl: ${f(3*r)} (vorher 2)<br>Gewinn in Stahl: ${g(da)}`;
+ $('rb').innerHTML=`<b>Land B</b><br>Autos: 3 (vorher 2)<br>Stahl: ${f(12-3*r)} (vorher 9)<br>Gewinn in Stahl (1 Auto = 1,5 Stahl): ${g(db)}`;
+ $('rt').textContent=da>0&&db>0?'Beide Länder gewinnen.':da<=0?'Land A gewinnt nichts.':'Land B gewinnt nichts.'}
+rate();
+function checkRange(){const ok=$('rr').value=='1';S.rng=ok;up();fb('fbr',ok,ok?'Richtig. Dann liegt das Tauschverhältnis zwischen den Opportunitätskosten beider Länder.':'Probiere den Regler aus: Wo sind beide Ergebnisse positiv?')}
+up();
+</script></body></html>
