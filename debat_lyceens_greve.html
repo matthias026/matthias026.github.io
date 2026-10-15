@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Podiumsdiskussion: Der Streik der Lycéens</title>
+<style>
+:root{
+  --bg:#f3ede3;--card:#ffffff;--ink:#2a2420;--mut:#6b625a;--line:#e3d9c8;
+  --orange:#d9622b;--pro:#2b8a4e;--contra:#b0392c;--navy:#1f3a5f;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#1c1814;--card:#2a241e;--ink:#eee7dd;--mut:#b7ab9c;--line:#43392d}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:17px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+header{background:var(--orange);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 14px}
+header h1{margin:0;font-size:1.5rem;line-height:1.3}
+header p{margin:4px 0 0;opacity:.95}
+main{max-width:920px;margin:0 auto;padding:16px}
+h2{color:var(--navy);margin:0 0 8px;font-size:1.25rem;border-bottom:3px solid var(--line);padding-bottom:4px}
+section{margin-bottom:26px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.voc{display:inline-block;background:rgba(127,127,127,.12);border-radius:6px;padding:1px 8px;margin:4px 4px 0 0;font-size:.85rem}
+i.fr{font-style:italic}
+ol,ul{margin:6px 0 0;padding-left:1.3em}
+li{margin:3px 0}
+.steps li{margin:8px 0}
+.steps b{color:var(--navy)}
+.steps .time{color:var(--mut);font-size:.9rem}
+.steps .tasks{margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:680px){.grid{grid-template-columns:1fr}}
+.role{border-radius:12px;padding:16px;border:2px solid var(--rc);background:var(--card)}
+.role h3{margin:0 0 2px;color:var(--rc)}
+.role .tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#fff;background:var(--rc);border-radius:20px;padding:2px 10px;margin-bottom:8px}
+.role p.desc{margin:4px 0 10px}
+.role .q{margin-top:10px}
+.role .q p{font-weight:600;margin:0 0 4px;color:var(--navy)}
+.examples{display:none;margin-top:12px;padding:10px 12px;background:rgba(43,138,79,.1);border:1px solid var(--pro);border-radius:8px}
+body.unlocked .examples{display:block}
+.examples b{color:var(--pro)}
+.lock{margin-top:10px;font-size:.85rem;color:var(--mut);font-style:italic}
+body.unlocked .lock{display:none}
+
+.codebox{background:var(--card);border:2px dashed var(--line);border-radius:10px;padding:14px 16px;margin:0 0 26px;text-align:center}
+.codebox input{font:inherit;font-size:1.1rem;letter-spacing:.1em;text-align:center;padding:8px 12px;border:2px solid var(--line);border-radius:8px;width:160px;text-transform:uppercase}
+.codebox button{font:inherit;background:var(--navy);color:#fff;border:0;border-radius:8px;padding:9px 18px;margin-left:8px;cursor:pointer}
+#codeMsg{display:block;margin-top:8px;font-size:.9rem;min-height:1.3em}
+body.unlocked .codebox{border-style:solid;border-color:var(--pro)}
+body.unlocked #codeMsg::before{content:"✓ Beispiele freigeschaltet."}
+
+footer{max-width:920px;margin:0 auto;padding:0 16px 30px;color:var(--mut);font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+<h1>Podiumsdiskussion: Der Streik der Lycéens</h1>
+<p>Fishbowl-Debatte &middot; Thema: Demokratie und Beteiligungsformen &middot; 45 Minuten</p>
+</header>
+
+<main>
+
+<section>
+<h2>1 &middot; Einführung</h2>
+<div class="card">
+<p>Ende September und Anfang Oktober 2026 kam es an über 300 <i class="fr">lycées</i> (weiterführenden Schulen der Sekundarstufe II) in Frankreich zu Streiks und Blockaden. Viele <i class="fr">lycéens</i> und <i class="fr">lycéennes</i> fordern bessere Lernbedingungen: kleinere Klassen, zumutbarere Stundenpläne, den Ersatz fehlender Lehrkräfte und die Sanierung veralteter Klassenräume. Ab dem 1. Oktober schlossen sich auch Studierende der Bewegung an. In einigen Städten kam es zudem zu gewaltsamen Ausschreitungen: Gebäude wurden beschädigt, Menschen verletzt.</p>
+<p><span class="voc"><i class="fr">le lycée</i> = die weiterführende Schule (Sek. II) in Frankreich</span>
+<span class="voc"><i class="fr">le lycéen / la lycéenne</i> = der/die Schüler(in) eines <i class="fr">lycée</i></span></p>
+</div>
+</section>
+
+<section>
+<h2>2 &middot; Aufgabenstellung</h2>
+<div class="card">
+<ol class="steps">
+<li><b>Einstieg</b> <span class="time">(5 Min.)</span><div class="tasks">Lest den Einführungstext und betrachtet ggf. Fotos der Proteste. Leitfrage: Worum geht es bei diesen Protesten, und wer ist beteiligt?</div></li>
+<li><b>Gruppenbildung</b> <span class="time">(2 Min.)</span><div class="tasks">Die Klasse wird in vier Gruppen eingeteilt: zwei Gruppen befürworten den Streik (pro), zwei lehnen ihn ab (contra).</div></li>
+<li><b>Erarbeitung in der Gruppe</b> <span class="time">(13 Min.)</span><div class="tasks">
+<b>Aufgabe 1:</b> Lest eure Rollenkarte und beantwortet in der Gruppe die drei Leitfragen.<br>
+<b>Aufgabe 2:</b> Sammelt mindestens drei eigene Argumente für eure Position, bevor ihr den Code für die Beispielargumente eingebt.<br>
+<b>Aufgabe 3:</b> Bestimmt zwei Vertreter:innen eurer Gruppe, die euch in der Fishbowl-Debatte vertreten.
+</div></li>
+<li><b>Fishbowl-Debatte</b> <span class="time">(15 Min.)</span><div class="tasks">Je ein bis zwei Vertreter:innen pro Gruppe sitzen im Innenkreis und tauschen ihre Argumente aus. Die übrigen Gruppenmitglieder hören im Außenkreis zu und können nach einem vereinbarten Zeichen in den Innenkreis wechseln.</div></li>
+<li><b>Auswertung</b> <span class="time">(10 Min.)</span><div class="tasks">Besprecht die überzeugendsten Argumente im Plenum. Stellt einen Bezug zu den im Unterricht behandelten Beteiligungsformen her (Demonstration, Petition, Streik, Wahl &hellip;).</div></li>
+</ol>
+</div>
+</section>
+
+<section>
+<h2>3 &middot; Eure Rollen</h2>
+<p style="color:var(--mut);margin-top:-4px">Lest eure Rolle und beantwortet zunächst selbst die Leitfragen, bevor ihr euch die Beispiele anseht.</p>
+
+<div class="grid">
+
+<div class="role" style="--rc:var(--pro)">
+<span class="tag">Pro &middot; Gruppe A</span>
+<h3>Die streikenden Lycéens</h3>
+<p class="desc">Ihr nehmt am Streik teil. Ihr wollt bessere Lernbedingungen und haltet den Streik für das richtige Mittel, um gehört zu werden.</p>
+<div class="q">
+<p>Warum sind gute Lernbedingungen für euch wichtig?</p>
+<p>Warum lenkt ein Streik Aufmerksamkeit auf eure Forderungen?</p>
+<p>Auf welches Recht beruft ihr euch, obwohl ihr noch nicht wählen dürft?</p>
+</div>
+<div class="examples"><b>Beispielargumente:</b>
+<ul>
+<li>In einer Demokratie ist es ein Recht, seine Unzufriedenheit auszudrücken &ndash; auch ohne Wahlrecht.</li>
+<li>Ohne gemeinsame Aktion werden unsere Probleme (überfüllte Klassen, fehlende Lehrkräfte) nicht ernst genommen.</li>
+<li>Der Streik lenkt die Aufmerksamkeit der Medien und damit auch der Politik auf unsere Anliegen.</li>
+</ul></div>
+<small class="lock">🔒 Beispiele nach Code sichtbar.</small>
+</div>
+
+<div class="role" style="--rc:var(--pro)">
+<span class="tag">Pro &middot; Gruppe B</span>
+<h3>Vertreter einer Lehrergewerkschaft</h3>
+<p class="desc">Ihr vertretet eine Lehrergewerkschaft. Ihr unterstützt den Streik der Lycéens, weil ihr ähnliche Probleme im Schulalltag seht.</p>
+<div class="q">
+<p>Warum unterstützen Lehrkräfte die Forderungen der Schüler:innen?</p>
+<p>Welche gemeinsamen Interessen haben Lehrkräfte und Schüler:innen hier?</p>
+<p>Warum ist Solidarität zwischen verschiedenen Gruppen in einer Demokratie wichtig?</p>
+</div>
+<div class="examples"><b>Beispielargumente:</b>
+<ul>
+<li>Überfüllte Klassen und fehlender Ersatz bei Unterrichtsausfall belasten auch die Lehrkräfte.</li>
+<li>Wenn Schüler:innen und Lehrkräfte gemeinsam protestieren, wird der Druck auf die Politik größer.</li>
+<li>Solidarität zwischen gesellschaftlichen Gruppen stärkt demokratische Bewegungen.</li>
+</ul></div>
+<small class="lock">🔒 Beispiele nach Code sichtbar.</small>
+</div>
+
+<div class="role" style="--rc:var(--contra)">
+<span class="tag">Contra &middot; Gruppe C</span>
+<h3>Vertreter des Schulministeriums</h3>
+<p class="desc">Ihr vertretet das französische Schulministerium (<i class="fr">ministère de l&rsquo;Éducation nationale</i>). Ihr müsst landesweite Regelungen im Blick behalten und auf Ordnung und Sicherheit an den Schulen achten.</p>
+<div class="q">
+<p>Welche Verantwortung hat der Staat für alle Schulen, nicht nur für die streikenden?</p>
+<p>Welche Probleme entstehen durch Unterrichtsausfall und Gewalt bei manchen Protesten?</p>
+<p>Welche anderen Wege der Mitbestimmung gibt es für Schüler:innen?</p>
+</div>
+<div class="examples"><b>Beispielargumente:</b>
+<ul>
+<li>Nicht alle Forderungen lassen sich sofort und überall umsetzen &ndash; Veränderungen brauchen Zeit und Haushaltsmittel.</li>
+<li>Ausgefallener Unterricht und Gewalt bei einigen Protesten schaden allen Beteiligten.</li>
+<li>Es gibt bereits demokratische Gremien (Schülervertretungen, Elternbeiräte), über die Anliegen eingebracht werden können.</li>
+</ul></div>
+<small class="lock">🔒 Beispiele nach Code sichtbar.</small>
+</div>
+
+<div class="role" style="--rc:var(--contra)">
+<span class="tag">Contra &middot; Gruppe D</span>
+<h3>Besorgte Eltern</h3>
+<p class="desc">Ihr seid Eltern von Lycéens. Ihr sorgt euch um die Schulzeit und die Sicherheit eurer Kinder während der Streiks und Demonstrationen.</p>
+<div class="q">
+<p>Welche Sorgen habt ihr um die Schullaufbahn eurer Kinder?</p>
+<p>Was haltet ihr von der Gewalt, die in einigen Städten aufgetreten ist?</p>
+<p>Wie lässt sich berechtigter Protest von Ausschreitungen unterscheiden?</p>
+</div>
+<div class="examples"><b>Beispielargumente:</b>
+<ul>
+<li>Verpasster Unterricht ist schwer nachzuholen, besonders vor wichtigen Prüfungen.</li>
+<li>Die Gewalt in einigen Städten beunruhigt Familien und schadet dem Ansehen der Bewegung.</li>
+<li>Nicht alle Forderungen betreffen jeden <i class="fr">lycée</i> gleichermaßen.</li>
+</ul></div>
+<small class="lock">🔒 Beispiele nach Code sichtbar.</small>
+</div>
+
+</div>
+</section>
+
+<div class="codebox">
+<label for="code">Code der Lehrkraft:</label><br>
+<input id="code" maxlength="12" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off">
+<button onclick="unlock()">Freischalten</button>
+<span id="codeMsg"></span>
+</div>
+
+</main>
+<footer>Quelle der Einführung: Presseartikel zu den Lycée-Protesten, September&ndash;Oktober 2026 (eigene Zusammenfassung).</footer>
+
+<script>
+const CODE = "GREVE26"; // bei Bedarf hier ändern
+function unlock(){
+  const v = document.getElementById('code').value.trim().toUpperCase();
+  const msg = document.getElementById('codeMsg');
+  if(v === CODE){
+    document.body.classList.add('unlocked');
+  } else {
+    msg.textContent = "Code nicht korrekt.";
+    msg.style.color = "var(--contra)";
+  }
+}
+document.getElementById('code').addEventListener('keydown', e=>{ if(e.key==='Enter') unlock(); });
+</script>
+</body>
+</html>
