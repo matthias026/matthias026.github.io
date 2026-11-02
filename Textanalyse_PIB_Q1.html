@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Analyser un commentaire</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: Kommentar als Blatt links, Analysefenster rechts; darunter Werkzeugkasten (Redemittel, Satzbaukasten, Corrigé). Schrittleiste = die fünf Analyseschritte mit Punkten. */
+:root{
+  --paper:#eceff2; --sheet:#ffffff; --ink:#17212c; --muted:#5f6b77; --rule:#d6dce3; --tint:#f3f5f8;
+  --accent:#27405f; --accent-ink:#ffffff;
+  --c1:#325f88; --c2:#447a58; --c3:#a05e14;
+  --c1-bg:rgba(50,95,136,.17); --c2-bg:rgba(68,122,88,.18); --c3-bg:rgba(160,94,20,.18);
+  --warn:#9a3a3a; --ok:#447a58;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141920; --sheet:#1c232c; --ink:#e3e7ec; --muted:#9aa4af; --rule:#333d49; --tint:#232b35;
+    --accent:#8fb0d8; --accent-ink:#121820;
+    --c1:#8fb6dd; --c2:#87c39d; --c3:#e0a45c;
+    --c1-bg:rgba(143,182,221,.2); --c2-bg:rgba(135,195,157,.2); --c3-bg:rgba(224,164,92,.22);
+    --warn:#e48b80; --ok:#87c39d; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141920; --sheet:#1c232c; --ink:#e3e7ec; --muted:#9aa4af; --rule:#333d49; --tint:#232b35;
+  --accent:#8fb0d8; --accent-ink:#121820;
+  --c1:#8fb6dd; --c2:#87c39d; --c3:#e0a45c;
+  --c1-bg:rgba(143,182,221,.2); --c2-bg:rgba(135,195,157,.2); --c3-bg:rgba(224,164,92,.22);
+  --warn:#e48b80; --ok:#87c39d; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.5}
+.wrap{max-width:76rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--c3);outline-offset:2px}
+
+/* Kopf */
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin:0 0 .45rem;text-wrap:balance}
+.kopf p{margin:0;color:var(--muted);max-width:52rem}
+.kopf .lockstate{display:inline-block;margin-top:.6rem;font-size:.82rem;padding:.15rem .5rem;border:1px solid var(--rule);color:var(--muted)}
+.kopf .lockstate.on{border-color:var(--ok);color:var(--ok)}
+
+/* Schrittleiste */
+nav.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 .4rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.65rem .75rem .7rem;cursor:pointer;color:var(--muted);min-width:0;position:relative}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.45rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.86rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.76rem;margin-top:.15rem}
+nav.steps .done{position:absolute;top:.5rem;right:.55rem;font-size:.75rem;color:var(--ok);font-weight:700}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t{color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .done{color:var(--accent-ink)}
+.gesamt{display:flex;align-items:center;gap:.7rem;font-size:.8rem;color:var(--muted);margin:0 0 1.4rem}
+.gesamt .bar{flex:1;height:.3rem;background:var(--rule)}
+.gesamt .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+@media (max-width:52rem){nav.steps{grid-template-columns:repeat(3,minmax(0,1fr))}nav.steps button:nth-child(3){border-right:0}nav.steps button:nth-child(-n+3){border-bottom:1px solid var(--rule)}}
+
+/* Hauptraster */
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 22rem;gap:1.4rem;align-items:start}
+@media (max-width:60rem){.haupt{grid-template-columns:1fr}}
+.blatt{background:var(--sheet);padding:1.3rem 1.4rem 1.5rem;box-shadow:0 1px 2px rgba(20,28,34,.05),0 10px 28px rgba(20,28,34,.09);min-width:0}
+.werkzeug{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center;padding-bottom:.7rem;margin-bottom:1rem;border-bottom:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+.werkzeug b{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.leg{display:inline-flex;align-items:center;gap:.35rem}
+.leg i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px}
+.leg.c1 i{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.leg.c2 i{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.leg.c3 i{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.werkzeug .still{font-style:italic}
+
+/* Paratext */
+.para{font-family:var(--sans);margin:0 0 1.1rem 2.6rem}
+.para .rubrik{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.para h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:.2rem 0 .3rem;text-wrap:balance}
+.para .byline{font-size:.9rem;color:var(--muted)}
+.texte{font-family:var(--serif);font-size:1.04rem;line-height:1.78}
+.abs{margin:0 0 .75rem}
+.z{display:block;position:relative;padding-left:2.6rem}
+.z::before{content:attr(data-z);position:absolute;left:0;width:1.7rem;text-align:right;font:600 .66rem/1.9rem var(--sans);color:var(--muted);user-select:none;-webkit-user-select:none}
+.z:not([data-show])::before{color:transparent}
+.fiktiv{font-size:.76rem;color:var(--muted);margin:1.1rem 0 0 2.6rem;padding-top:.6rem;border-top:1px solid var(--rule)}
+.vocab{margin:.8rem 0 0 2.6rem;font-size:.82rem;color:var(--muted);display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.15rem 1.2rem}
+.vocab span b{color:var(--ink);font-weight:600}
+
+/* Markierungen */
+.mk{border-radius:2px;cursor:pointer;padding:.05em 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mk.c1{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.mk.c2{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.mk.c3{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.mk.aktiv{box-shadow:inset 0 -3px var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.tagline{display:block;padding-left:2.6rem;margin:.15rem 0 .1rem}
+.secTag{display:inline-block;font:700 .64rem/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:.12rem .4rem;margin-right:.35rem;border-radius:2px;color:#fff;vertical-align:.12em;cursor:pointer}
+.secTag.c1{background:var(--c1)}.secTag.c2{background:var(--c2)}.secTag.c3{background:var(--c3)}
+:root[data-theme="dark"] .secTag{color:#121820}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .secTag{color:#121820}}
+
+/* Rand */
+.rand{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.frage{font-family:var(--serif);font-size:1.12rem;line-height:1.35;margin:0 0 .7rem}
+.karte ul{margin:0;padding-left:1.1rem;font-size:.9rem}
+.karte li{margin:.2rem 0}
+.de{font-size:.66rem;font-weight:700;letter-spacing:.1em;color:var(--muted);border:1px solid var(--rule);padding:0 .25rem;margin-left:.3rem;vertical-align:.1em}
+.auftrag{border-left:4px solid var(--c3);padding:.4rem 0 .4rem .8rem;margin:.9rem 0 0;font-size:.92rem}
+.auftrag b{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c3);margin-bottom:.15rem}
+.fort{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
+.fbar{height:.32rem;background:var(--tint);margin-bottom:.6rem}
+.fbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+ol.fund{list-style:none;margin:0;padding:0}
+ol.fund li+li{border-top:1px dotted var(--rule)}
+ol.fund button{width:100%;display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:.5rem;align-items:start;border:0;background:none;padding:.45rem 0;text-align:left;cursor:pointer;font-size:.9rem;line-height:1.3}
+ol.fund .num{display:block;height:1.2rem;line-height:1.2rem;text-align:center;font-size:.66rem;font-weight:700;color:#fff;border-radius:2px;background:var(--accent)}
+:root[data-theme="dark"] ol.fund .num{color:#121820}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) ol.fund .num{color:#121820}}
+ol.fund .num.c1{background:var(--c1)}ol.fund .num.c2{background:var(--c2)}ol.fund .num.c3{background:var(--c3)}
+ol.fund button[aria-current="true"]{font-weight:600}
+ol.fund button.vu .lab{color:var(--muted)}
+ol.fund .meta{display:block;font-size:.74rem;color:var(--muted)}
+.detail{margin:.2rem 0 .5rem 2.1rem;padding:.6rem .7rem;background:var(--tint);border-left:3px solid var(--accent);font-size:.88rem}
+.detail .beleg{font-family:var(--serif);font-style:italic;margin:0 0 .35rem}
+.detail .beleg small{font-style:normal;font-family:var(--sans);color:var(--muted)}
+.detail .indice{color:var(--muted)}
+.detail .indice b{color:var(--ink)}
+
+/* Werkzeugkasten unten */
+.unten{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.4rem}
+.unten .breit{grid-column:1/-1}
+@media (max-width:52rem){.unten{grid-template-columns:1fr}}
+.rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.3rem 1.4rem}
+.rm h4{font-size:.78rem;font-weight:600;margin:.4rem 0 .2rem;color:var(--muted)}
+.rm ul{list-style:none;padding:0;margin:0 0 .4rem;font-family:var(--serif);font-size:.95rem}
+.rm li{padding:.12rem 0;border-bottom:1px dotted var(--rule)}
+.rm li small{font-family:var(--sans);color:var(--muted)}
+details.klapp>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+details.klapp>summary::-webkit-details-marker{display:none}
+details.klapp>summary h3{border:0;padding:0;margin:0}
+details.klapp>summary span{font-size:.78rem;color:var(--muted)}
+details.klapp[open]>summary{margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+
+/* Satzbaukasten */
+.bau{display:grid;gap:.55rem}
+.bau label{display:block;font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.chips button{border:1px solid var(--rule);background:var(--sheet);padding:.3rem .6rem;cursor:pointer;font-size:.88rem;border-radius:2px;text-align:left}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.satz{font-family:var(--serif);font-size:1.05rem;line-height:1.55;background:var(--tint);border-left:3px solid var(--c2);padding:.7rem .85rem;margin:.3rem 0 0}
+.satz .var{border-bottom:2px solid var(--c2)}
+.feedback{font-size:.84rem;margin:.3rem 0 0}
+.feedback.warn{color:var(--warn)}
+.feedback.ok{color:var(--ok)}
+.knopf{border:1px solid var(--accent);background:var(--sheet);color:var(--accent);padding:.4rem .8rem;cursor:pointer;font-weight:500;border-radius:2px}
+.knopf.voll{background:var(--accent);color:var(--accent-ink)}
+.knopf:disabled{opacity:.5;cursor:default}
+
+/* Corrigé */
+.corr .zu{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.9rem;color:var(--muted)}
+.corr input{width:6.5rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;letter-spacing:.2em}
+.corr .msg{font-size:.8rem;color:var(--warn)}
+.loesung{font-family:var(--serif);font-size:1rem;line-height:1.6;margin-top:.8rem;padding:.8rem 1rem;background:var(--tint);border-left:3px solid var(--ok)}
+.loesung p{margin:0 0 .6rem}.loesung p:last-child{margin:0}
+.loesung h4{font-family:var(--sans);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:.9rem 0 .3rem}
+.loesung h4:first-child{margin-top:0}
+
+/* Checkliste */
+.check fieldset{border:0;border-top:1px solid var(--rule);margin:0 0 .6rem;padding:.6rem 0 0}
+.check legend{font-weight:600;padding-right:.4rem}
+.check legend small{color:var(--muted);font-weight:400}
+.check label{display:flex;gap:.55rem;align-items:flex-start;margin:.3rem 0;cursor:pointer;font-size:.93rem}
+.check input{margin-top:.25rem;accent-color:var(--accent);width:1.05rem;height:1.05rem;flex:none}
+.summe{display:flex;justify-content:space-between;align-items:baseline;font-weight:600;border-top:2px solid var(--ink);padding-top:.5rem;margin-top:.3rem}
+.summe span{font-family:var(--serif);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.note{font-size:.82rem;color:var(--muted);margin:.5rem 0 0}
+footer{margin-top:2.5rem;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="kopf">
+    <p class="eyebrow">Sciences sociales bilingues · Q1 · Méthode</p>
+    <h1>Analyser un commentaire</h1>
+    <p>Texte d'entraînement : « Le PIB, une boussole qui nous égare ». Travaillez les cinq étapes de l'analyse dans l'ordre. Vous lisez et annotez le texte dans OneNote ; cette page vous donne les consignes, les expressions utiles et, après déblocage, la solution modèle.</p>
+    <span class="lockstate" id="lockState">Musterlösungen freigeschaltet: 0 / 6</span>
+  </header>
+
+  <nav class="steps" id="steps" role="tablist" aria-label="Schritte der Textanalyse"></nav>
+  <div class="gesamt"><span>Fundstellen bearbeitet</span><div class="bar"><i id="gesamtBar"></i></div><strong id="gesamtTxt">0 / 0</strong></div>
+
+  <div id="ansicht"></div>
+
+  <footer>
+    <p>Texte d'entraînement fictif, rédigé pour le cours : l'auteure et le journal sont inventés ; les faits cités (Kuznets 1934, commission Stiglitz-Sen-Fitoussi 2009, naufrage de l'Erika 1999) sont réels. Barème de l'exercice 2 (analyse) : 2 + 8 + 18 + 10 + 8 = 46 points.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+const D = {"meta": {"title": "Le PIB, une boussole qui nous égare", "author": "Claire Morel", "source": "Le Regard économique", "date": "3 novembre 2026", "genre": "chronique économique (commentaire)"}, "lines": [[0, 0, 66], [0, 67, 124], [0, 125, 189], [0, 190, 255], [0, 256, 290], [1, 0, 65], [1, 66, 129], [1, 130, 196], [1, 197, 261], [1, 262, 304], [2, 0, 63], [2, 64, 129], [2, 130, 196], [2, 197, 263], [2, 264, 330], [2, 331, 399], [2, 400, 407], [3, 0, 65], [3, 66, 124], [3, 125, 183], [3, 184, 247], [3, 248, 310], [3, 311, 349], [4, 0, 59], [4, 60, 118], [4, 119, 185], [4, 186, 245], [4, 246, 309], [4, 310, 376], [4, 377, 443], [4, 444, 509], [4, 510, 542], [5, 0, 65], [5, 66, 126], [5, 127, 188], [5, 189, 253], [5, 254, 312], [5, 313, 379], [5, 380, 448], [5, 449, 482]], "paras": ["« Le PIB progresse de 0,3 % ! » Chaque trimestre, des titres de ce genre font la une des journaux, et nos gouvernements s'en félicitent. Mais que nous dit vraiment ce chiffre ? Il mesure la valeur de tous les biens et services produits dans un pays. Il ne nous dit pas si nous vivons mieux.", "Certes, le PIB reste un outil indispensable. Il permet de repérer les phases du cycle conjoncturel, d'identifier une récession et d'adapter la politique économique. Mais on lui demande aujourd'hui bien plus : il est devenu la boussole unique de nos responsables politiques. Or, cette boussole nous égare.", "Premier problème : le PIB additionne tout, le meilleur comme le pire. Un embouteillage fait grimper la consommation d'essence, un accident de la route fait travailler garagistes et hôpitaux. Après le naufrage du pétrolier Erika en 1999, le nettoyage des plages de l'Atlantique a même fait augmenter la production. Une marée noire, bonne nouvelle pour la croissance ? Personne ne peut sérieusement le croire.", "Deuxième problème : le PIB ignore tout ce qui n'a pas de prix. Le père qui s'occupe de ses enfants, la bénévole qui aide les sans-abri, la forêt qui absorbe le CO₂ : rien de tout cela n'apparaît dans les comptes. De plus, le PIB par habitant n'est qu'une moyenne. Il peut augmenter alors que la situation de la plupart des ménages ne s'améliore pas.", "Ces critiques ne sont pas nouvelles. Dès 1934, l'économiste américain Simon Kuznets, l'un des pères de la comptabilité nationale, avertissait qu'on ne pouvait guère déduire le bien-être d'une nation de son revenu national. En 2009, la commission Stiglitz-Sen-Fitoussi, réunie à la demande du président Nicolas Sarkozy, est arrivée à la même conclusion. On objectera qu'un seul chiffre est plus simple à communiquer. C'est vrai. Mais un médecin qui ne regarderait que la température de ses patients passerait à côté de la plupart des maladies.", "Il ne s'agit donc pas de supprimer le PIB, ni de renoncer à toute croissance. Il s'agit de le remettre à sa place : celle d'un thermomètre de l'activité, pas d'un baromètre du bonheur. Nos responsables politiques doivent enfin publier, à côté du PIB, un véritable tableau de bord du bien-être : espérance de vie, inégalités, émissions de CO₂, qualité de l'emploi. Car ce que nous mesurons détermine ce que nous décidons. Mesurer autrement, c'est se donner les moyens de vivre mieux."], "annos": [{"step": 1, "cat": "c1", "id": "h_titre", "field": "title", "name": "Le titre", "hint": "Steht ganz oben, in Anführungszeichen « … » zitieren.", "expl": "Le titre se cite entre guillemets français : « Le PIB, une boussole qui nous égare ». Il annonce déjà la thèse sous forme de métaphore."}, {"step": 1, "cat": "c1", "id": "h_auteur", "field": "author", "name": "L'auteure", "hint": "Name unter dem Titel. Achtung: weiblich → <i>l’auteure</i>, <i>écrite par</i>.", "expl": "Claire Morel est une femme : on écrit <i>l'auteure</i> (ou <i>la journaliste</i>) et on accorde les participes (<i>écrite par…</i> si l'on parle de « la chronique »)."}, {"step": 1, "cat": "c1", "id": "h_source", "field": "source", "name": "La source", "hint": "Wo ist der Text erschienen?", "expl": "Le texte est paru dans le journal <i>Le Regard économique</i>. Le nom d'un journal s'écrit en italique (à la main : souligné)."}, {"step": 1, "cat": "c2", "id": "h_date", "field": "date", "name": "La date", "hint": "Datum vollständig nennen, ohne Wochentag.", "expl": "« le 3 novembre 2026 » : en français, pas de point après le chiffre et le mois en minuscule."}, {"step": 1, "cat": "c2", "id": "h_genre", "field": "genre", "name": "Le type de texte", "hint": "Bericht oder Meinungstext? Achte auf die Rubrik.", "expl": "Il s'agit d'une <b>chronique</b>, c'est-à-dire d'un <b>commentaire</b> : un texte d'opinion dans lequel l'auteure défend une position personnelle. On peut écrire « dans la chronique… » ou « dans le commentaire… »."}, {"step": 1, "cat": "c3", "id": "h_sujet", "name": "Le sujet", "hint": "Worum geht es im Kern? Lies den ersten Absatz und formuliere neutral.", "expl": "Le sujet : les limites du PIB comme indicateur du bien-être d'une nation. Attention : dans l'introduction, on reste <b>neutre</b>. On n'écrit pas encore « le PIB est un mauvais indicateur » – c'est la position de l'auteure (étape 2).", "ranges": [[0, 250, 290]], "lines": "l. 4–5"}, {"step": 2, "cat": "c1", "id": "p_constat1", "name": "Constat : ce que le PIB ne dit pas", "hint": "Ist-Zustand: Was misst das BIP – und was nicht? (Absatz 1)", "expl": "Constat de départ : le PIB mesure la production, mais pas la qualité de vie.", "ranges": [[0, 250, 290]], "lines": "l. 4–5"}, {"step": 2, "cat": "c1", "id": "p_constat2", "name": "Constat : la « boussole unique »", "hint": "Welche Rolle spielt das BIP heute in der Politik? (Absatz 2)", "expl": "Le problème selon l'auteure : les responsables politiques se fient presque uniquement au PIB, qui les oriente dans une mauvaise direction.", "ranges": [[1, 209, 304]], "lines": "l. 9–10"}, {"step": 2, "cat": "c2", "id": "p_cause1", "name": "Cause 1 : tout est additionné", "hint": "Ursachen: Warum führt das BIP in die Irre? (Absatz 3)", "expl": "Première cause : le PIB compte aussi des activités nuisibles (accidents, pollution) comme une création de richesse.", "ranges": [[2, 19, 69]], "lines": "l. 11–12"}, {"step": 2, "cat": "c2", "id": "p_cause2", "name": "Cause 2 : ce qui n'a pas de prix", "hint": "Was fehlt im BIP? (Absatz 4, Anfang)", "expl": "Deuxième cause : le travail domestique, le bénévolat et la nature n'apparaissent pas dans le PIB.", "ranges": [[3, 20, 62]], "lines": "l. 18"}, {"step": 2, "cat": "c2", "id": "p_cause3", "name": "Cause 3 : une moyenne", "hint": "Was verbirgt ein Durchschnittswert? (Absatz 4, Ende)", "expl": "Troisième cause : comme moyenne, le PIB par habitant cache les inégalités entre les ménages.", "ranges": [[3, 222, 263]], "lines": "l. 21–22"}, {"step": 2, "cat": "c3", "id": "p_rev1", "name": "Revendication : remettre le PIB à sa place", "hint": "Was will die Autorin – das BIP abschaffen? (letzter Absatz)", "expl": "L'auteure ne veut pas supprimer le PIB, mais limiter son rôle à la mesure de l'activité.", "ranges": [[5, 78, 113]], "lines": "l. 34"}, {"step": 2, "cat": "c3", "id": "p_rev2", "name": "Revendication : un tableau de bord", "hint": "Konkrete Forderung – an wen richtet sie sich?", "expl": "Revendication concrète, adressée aux responsables politiques : publier un tableau de bord du bien-être (espérance de vie, inégalités, CO₂, emploi).", "ranges": [[5, 185, 292]], "lines": "l. 35–37"}, {"step": 3, "cat": "c1", "id": "s_A", "pts": 2, "name": "Introduction du problème", "hint": "Womit steigt die Autorin ein, und welche Frage wirft sie auf?", "expl": "L'auteure part de l'actualité (les titres sur la croissance) et pose la question de ce que mesure vraiment le PIB.", "ranges": [[0, 0, 290]], "lines": "l. 1–5"}, {"step": 3, "cat": "c2", "id": "s_B", "pts": 2, "name": "Concession et thèse", "hint": "Was gesteht sie dem BIP zu – und welche These folgt mit <i>Mais … Or …</i>?", "expl": "Concession (utilité pour le cycle conjoncturel), puis thèse : le PIB, devenu boussole unique, égare les politiques.", "ranges": [[1, 0, 304]], "lines": "l. 6–10"}, {"step": 3, "cat": "c3", "id": "s_C", "pts": 3, "name": "Premier argument et exemples", "hint": "Erstes Argument + Beispiele, die es stützen.", "expl": "Argument 1 : le PIB additionne aussi les dommages. Exemples : embouteillage, accident, marée noire de l'Erika.", "ranges": [[2, 0, 407]], "lines": "l. 11–17"}, {"step": 3, "cat": "c1", "id": "s_D", "pts": 3, "name": "Deuxième argument", "hint": "Zweites Argument – es hat zwei Teile (<i>De plus …</i>).", "expl": "Argument 2 : le PIB ignore ce qui n'a pas de prix ; en outre, comme moyenne, il cache les inégalités.", "ranges": [[3, 0, 349]], "lines": "l. 18–23"}, {"step": 3, "cat": "c2", "id": "s_E", "pts": 2, "name": "Appui sur des autorités", "hint": "Auf wen beruft sich die Autorin?", "expl": "L'auteure montre que sa critique est partagée par des experts : Kuznets (1934) et la commission Stiglitz-Sen-Fitoussi (2009).", "ranges": [[4, 0, 352]], "lines": "l. 24–29"}, {"step": 3, "cat": "c3", "id": "s_F", "pts": 2, "name": "Objection et réfutation", "hint": "Welchen Einwand nimmt sie vorweg, und wie entkräftet sie ihn?", "expl": "Objection : un seul chiffre est plus simple. Réfutation par la comparaison avec le médecin.", "ranges": [[4, 353, 542]], "lines": "l. 29–32"}, {"step": 3, "cat": "c1", "id": "s_G", "pts": 4, "name": "Conclusion et revendication", "hint": "Fazit (<i>donc</i>), Forderung und Begründung (<i>Car …</i>).", "expl": "Conclusion : compléter le PIB plutôt que le supprimer. Revendication : un tableau de bord du bien-être. Justification : ce que l'on mesure guide les décisions.", "ranges": [[5, 0, 482]], "lines": "l. 33–40"}, {"step": 4, "cat": "c2", "id": "d_titre", "name": "Une accroche : le titre de presse", "hint": "Wie fängt der Text an? (Z. 1)", "expl": "<b>Accroche</b> : l'auteure commence par un titre de presse typique. Effet : elle capte l'attention et part de l'actualité du lecteur.", "ranges": [[0, 0, 31]], "lines": "l. 1"}, {"step": 4, "cat": "c2", "id": "d_meta", "name": "Une métaphore filée", "hint": "Ein Bild aus dem Titel kehrt wieder – welches?", "expl": "<b>Métaphore filée</b> de la boussole (titre et l. 10), reprise à la fin par le thermomètre et le baromètre. Effet : la thèse devient concrète et facile à retenir – le PIB indique une mauvaise direction.", "ranges": [[1, 278, 303]], "lines": "l. 10"}, {"step": 4, "cat": "c2", "id": "d_quest", "name": "Des questions rhétoriques", "hint": "Zwei Fragen, auf die niemand eine Antwort erwartet.", "expl": "<b>Questions rhétoriques</b>. Effet : l'auteure incite le lecteur à réfléchir ; la deuxième question est <b>ironique</b> et souligne l'absurdité du calcul.", "ranges": [[0, 137, 176], [2, 314, 366]], "lines": "l. 3, 15–16"}, {"step": 4, "cat": "c1", "id": "d_conc", "name": "Des concessions", "hint": "Wo gibt die Autorin der Gegenseite scheinbar recht? (<i>Certes …</i>)", "expl": "<b>Concessions</b> (« Certes… », « C'est vrai. »). Effet : l'auteure paraît nuancée et gagne la confiance du lecteur, avant de réfuter avec « Mais ».", "ranges": [[1, 0, 44], [4, 416, 427]], "lines": "l. 6, 30"}, {"step": 4, "cat": "c1", "id": "d_ex", "name": "Des exemples concrets", "hint": "Konkrete Fälle aus dem Alltag und aus der Geschichte.", "expl": "<b>Exemples concrets</b> (embouteillage, Erika). Effet : un problème statistique abstrait devient compréhensible pour tous.", "ranges": [[2, 70, 125], [2, 191, 235]], "lines": "l. 12–14"}, {"step": 4, "cat": "c1", "id": "d_auto", "name": "Des autorités", "hint": "Namen von Experten.", "expl": "<b>Appui sur des autorités</b>. Effet : la critique gagne en crédibilité, elle n'apparaît pas comme une opinion isolée.", "ranges": [[4, 70, 128], [4, 232, 267]], "lines": "l. 25–28"}, {"step": 4, "cat": "c2", "id": "d_enum", "name": "Une énumération", "hint": "Drei Dinge hintereinander, gleich gebaut.", "expl": "<b>Énumération</b> (et parallélisme : « qui… qui… qui… »). Effet : elle met en relief tout ce que le PIB ne mesure pas.", "ranges": [[3, 63, 163]], "lines": "l. 18–20"}, {"step": 4, "cat": "c1", "id": "d_comp", "name": "Une comparaison", "hint": "Ein Vergleich aus einem ganz anderen Bereich.", "expl": "<b>Comparaison</b> avec un médecin. Effet : l'objection est réfutée de manière simple et convaincante.", "ranges": [[4, 433, 497]], "lines": "l. 30–31"}, {"step": 4, "cat": "c2", "id": "d_anti", "name": "Une antithèse", "hint": "Zwei Begriffe werden einander gegenübergestellt.", "expl": "<b>Antithèse</b> thermomètre / baromètre. Effet : l'auteure résume sa position de manière frappante.", "ranges": [[5, 116, 183]], "lines": "l. 34–35"}, {"step": 4, "cat": "c3", "id": "d_nous", "name": "Le pronom « nous »", "hint": "Wer ist mit „wir“ gemeint?", "expl": "Emploi du pronom <b>« nous »</b> (et parallélisme). Effet : l'auteure invite le lecteur à s'identifier avec sa position et le rend co-responsable.", "ranges": [[5, 368, 419]], "lines": "l. 38–39"}, {"step": 5, "cat": "c1", "id": "i_info", "name": "Informer", "hint": "Welche Abschnitte erklären vor allem Sachverhalte? (Blick zurück auf Schritt 3)", "expl": "<b>Informer / expliquer</b> : elle explique ce que mesure le PIB et quelles sont ses limites. <i>D'où vient cette intention ?</i> Des arguments 1 et 2 (étape 3) et des exemples concrets (étape 4)."}, {"step": 5, "cat": "c2", "id": "i_crit", "name": "Critiquer", "hint": "Wen oder was kritisiert sie – und wer ist gemeint?", "expl": "<b>Critiquer</b> : elle critique la place excessive du PIB dans les décisions politiques. <i>D'où vient cette intention ?</i> De la thèse (« boussole unique ») et de l'ironie de la question rhétorique."}, {"step": 5, "cat": "c3", "id": "i_appel", "name": "Appeler / convaincre", "hint": "Wozu fordert sie auf – und wen?", "expl": "<b>Appeler et convaincre</b> : elle appelle les responsables politiques à agir et cherche à convaincre le lecteur que d'autres indicateurs sont nécessaires. <i>D'où vient cette intention ?</i> De la revendication finale et du « nous » qui inclut le lecteur."}], "corr": {"1": "Dans la chronique « Le PIB, une boussole qui nous égare », écrite par Claire Morel et publiée dans le journal <i>Le Regard économique</i> le 3 novembre 2026, il est question des limites du produit intérieur brut (PIB) comme indicateur du bien-être d'une nation.", "2": "L'auteure constate que le PIB est devenu l'indicateur central des responsables politiques, alors qu'il ne permet pas de savoir si la population vit mieux. Selon elle, cela s'explique par le fait que le PIB additionne aussi des activités nuisibles, qu'il ignore tout ce qui n'a pas de prix et qu'en tant que moyenne, il cache les inégalités. Elle ne veut pas supprimer le PIB, mais revendique que les responsables politiques publient, à côté de lui, un tableau de bord du bien-être.", "3": "<p><b>Pour commencer</b>, l'auteure part de l'actualité : chaque trimestre, l'évolution du PIB fait la une des journaux. Elle se demande pourtant ce que ce chiffre dit vraiment et souligne qu'il mesure la production, mais pas le bien-être (l. 1–5).</p><p><b>Ensuite</b>, elle admet que le PIB est utile pour suivre le cycle conjoncturel et adapter la politique économique. Elle formule cependant sa thèse : devenu la « boussole unique » des politiques, le PIB les égare (l. 6–10).</p><p><b>Son premier argument</b> est que le PIB additionne aussi des activités nuisibles. Elle l'illustre par les embouteillages, les accidents et la marée noire de l'Erika, dont le nettoyage a fait augmenter la production (l. 11–17).</p><p><b>Son deuxième argument</b> est que le PIB ne tient pas compte de ce qui n'a pas de prix, comme le travail domestique, le bénévolat ou la nature. <b>En outre</b>, en tant que moyenne, il cache les inégalités entre les ménages (l. 18–23).</p><p><b>Puis</b>, elle appuie sa critique sur des autorités : dès 1934, Simon Kuznets mettait en garde contre l'utilisation du revenu national pour mesurer le bien-être, et la commission Stiglitz-Sen-Fitoussi est arrivée à la même conclusion en 2009 (l. 24–29).</p><p>Elle reprend <b>ensuite</b> une objection, la simplicité d'un chiffre unique, <b>mais</b> la réfute par la comparaison avec un médecin qui ne regarderait que la température (l. 29–32).</p><p><b>Enfin</b>, elle conclut qu'il ne faut ni supprimer le PIB ni renoncer à la croissance, mais le compléter. Elle revendique que les responsables politiques publient un tableau de bord du bien-être, <b>car</b> ce que l'on mesure détermine les décisions politiques (l. 33–40).</p>", "4": "<p>Pour mettre en relief sa thèse, l'auteure se sert de la <b>métaphore filée</b> de la boussole (« cette boussole nous égare », l. 10). Elle montre ainsi que le PIB oriente les décisions politiques dans une mauvaise direction.</p><p>Pour gagner la faveur du lecteur, elle utilise des <b>propositions de concession</b> (« Certes, le PIB reste un outil indispensable », l. 6) ; elle paraît ainsi nuancée et crédible avant de réfuter les objections.</p><p>Pour soutenir son point de vue, elle s'appuie sur des <b>autorités</b> comme Simon Kuznets et la commission Stiglitz-Sen-Fitoussi (l. 25–28), ce qui donne plus de poids à son argumentation.</p><p>Enfin, la <b>question rhétorique</b> ironique « Une marée noire, bonne nouvelle pour la croissance ? » (l. 15–16) souligne l'absurdité du calcul du PIB et incite le lecteur à réfléchir.</p>", "5": "L'auteure veut d'abord <b>informer</b> le lecteur sur les limites du PIB comme mesure du bien-être. Elle <b>critique</b> ensuite le fait que les responsables politiques se fient presque uniquement à ce chiffre. Enfin, elle <b>plaide</b> pour des indicateurs complémentaires et <b>appelle</b> les politiques à publier un tableau de bord du bien-être ; elle cherche ainsi à convaincre le lecteur qu'il faut mesurer autrement pour vivre mieux."}, "build4": [{"id": "d_meta", "moyen": "la métaphore filée de la boussole", "de": "de la métaphore filée de la boussole", "cit": "cette boussole nous égare", "eff": ["montrer que le PIB oriente la politique dans une mauvaise direction", "rendre sa thèse concrète et facile à retenir"], "l": "l. 10"}, {"id": "d_quest", "r": 1, "moyen": "une question rhétorique ironique", "de": "d'une question rhétorique ironique", "cit": "Une marée noire, bonne nouvelle pour la croissance ?", "eff": ["souligner l'absurdité du calcul du PIB", "inciter le lecteur à réfléchir"], "l": "l. 15–16"}, {"id": "d_conc", "moyen": "une proposition de concession", "de": "d'une proposition de concession", "cit": "Certes, le PIB reste un outil indispensable", "eff": ["paraître nuancée et gagner la confiance du lecteur", "anticiper les objections des défenseurs du PIB"], "l": "l. 6"}, {"id": "d_ex", "moyen": "des exemples concrets", "de": "d'exemples concrets", "cit": "Un embouteillage fait grimper la consommation d'essence", "eff": ["illustrer un problème abstrait", "rendre sa critique compréhensible pour tous"], "l": "l. 12"}, {"id": "d_auto", "moyen": "des références à des experts", "de": "de références à des experts", "cit": "Simon Kuznets, l'un des pères de la comptabilité nationale", "eff": ["donner plus de crédibilité à sa critique", "montrer que sa position est partagée par des spécialistes"], "l": "l. 25–26"}, {"id": "d_enum", "moyen": "une énumération", "de": "d'une énumération", "cit": "Le père qui s'occupe de ses enfants, la bénévole qui aide les sans-abri, la forêt qui absorbe le CO₂", "eff": ["mettre en relief tout ce que le PIB ne mesure pas", "montrer l'ampleur du problème"], "l": "l. 18–20"}, {"id": "d_comp", "moyen": "une comparaison", "de": "d'une comparaison", "cit": "un médecin qui ne regarderait que la température de ses patients", "eff": ["réfuter l'objection de manière convaincante", "rendre son argument concret"], "l": "l. 30–31"}, {"id": "d_anti", "moyen": "une antithèse", "de": "d'une antithèse", "cit": "un thermomètre de l'activité, pas […] un baromètre du bonheur", "eff": ["opposer ce que le PIB mesure et ce qu'il ne mesure pas", "résumer sa position de manière frappante"], "l": "l. 34–35"}, {"id": "d_nous", "moyen": "le pronom personnel « nous »", "de": "du pronom personnel « nous »", "cit": "ce que nous mesurons détermine ce que nous décidons", "eff": ["inviter le lecteur à s'identifier avec sa position", "rendre le lecteur co-responsable"], "l": "l. 38–39"}], "fields": {}};
+const CODES = {1:'2814',2:'5307',3:'9162',4:'4478',5:'6035',6:'8241'};
+const NB = ' ';
+
+/* ---------- Schritte ---------- */
+const STEPS = [
+ {n:1,t:'Einleitung',pts:2,
+  frage:'Wer schreibt was worüber und hat es wann und wo veröffentlicht?',
+  hinweise:['Stelle den Text anhand der äußeren Textmerkmale vor: Titel, Autorin, Textsorte, Quelle, Datum, Thema.','Knapp fassen: 1–2 Sätze.','Präzise und <b>wertungsfrei</b>: Die Meinung der Autorin gehört noch nicht hierher.'],
+  auftrag:"Rédigez votre introduction (1–2 phrases) dans OneNote. Le constructeur de phrases ci-dessous vous aide à trouver la bonne formulation.",
+  legende:[['c1','Titre, auteure, source'],['c2','Date, type de texte'],['c3','Sujet']],
+  rm:[['Présenter le texte',["Dans l'article / le commentaire / la chronique « … »","écrit(e) par …","et publié(e) dans le journal … / sur le site Internet de …","le 3 novembre 2026,","il est question de …"]],
+      ['Nommer le sujet',["Ce texte a pour sujet …","Ce texte parle de … / traite de … / expose le problème de …","Dans le texte intitulé …, l'auteur(e) parle de … / présente …"]],
+      ['Le type de texte',["un commentaire <small>Kommentar</small>","une chronique <small>Kolumne</small>","un éditorial <small>Leitartikel</small>","une tribune <small>Gastbeitrag</small>","un article d'opinion <small>Meinungsartikel</small>"]]]},
+ {n:2,t:'Position',pts:8,
+  frage:'Welche Meinung vertritt die Autorin?',
+  hinweise:['Arbeite die Position im Hinblick auf das Thema der Aufgabenstellung heraus. Fast immer helfen drei Fragen:','1. Wie sieht die Autorin den <b>Ist-Zustand</b> / das <b>Problem</b>?','2. Was sind die <b>Ursachen</b> für den Ist-Zustand?','3. Welche Maßnahmen / <b>Forderungen</b> schlägt sie vor?','Beantworte jede Frage in 1–2 Sätzen. Weniger ist mehr: keine Beispiele, keine Einzelheiten – die kommen im Begründungsgang.','<b>Keine Zitate, keine Zeilenangaben:</b> Die Position ist eine Synthese in eigenen Worten. Die Markierungen in der Musterlösung sind nur eine <b>Lesehilfe</b>, damit du siehst, wo die drei Aspekte im Text stecken.'],
+  auftrag:"Répondez aux trois questions en 3 à 6 phrases dans OneNote, avec vos propres mots – sans citations ni renvois aux lignes.",
+  legende:[['c1','Constat (Ist-Zustand)'],['c2','Causes'],['c3','Revendication']],lesehilfe:'Lesehilfe – in der Analyse ohne Zeilenangaben',
+  rm:[['1. / 2. Constat et causes',["L'auteure constate que …","affirme que …","est d'avis que … / est convaincue que …","critique … / s'oppose à …","Cela s'explique par le fait que …","Selon elle, …"]],
+      ['3. Revendication',["revendique que (+ subj.) …","demande que (+ subj.) …","propose de (+ inf.) …","se prononce pour / contre …","s'exprime pour / contre …","prend le parti de …"]]]},
+ {n:3,t:'Begründungsgang',pts:18,
+  frage:'Mit welchen Argumenten begründet die Autorin ihre Position inhaltlich?',
+  hinweise:['Arbeite die Aussagen <b>aspektorientiert</b> heraus, Sinnabschnitt für Sinnabschnitt.','Gib sie zusammengefasst in eigenen Worten wieder und belege sie mit <b>Zeilenangaben</b>.','Keine Nacherzählung! Benenne die <b>Funktion</b> jedes Abschnitts (Problemaufriss, These, Argument, Beispiel, Einwand, Fazit, Forderung).','Verknüpfe die Schritte mit Bindewörtern (<i>d\'abord, ensuite, de plus, enfin …</i>).'],
+  auftrag:"Le texte comporte sept étapes. Délimitez-les dans OneNote (lignes) et résumez chaque étape en une ou deux phrases.",
+  legende:[['c1','Étapes de l\'argumentation (les couleurs alternent)']],
+  rm:[['Décrire la démarche',["L'auteure commence par … / part du constat que …","Elle décrit / explique / illustre le problème …","Elle formule sa thèse : …","Elle avance un argument / donne une raison : …","Elle justifie son opinion par … / appuie son point de vue par …","Elle illustre son argument par l'exemple de …"]],
+      ['Critique et réfutation',["Elle fait une critique sévère de la situation actuelle.","Elle rejette l'idée selon laquelle …","Elle reprend une objection : … mais la réfute en …","Elle ne partage pas l'opinion de …","Elle conteste …"]],
+      ['Conclure',["Elle en conclut que …","Pour terminer, elle plaide pour …","Elle défend l'idée que … / justifie la thèse que …"]]]},
+ {n:4,t:'Argumentationsweise',pts:10,
+  frage:'Mit welchen sprachlichen und argumentativen Mitteln untermauert die Autorin ihre Argumentation?',
+  hinweise:['Wie beeinflusst die Autorin den Leser? Bezieht sie sich auf Experten oder Fakten? Nutzt sie Beispiele, Bilder, rhetorische Fragen?','Nenne <b>mindestens drei Mittel</b>, jeweils mit <b>Zitat und Zeile</b> und mit der beabsichtigten <b>Wirkung</b> (<i>pour …</i>).','Zehn Mittel findest du im Text – drei gut erklärte reichen für die volle Punktzahl.'],
+  auftrag:"Choisissez trois moyens, citez-les avec la ligne et expliquez leur effet. Formulez vos phrases dans OneNote – le constructeur de phrases vous propose des modèles.",
+  legende:[['c1','Stratégie argumentative'],['c2','Moyens stylistiques'],['c3','Langage (« nous »)']],
+  rm:[['Expressions générales',["L'auteure se sert de certains moyens …","… pour convaincre / sensibiliser le lecteur","… pour mettre l'accent sur …","Pour (mieux) illustrer …, l'auteure emploie …","En utilisant ce moyen, elle souligne / accentue …","Cette phrase / métaphore montre que / révèle que / évoque …"]],
+      ['La stratégie argumentative',["Pour soutenir son point de vue, elle s'appuie sur des faits et des chiffres.","Elle fait appel à la raison du lecteur.","Elle se réfère à des autorités / des experts.","Elle soutient sa thèse par un exemple qu'elle généralise.","Pour gagner la faveur du lecteur, elle utilise des concessions (<i>certes …, il est vrai que …</i>).","Elle renforce son point de vue en montrant les conséquences."]],
+      ['Le langage et le style',["Elle provoque des sentiments (de peur, de responsabilité …).","Elle invite le lecteur à s'identifier avec sa position par le pronom <i>nous</i>.","Elle se sert d'une métaphore / d'une comparaison / d'une antithèse / d'une question rhétorique / d'une hyperbole <small>Übertreibung</small>, ce qui lui permet de (+ inf.) …","Elle énumère … pour mettre en relief …","La répétition du mot « … » donne du poids à l'argumentation."]]]},
+ {n:5,t:'Intention',pts:8,
+  frage:'Warum schreibt die Autorin diesen Text? Was oder wer soll erreicht werden, wozu wird (auch indirekt) aufgefordert?',
+  hinweise:['Erschließe die <b>Absicht</b>, z. B. Aufklärung über etwas, Kritik an etwas, Plädoyer für etwas, Aufforderung zu etwas.','Erwartet werden <b>drei Absichten</b>, knapp formuliert – <b>ohne Zitate und Zeilenangaben</b>.','Die Intention steht nicht in einem einzelnen Satz: Du erschließt sie aus dem Ganzen, also aus Position, Begründungsgang und Argumentationsweise.','Nicht wiederholen, was schon in der Position steht: Hier geht es um das <i>Wozu</i>, nicht um das <i>Was</i>.'],
+  auftrag:"Formulez trois intentions de l'auteure en 3 à 4 phrases, sans citations ni renvois aux lignes.",
+  legende:null,
+  rm:[["L'intention de l'auteure",["L'auteure veut informer le lecteur sur …","veut attirer l'attention du lecteur sur …","critique … / dénonce …","plaide pour …","appelle le lecteur / les responsables à (+ inf.) …","incite le lecteur à (réagir / réfléchir à) …","cherche à convaincre le lecteur de / que …","soulève une question importante : …"]]]},
+ {n:6,t:'Überprüfen',pts:46}
+];
+
+/* ---------- Zustand ---------- */
+const S = {step:1, unlocked:new Set(), show:{}, sel:null, visited:new Set(), b1:{a:0,b:0,c:0,d:0,e:0}, b4:{m:0,f:0,e:0}, checks:new Set()};
+try{ const v=JSON.parse(localStorage.getItem('pib-visited')||'[]'); v.forEach(x=>S.visited.add(x)); }catch(e){}
+try{ const v=JSON.parse(localStorage.getItem('pib-checks')||'[]'); v.forEach(x=>S.checks.add(x)); }catch(e){}
+const save=()=>{ try{ localStorage.setItem('pib-visited',JSON.stringify([...S.visited])); localStorage.setItem('pib-checks',JSON.stringify([...S.checks])); }catch(e){} };
+
+const A = D.annos, byId = Object.fromEntries(A.map(a=>[a.id,a]));
+const annosOf = n => A.filter(a=>a.step===n);
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const marksOn = () => S.unlocked.has(S.step) && S.show[S.step];
+
+/* ---------- Text rendern ---------- */
+function renderTexte(){
+  const on = marksOn(); const list = on ? annosOf(S.step).filter(a=>a.ranges) : [];
+  const ranges=[]; list.forEach((a,ai)=>a.ranges.forEach(r=>ranges.push({pi:r[0],s:r[1],e:r[2],a, ai})));
+  const firstLineSeen=new Set();
+  let h=''; let cur=-1;
+  D.lines.forEach((L,i)=>{
+    const [pi,s,e]=L; const z=i+1;
+    if(pi!==cur){ if(cur>=0) h+='</p>'; h+='<p class="abs">'; cur=pi; }
+    const txt=D.paras[pi];
+    const pts=new Set([s,e]); ranges.forEach(r=>{ if(r.pi===pi){ if(r.s>s&&r.s<e) pts.add(r.s); if(r.e>s&&r.e<e) pts.add(r.e);} });
+    const cuts=[...pts].sort((a,b)=>a-b);
+    let line='', tagHtml='';
+    for(let k=0;k<cuts.length-1;k++){
+      const a0=cuts[k],a1=cuts[k+1]; const seg=esc(txt.slice(a0,a1));
+      const hit=ranges.find(r=>r.pi===pi&&r.s<=a0&&r.e>=a1);
+      if(hit){
+        let cat=hit.a.cat; if(S.step===3) cat=['c1','c2','c3'][hit.ai%3];
+                if(S.step===3 && !firstLineSeen.has(hit.a.id)){ firstLineSeen.add(hit.a.id); tagHtml+='<span class="tagline"><span class="secTag '+cat+'" data-id="'+hit.a.id+'">'+(hit.ai+1)+' · '+hit.a.name+' · '+hit.a.pts+' P.</span></span>'; }
+        line+='<span class="mk '+cat+(S.sel===hit.a.id?' aktiv':'')+'" data-id="'+hit.a.id+'">'+seg+'</span>';
+      } else line+=seg;
+    }
+    // Leerzeichen zwischen Zeilen
+    h+=tagHtml+'<span class="z" data-z="'+z+'"'+(z%5===0||z===1?' data-show':'')+'>'+line+'</span>';
+  });
+  h+='</p>';
+  return h;
+}
+function paraField(f, html){
+  const a=A.find(x=>x.field===f);
+  if(marksOn() && S.step===1 && a) return '<span class="mk '+a.cat+(S.sel===a.id?' aktiv':'')+'" data-id="'+a.id+'">'+html+'</span>';
+  return html;
+}
+function renderBlatt(){
+  const st=STEPS[S.step-1]; const m=D.meta;
+  let leg = st.legende ? st.legende.map(([c,t])=>'<span class="leg '+c+'"><i></i>'+t+'</span>').join('') : '';
+  if(marksOn()&&st.lesehilfe) leg+='<span class="still">'+st.lesehilfe+'</span>';
+  if(marksOn()&&!st.legende) leg='<span class="still">Keine Markierung: Die Intention erschließt sich aus dem ganzen Text, nicht aus einzelnen Sätzen.</span>';
+  if(!marksOn()) leg='<span class="still">'+(S.unlocked.has(S.step)?'Markierungen ausgeblendet – in der Musterlösung einblenden.':'Markierungen erscheinen nach der Freigabe der Musterlösung.')+'</span>';
+  return '<article class="blatt" aria-label="Texte">'+
+    '<div class="werkzeug"><b>Marquage</b>'+leg+'</div>'+
+    '<div class="para"><div class="rubrik">'+paraField('genre','Chronique économique')+'</div>'+
+    '<h2>'+paraField('title',m.title)+'</h2>'+
+    '<div class="byline">'+paraField('author','par '+m.author)+' · '+paraField('source','<i>'+m.source+'</i>')+' · '+paraField('date',m.date)+'</div></div>'+
+    '<div class="texte" id="texte">'+renderTexte()+'</div>'+
+    '<div class="vocab"><span><b>égarer qn</b> – jdn. in die Irre führen</span><span><b>un embouteillage</b> – Stau</span><span><b>le naufrage</b> – Schiffbruch</span><span><b>une marée noire</b> – Ölpest</span><span><b>un(e) bénévole</b> – Ehrenamtliche(r)</span><span><b>la comptabilité nationale</b> – Volkswirtschaftliche Gesamtrechnung</span><span><b>le tableau de bord</b> – Armaturenbrett; Kennzahlenübersicht</span><span><b>le baromètre du bonheur</b> – Glücksbarometer</span></div>'+
+    '<p class="fiktiv">Texte fictif rédigé pour l\'entraînement (env. 400 mots). Auteure et journal sont inventés.</p>'+
+  '</article>';
+}
+
+/* ---------- Rand ---------- */
+function renderRand(){
+  const st=STEPS[S.step-1]; const list=annosOf(S.step);
+  const vis=list.filter(a=>S.visited.has(a.id)).length;
+  let h='<aside class="rand">';
+  h+='<section class="karte"><h3>Analysefenster · Schritt '+st.n+' · '+st.t+'</h3><p class="frage">'+st.frage+'<span class="de">DE</span></p><ul>'+st.hinweise.map(x=>'<li>'+x+'</li>').join('')+'</ul><div class="auftrag"><b>Consigne</b>'+st.auftrag+'</div></section>';
+  h+='<section class="karte"><h3>Fundstellen</h3><div class="fort"><span>'+(marksOn()?'Antippen: Erklärung':'Antippen: Tipp')+'</span><strong>'+vis+' / '+list.length+'</strong></div><div class="fbar"><i style="width:'+(list.length?vis/list.length*100:0)+'%"></i></div><ol class="fund">';
+  list.forEach((a,i)=>{
+    const cat = S.step===3 ? ['c1','c2','c3'][i%3] : a.cat;
+    const meta = S.step===3 ? a.pts+' P.' : '';
+    h+='<li><button type="button" data-id="'+a.id+'" class="'+(S.visited.has(a.id)?'vu':'')+'" aria-current="'+(S.sel===a.id)+'"><span class="num '+cat+'">'+(S.visited.has(a.id)?'✓':(i+1))+'</span><span class="lab">'+a.name+(meta?'<span class="meta">'+meta+'</span>':'')+'</span></button>';
+    if(S.sel===a.id){
+      if(marksOn()){
+        const quote = a.ranges ? a.ranges.map(r=>D.paras[r[0]].slice(r[1],r[2])).join(' […] ') : '';
+        h+='<div class="detail">'+(S.step===2?'<p class="indice" style="margin:0 0 .3rem;font-size:.78rem">Lesehilfe – nicht zitieren</p>':'')+(quote&&S.step!==3?'<p class="beleg">« '+esc(quote.replace(/^« |»$/g,'').replace(/^« | »$/g,''))+' » <small>('+a.lines+')</small></p>':(a.lines?'<p class="beleg"><small>'+a.lines+'</small></p>':''))+'<div>'+a.expl+'</div></div>';
+      } else {
+        h+='<div class="detail"><div class="indice"><b>Tipp:</b> '+a.hint+'</div></div>';
+      }
+    }
+    h+='</li>';
+  });
+  h+='</ol></section></aside>';
+  return h;
+}
+
+/* ---------- Satzbaukasten 1 ---------- */
+const B1 = {
+  a:[{t:'Dans la chronique',g:'f'},{t:'Dans le commentaire',g:'m'},{t:"Dans l'article",g:'m'}],
+  b:[{t:'écrit',w:'par'},{t:'rédigé',w:'par'}],
+  c:[{t:'publié dans le journal'},{t:'paru dans le journal'}],
+  d:[{t:'il est question de'},{t:"l'auteure traite de"},{t:"l'auteure s'interroge sur"}],
+  e:[{t:"les limites du PIB comme indicateur du bien-être d'une nation"},{t:"la capacité du PIB à mesurer le bien-être d'une nation"},{t:"l'absurdité du PIB, un indicateur dépassé",warn:true}]
+};
+function de(v,obj){ if(!/ de$/.test(v)) return v+' '+obj;
+  const b=v.slice(0,-3); if(/^les /.test(obj)) return b+' des '+obj.slice(4); if(/^le /.test(obj)) return b+' du '+obj.slice(3);
+  if(/^l'/.test(obj)||/^la /.test(obj)) return b+' de '+obj; return v+' '+obj; }
+function renderBau1(){
+  const s=S.b1, f=B1.a[s.a].g==='f'?'e':'';
+  const chips=(k,arr,lab)=>'<div><label>'+lab+'</label><div class="chips">'+arr.map((o,i)=>'<button type="button" data-b1="'+k+'" data-i="'+i+'" aria-pressed="'+(s[k]===i)+'">'+(k==='b'?o.t+'(e) par':k==='c'?o.t.replace(' dans','(e) dans'):o.t)+'</button>').join('')+'</div></div>';
+  const m=D.meta;
+  const v=(x)=>'<span class="var">'+x+'</span>';
+  const satz = v(B1.a[s.a].t)+' « '+m.title+' », '+v(B1.b[s.b].t+f+' par')+' '+m.author+' et '+v(B1.c[s.c].t.replace('publié','publié'+f).replace('paru','paru'+f))+' <i>'+m.source+'</i> le '+m.date+', '+v(de(B1.d[s.d].t,B1.e[s.e].t))+'.';
+  const warn=B1.e[s.e].warn;
+  return '<section class="karte breit"><h3>Satzbaukasten · Einleitung</h3><div class="bau">'+
+    chips('a',B1.a,'Type de texte')+chips('b',B1.b,'Auteure')+chips('c',B1.c,'Source')+chips('d',B1.d,'Formule')+chips('e',B1.e,'Sujet')+
+    '<p class="satz">'+satz+'</p>'+
+    '<p class="feedback '+(warn?'warn':'ok')+'">'+(warn?'Achtung: wertend. „Absurdité“ und „dépassé“ sind schon Meinung – in der Einleitung neutral bleiben.':(B1.a[s.a].g==='f'?'Angleichung beachtet: <i>la chronique</i> → écrite, publiée.':'Neutral formuliert. Bei <i>la chronique</i> würden sich die Partizipien angleichen.'))+'</p>'+
+  '</div></section>';
+}
+/* ---------- Satzbaukasten 4 ---------- */
+const F4 = [
+  d=>'Pour '+d.e+", l'auteure se sert "+d.de+' : « '+d.cit+' » ('+d.l+').',
+  d=>"L'auteure utilise "+d.moyen+' (« '+d.cit+' », '+d.l+'), ce qui lui permet de '+d.e+'.',
+  d=>'En utilisant '+d.moyen+' (« '+d.cit+' », '+d.l+"), l'auteure cherche à "+d.e+'.'
+];
+function renderBau4(){
+  const s=S.b4, M=D.build4, m=M[s.m]; const e=m.eff[Math.min(s.e,m.eff.length-1)];
+  const v=x=>'<span class="var">'+x+'</span>';
+  const d={moyen:v(m.moyen),de:v(m.de),cit:m.cit,l:m.l,e:v(e)};
+  let satz=F4[s.f](d); satz=satz.replace(/de <span class="var">([aeiouéè])/i,"d'<span class=\"var\">$1");
+  return '<section class="karte breit"><h3>Satzbaukasten · Argumentationsweise</h3><div class="bau">'+
+   '<div><label>1. Moyen</label><div class="chips">'+M.map((x,i)=>'<button type="button" data-b4="m" data-i="'+i+'" aria-pressed="'+(s.m===i)+'">'+x.moyen+'</button>').join('')+'</div></div>'+
+   '<div><label>2. Effet</label><div class="chips">'+m.eff.map((x,i)=>'<button type="button" data-b4="e" data-i="'+i+'" aria-pressed="'+(s.e===i)+'">'+x+'</button>').join('')+'</div></div>'+
+   '<div><label>3. Formule</label><div class="chips">'+['Pour … , l\'auteure se sert de …','L\'auteure utilise … , ce qui lui permet de …','En utilisant … , l\'auteure cherche à …'].map((x,i)=>'<button type="button" data-b4="f" data-i="'+i+'" aria-pressed="'+(s.f===i)+'">'+x+'</button>').join('')+'</div></div>'+
+   '<p class="satz">'+satz+'</p><p class="feedback ok">Moyen + citation avec ligne + effet : c\'est le schéma complet. Les citations sont exactes.</p>'+
+  '</div></section>';
+}
+
+/* ---------- Redemittel & Corrigé ---------- */
+function renderRM(st){
+  return '<section class="karte'+(S.step===4?' breit':'')+'"><details class="klapp" open><summary><h3>Les formules et les expressions pour le dire</h3><span>ein-/ausklappen</span></summary><div class="rm">'+
+    st.rm.map(([t,l])=>'<div><h4>'+t+'</h4><ul>'+l.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>').join('')+'</div></details></section>';
+}
+function renderCorr(n, all){
+  let h='<section class="karte corr'+(all||n===4||n===3?' breit':'')+'"><h3>Musterlösung · '+(all?'vollständige Analyse (Schritte 1–5)':'Schritt '+n+' · '+STEPS[n-1].t)+'</h3>';
+  if(!S.unlocked.has(n)){
+    h+='<form class="zu" data-unlock><span>Gesperrt. Code für '+(all?'die vollständige Musterlösung':'Schritt '+n)+':</span><input type="password" inputmode="numeric" autocomplete="off" id="code'+n+'" aria-label="Code" maxlength="8"><button class="knopf voll" type="submit">Freischalten</button><span class="msg" id="msg'+n+'"></span></form>';
+  } else if(all){
+    h+='<div class="loesung">'+[1,2,3,4,5].map(k=>'<h4>'+k+'. '+STEPS[k-1].t+' ('+STEPS[k-1].pts+' P.)</h4>'+(D.corr[k].startsWith('<p>')?D.corr[k]:'<p>'+D.corr[k]+'</p>')).join('')+'</div>';
+  } else {
+    const on=!!S.show[n];
+    h+='<button type="button" class="knopf'+(on?'':' voll')+'" data-toggle="'+n+'">'+(on?'Musterlösung ausblenden':'Musterlösung und Markierungen einblenden')+'</button>';
+    if(on) h+='<div class="loesung">'+(D.corr[n].startsWith('<p>')?D.corr[n]:'<p>'+D.corr[n]+'</p>')+'</div>'+(n===4?'<p class="note">Trois moyens suffisent ; ici, quatre exemples possibles.</p>':'');
+  }
+  return h+'</section>';
+}
+
+/* ---------- Schritt 6 ---------- */
+const CHECK = [
+ [1,'Einleitung',2,[['c1a',"J'ai nommé le titre, l'auteure, le type de texte, la source et la date.",1],['c1b',"J'ai formulé le sujet en une phrase neutre.",1]]],
+ [2,'Position',8,[['c2a',"J'ai résumé le constat de l'auteure.",3],['c2b',"J'ai nommé les causes du problème.",2],['c2c',"J'ai nommé sa revendication – sans citations ni lignes.",3]]],
+ [3,'Begründungsgang',18,[['c3a',"J'ai suivi les étapes du texte dans l'ordre (introduction, thèse, arguments, objection, conclusion).",8],['c3b',"J'ai nommé la fonction de chaque étape (elle avance un argument, elle réfute …).",4],['c3c',"J'ai utilisé mes propres mots et indiqué les lignes.",4],['c3d',"J'ai relié les étapes par des mots charnières.",2]]],
+ [4,'Argumentationsweise',10,[['c4a',"J'ai analysé au moins trois moyens.",4],['c4b',"Chaque moyen est cité avec la ligne.",3],['c4c',"J'ai expliqué l'effet de chaque moyen (pour …).",3]]],
+ [5,'Intention',8,[['c5a',"J'ai formulé trois intentions (informer, critiquer, appeler …).",6],['c5b',"Je ne répète pas la position et je ne cite pas le texte.",2]]]
+];
+const CHARN = [['Pour relier une série',"premièrement, deuxièmement / pour commencer / d'abord / puis / ensuite / de plus / en outre <small>außerdem</small> / à part cela <small>abgesehen davon</small> / enfin / pour terminer"],
+ ['Pour expliquer',"car / parce que / puisque / comme / pour cette raison / c'est pourquoi / ainsi / par conséquent / en effet / pour que (+ subj.) / de manière que <small>so dass</small>"],
+ ['Pour comparer',"comme / comparé à / par comparaison avec / à la différence de / de même"],
+ ['Pour opposer',"d'une part … d'autre part / d'un côté … de l'autre / mais / pourtant / cependant / malgré cela <small>dem zum Trotz</small> / alors que / tandis que / bien que (+ subj.) / par contre / au contraire / en revanche <small>hingegen</small>"]];
+function renderStep6(){
+  let tot=0;
+  let h='<div class="haupt"><section class="karte check"><h3>Liste de contrôle · 46 points</h3><p class="note" style="margin:0 0 .6rem">Kontrolliere deinen eigenen Text oder den deines Partners. Die Punkte sind eine Orientierung, keine Note.</p>';
+  CHECK.forEach(([n,t,p,items])=>{
+    h+='<fieldset><legend>'+n+'. '+t+' <small>· '+p+' P.</small></legend>';
+    items.forEach(([id,txt,pt])=>{ const c=S.checks.has(id); if(c) tot+=pt; h+='<label><input type="checkbox" data-chk="'+id+'" id="'+id+'"'+(c?' checked':'')+'><span>'+txt+'</span></label>'; });
+    h+='</fieldset>';
+  });
+  h+='<div class="summe">Selbstcheck <span>'+tot+' / 46</span></div></section>';
+  h+='<aside class="rand"><section class="karte"><h3>Les mots charnières</h3><div class="rm">'+CHARN.map(([t,x])=>'<div><h4>'+t+'</h4><ul><li>'+x+'</li></ul></div>').join('')+'</div></section>'+
+   '<section class="karte"><h3>Citer le texte</h3><ul><li>Citation directe entre guillemets français, avec la ligne : « cette boussole nous égare » (l. 10).</li><li>Mots ajoutés ou supprimés entre crochets : « [le PIB] est devenu la boussole unique […] » (l. 9).</li><li>Citation indirecte, signalée aussi : <i>Selon l\'auteure, le PIB additionne aussi les dommages (l. 11–17).</i></li></ul><div class="rm" style="margin-top:.5rem"><div><h4>Intégrer des citations</h4><ul><li>par exemple …</li><li>tel(le)(s) que (la question rhétorique) à la ligne …</li><li>c\'est le cas (dans le premier paragraphe) où l\'auteure …</li><li>… comme l\'expression « … » (l. …) le montre</li><li>l\'expression « … » à la ligne … est un bon exemple pour …</li><li>comme on le voit à la ligne …</li></ul></div></div></section></aside></div>';
+  h+='<div class="unten">'+renderCorr(6,true)+'</div>';
+  return h;
+}
+
+/* ---------- Gesamt ---------- */
+function renderNav(){
+  document.getElementById('steps').innerHTML=STEPS.map(st=>{
+    const l=annosOf(st.n); const done=l.length&&l.every(a=>S.visited.has(a.id));
+    return '<button type="button" role="tab" aria-selected="'+(S.step===st.n)+'" data-step="'+st.n+'"><span class="n">'+st.n+'</span><span class="t">'+st.t+'</span><span class="p">'+st.pts+' points</span>'+(done?'<span class="done">✓</span>':'')+'</button>';
+  }).join('');
+  const all=A.length, v=A.filter(a=>S.visited.has(a.id)).length;
+  document.getElementById('gesamtBar').style.width=(v/all*100)+'%';
+  document.getElementById('gesamtTxt').textContent=v+' / '+all;
+  const ls=document.getElementById('lockState'); ls.textContent='Musterlösungen freigeschaltet: '+S.unlocked.size+' / 6'; ls.classList.toggle('on',S.unlocked.size>0);
+}
+function render(){
+  renderNav();
+  const st=STEPS[S.step-1]; let h;
+  if(S.step===6) h=renderStep6();
+  else {
+    h='<div class="haupt">'+renderBlatt()+renderRand()+'</div><div class="unten">';
+    if(S.step===1) h+=renderBau1();
+    h+=renderRM(st);
+    if(S.step===4) h+=renderBau4();
+    h+=renderCorr(S.step,false)+'</div>';
+  }
+  document.getElementById('ansicht').innerHTML=h;
+}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener('click',e=>{
+  const sb=e.target.closest('[data-step]'); if(sb){ S.step=+sb.dataset.step; S.sel=null; render(); window.scrollTo({top:0}); return; }
+  const f=e.target.closest('ol.fund button, .mk, .secTag');
+  if(f){ const id=f.dataset.id; S.sel = (S.sel===id && f.tagName==='BUTTON') ? null : id; S.visited.add(id); save(); render();
+    if(f.classList.contains('mk')||f.classList.contains('secTag')){ const b=document.querySelector('ol.fund button[data-id="'+id+'"]'); if(b&&window.innerWidth<960) b.scrollIntoView({block:'center'}); }
+    else { const m=document.querySelector('.mk[data-id="'+id+'"]'); if(m) m.scrollIntoView({block:'center',behavior:'smooth'}); }
+    return; }
+  const t=e.target.closest('[data-toggle]'); if(t){ const n=+t.dataset.toggle; S.show[n]=!S.show[n]; render(); return; }
+  const b1=e.target.closest('[data-b1]'); if(b1){ S.b1[b1.dataset.b1]=+b1.dataset.i; render(); return; }
+  const b4=e.target.closest('[data-b4]'); if(b4){ const k=b4.dataset.b4; S.b4[k]=+b4.dataset.i; if(k==='m') S.b4.e=0; render(); return; }
+});
+document.addEventListener('change',e=>{
+  const c=e.target.closest('[data-chk]'); if(c){ c.checked?S.checks.add(c.dataset.chk):S.checks.delete(c.dataset.chk); save(); render(); }
+});
+document.addEventListener('submit',e=>{
+  const f=e.target.closest('[data-unlock]'); if(!f) return; e.preventDefault();
+  const inp=f.querySelector('input');
+  if(inp.value.trim()===CODES[S.step]){ S.unlocked.add(S.step); S.show[S.step]=true; render(); }
+  else { const m=f.querySelector('.msg'); m.textContent='Falscher Code für diesen Schritt.'; inp.value=''; }
+});
+render();
+})();
+</script>
+
+</body>
+</html>
