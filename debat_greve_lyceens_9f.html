@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Débat 9f · Les blocages des lycées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eceef1; --sheet:#ffffff; --ink:#1a2029; --muted:#5d6672; --rule:#d7dbe1; --tint:#f3f4f7;
+  --accent:#1f4e8c; --accent-ink:#ffffff;
+  --pro:#2e7a55; --pro-bg:rgba(46,122,85,.10);
+  --contra:#a8432f; --contra-bg:rgba(168,67,47,.10);
+  --gold:#8a6a12; --ok:#2e7a55; --warn:#a8432f;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+    --accent:#8fb4ea; --accent-ink:#0f1726;
+    --pro:#7fcca3; --pro-bg:rgba(127,204,163,.12);
+    --contra:#ee9a8b; --contra-bg:rgba(238,154,139,.12);
+    --gold:#e2c063; --ok:#7fcca3; --warn:#ee9a8b; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+  --accent:#8fb4ea; --accent-ink:#0f1726;
+  --pro:#7fcca3; --pro-bg:rgba(127,204,163,.12);
+  --contra:#ee9a8b; --contra-bg:rgba(238,154,139,.12);
+  --gold:#e2c063; --ok:#7fcca3; --warn:#ee9a8b; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.02rem;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:74rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* Kopf */
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.65rem,4vw,2.4rem);line-height:1.15;margin:0 0 .5rem;text-wrap:balance}
+.kopf p{margin:0;color:var(--muted);max-width:54rem}
+
+/* Reiter */
+nav.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 1.4rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.65rem .8rem .7rem;cursor:pointer;color:var(--muted);min-width:0}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.92rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.76rem;margin-top:.15rem}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t{color:var(--accent-ink)}
+@media (max-width:44rem){nav.steps{grid-template-columns:repeat(2,minmax(0,1fr))}nav.steps button:nth-child(2){border-right:0}nav.steps button:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+
+/* Raster */
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 21rem;gap:1.4rem;align-items:start}
+@media (max-width:60rem){.haupt{grid-template-columns:1fr}.seite.vorn{order:-1}}
+.blatt{background:var(--sheet);padding:1.3rem 1.4rem 1.5rem;box-shadow:0 1px 2px rgba(20,24,30,.05),0 10px 28px rgba(20,24,30,.09);min-width:0}
+.seite{display:grid;gap:1.2rem}
+.rubrik{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h2{font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.25;margin:.2rem 0 .4rem;text-wrap:balance}
+h3{font-size:1.02rem;margin:1.1rem 0 .4rem}
+.hinweis{font-size:.88rem;color:var(--muted);margin:0 0 1rem}
+
+/* Text */
+.texte{font-family:var(--serif);font-size:1.08rem;line-height:1.75}
+.texte p{margin:0 0 1rem;max-width:66ch}
+.texte h3{font-family:var(--sans);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:1.3rem 0 .3rem}
+.voc{border-bottom:1.5px dotted var(--muted);cursor:pointer;position:relative}
+.voc:hover{border-bottom-color:var(--accent)}
+.voc.auf{border-bottom-color:var(--accent);background:var(--tint)}
+.gl{position:absolute;left:0;bottom:100%;z-index:6;font-family:var(--sans);font-style:normal;font-size:.8rem;font-weight:500;line-height:1.3;color:var(--accent-ink);background:var(--accent);padding:.15rem .45rem;border-radius:3px;width:max-content;max-width:15rem;box-shadow:0 2px 6px rgba(0,0,0,.2);pointer-events:none}
+.vocab{margin-top:1.4rem;padding-top:.8rem;border-top:1px solid var(--rule)}
+.vkopf{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.4rem}
+.vkopf h3{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+.vlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.1rem 1.2rem;font-size:.88rem}
+.vlist button{border:0;background:none;padding:.2rem 0;text-align:left;cursor:pointer;display:block;width:100%;border-bottom:1px dotted var(--rule)}
+.vlist b{font-weight:600}
+.vlist .de{color:var(--muted)}
+.vlist .zu{color:var(--muted);letter-spacing:.2em}
+.minibtn{border:1px solid var(--rule);background:var(--sheet);padding:.15rem .55rem;cursor:pointer;font-size:.8rem;border-radius:2px}
+
+/* Seitenkarten */
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.frage{font-family:var(--serif);font-size:1.25rem;line-height:1.35;font-weight:600;margin:0 0 .4rem}
+.frage-de{font-size:.88rem;color:var(--muted);margin:0}
+dl.zahlen{margin:0;display:grid;gap:.6rem}
+dl.zahlen div{display:grid;grid-template-columns:5.6rem 1fr;gap:.6rem;align-items:baseline}
+dl.zahlen dt{font-family:var(--serif);font-weight:600;font-size:1.15rem;text-align:right}
+dl.zahlen dd{margin:0;font-size:.86rem;color:var(--muted)}
+
+/* Aufgabenstellung */
+.phase{border-left:4px solid var(--accent);padding:.2rem 0 .2rem 1rem;margin:0 0 1.4rem}
+.phase h3{margin:0 0 .3rem;display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.phase .zeit{font-weight:500;font-size:.85rem;color:var(--muted)}
+.phase ol,.phase ul{margin:.3rem 0 0;padding-left:1.2rem}
+.phase li{margin:.35rem 0}
+.regel{background:var(--tint);border:1px solid var(--rule);padding:.8rem 1rem;margin:.8rem 0}
+.regel b.kl{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
+.tabelle{overflow-x:auto;margin:.6rem 0 0}
+table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.88rem}
+th,td{border:1px solid var(--rule);padding:.4rem .55rem;text-align:left;vertical-align:top}
+th{background:var(--tint);font-weight:600}
+td.leer{height:2.2rem}
+.summe{font-size:.86rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:.6rem;margin-top:.4rem}
+
+/* Rollen */
+.rollen{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:52rem){.rollen{grid-template-columns:1fr}}
+.rolle{background:var(--sheet);border:1px solid var(--rule);border-top:4px solid var(--rc);padding:1rem 1.15rem 1.15rem;box-shadow:0 1px 2px rgba(20,24,30,.05);min-width:0}
+.rolle.pro{--rc:var(--pro);--rb:var(--pro-bg)}
+.rolle.contra{--rc:var(--contra);--rb:var(--contra-bg)}
+.rolle .tag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.rolle h3{font-family:var(--serif);font-size:1.25rem;margin:.15rem 0 .5rem}
+.rolle p{margin:0 0 .6rem}
+.rolle .lf{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:.8rem 0 .2rem}
+.rolle ol{margin:0;padding-left:1.2rem}
+.rolle ol li{margin:.3rem 0}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin:.3rem 0 0}
+.chips span{background:var(--rb,var(--tint));border-radius:999px;padding:.12rem .6rem;font-size:.85rem}
+.code{margin-top:1rem;padding-top:.8rem;border-top:1px dashed var(--rule)}
+.code .zu{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.88rem;color:var(--muted)}
+.code input{width:6.5rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;letter-spacing:.25em;text-align:center}
+.code button{border:0;background:var(--rc);color:#fff;padding:.4rem .9rem;cursor:pointer;font-weight:600}
+:root[data-theme="dark"] .code button{color:#111}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .code button{color:#111}}
+.code .msg{font-size:.84rem;color:var(--warn);min-height:1.2em;margin:.35rem 0 0}
+.muster{background:var(--rb);border-left:3px solid var(--rc);padding:.7rem .9rem;margin-top:.6rem}
+.muster h4{margin:0 0 .4rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.muster ul{margin:0;padding-left:1.1rem}
+.muster li{margin:.45rem 0}
+.muster .fr{font-family:var(--serif);font-style:italic;font-weight:600}
+
+/* Formules */
+.formules{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem}
+.fgruppe{background:var(--sheet);border:1px solid var(--rule);padding:.9rem 1rem}
+.fgruppe h3{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.fgruppe ul{list-style:none;margin:0;padding:0}
+.fgruppe li{padding:.3rem 0;border-bottom:1px dotted var(--rule)}
+.fgruppe li:last-child{border-bottom:0}
+.fgruppe .f{font-family:var(--serif);font-weight:600}
+.fgruppe .d{display:block;font-size:.82rem;color:var(--muted)}
+.fgruppe.spezial{border-top:3px solid var(--gold)}
+.fgruppe.spezial h3{color:var(--gold)}
+
+/* Textaufgaben */
+.spalte{display:grid;gap:1.4rem;min-width:0}
+.mark{font-family:var(--sans);font-size:.78rem;font-weight:600;padding:.2rem .6rem;margin:0 0 .5rem;display:inline-block;border-radius:2px}
+.ueb-mark{background:rgba(31,78,140,.12);color:var(--accent)}
+.vs-mark{background:rgba(138,106,18,.14);color:var(--gold)}
+.ueb{margin:-.4rem 0 1.2rem}
+.uebbtn{border:1px solid var(--accent);background:transparent;color:var(--accent);font-family:var(--sans);font-size:.85rem;font-weight:600;padding:.3rem .8rem;cursor:pointer}
+.uebbtn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+.uebtext{font-family:var(--sans);font-size:.98rem;line-height:1.6;background:var(--tint);border-left:3px solid var(--accent);padding:.7rem .9rem;margin-top:.5rem;max-width:66ch}
+.uebung h3{margin:0 0 .6rem}
+.uebung h3.unter{margin-top:1rem;font-size:.95rem}
+.uebung ol{margin:0;padding-left:1.3rem}
+.uebung li{margin:.55rem 0}
+.uebung ol.vf li,.uebung ol.zz li{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;justify-content:space-between}
+.uebung ol.mc li span{display:block;margin-bottom:.3rem}
+.uebung ol.zz li b{font-family:var(--serif);font-size:1.15rem;min-width:3.5rem}
+.uebung select{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);padding:.3rem .5rem;max-width:100%}
+.uebung select.ok{border-color:var(--ok);background:var(--pro-bg)}
+.uebung select.ko{border-color:var(--warn);background:var(--contra-bg)}
+.pruef,.loes{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;padding:.45rem 1rem;cursor:pointer;margin-top:.8rem}
+.loes{background:transparent;color:var(--accent);border:1px solid var(--accent);margin-top:.4rem}
+.uebung .msg{font-weight:600;min-height:1.3em;margin:.5rem 0 0}
+.indice{background:var(--tint);padding:.5rem .8rem;font-size:.9rem;margin:.4rem 0 0}
+.kt{font-size:.9rem;margin:0 0 .7rem}
+.stunde{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:1.2rem 0 .8rem;padding-bottom:.3rem;border-bottom:2px solid var(--ink)}
+
+/* Reiter 1: Text links, gelbe Aufgaben rechts daneben */
+.kontext{display:grid;gap:1.2rem}
+.ktext{background:var(--sheet);padding:1.1rem 1.2rem;box-shadow:0 1px 2px rgba(20,24,30,.05);min-width:0}
+@media (min-width:60.01rem){
+  .kontext{grid-template-columns:minmax(0,1fr) 22rem;grid-template-rows:repeat(5,auto);column-gap:1.4rem;row-gap:0;position:relative}
+  .kontext::before{content:"";grid-column:1;grid-row:2 / -1;background:var(--sheet);box-shadow:0 1px 2px rgba(20,24,30,.05),0 10px 28px rgba(20,24,30,.09)}
+  .k-s1{grid-column:1 / -1;grid-row:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:1.4rem;padding-bottom:1.4rem}
+  .ktext{background:none;box-shadow:none;padding:0 1.4rem;grid-column:1;position:relative;z-index:1}
+  .k-t1{grid-row:2;padding-top:1.3rem}.k-t2{grid-row:3}.k-t3{grid-row:4}.k-t4{grid-row:5;padding-bottom:1.4rem}
+  .k-a{grid-column:2;grid-row:3 / 5;align-self:start}
+  .k-b{grid-column:2;grid-row:5;align-self:start}
+}
+.uebung{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--gold);padding:.9rem 1rem 1rem}
+.uebung .ulabel{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.uebung .uhint{font-size:.85rem;color:var(--muted);margin:0 0 .5rem}
+.uebung ol.vf li{display:block}
+.uebung ol.vf li span{display:block;margin-bottom:.25rem}
+.uebung ol.zz li{display:grid;grid-template-columns:3.3rem minmax(0,1fr);gap:.5rem;align-items:center}
+.uebung select{width:100%}
+.uebung ol.vf select{width:auto;min-width:7rem}
+.kt .mark{margin-bottom:.25rem}
+.phase li .mark{margin:0 .3rem .1rem 0}
+
+footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+footer a{color:var(--muted)}
+footer ul{margin:.3rem 0 0;padding-left:1.1rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="kopf">
+<p class="eyebrow">Classe 9f · Politik bilingual · Débat</p>
+<h1>Les lycéens doivent-ils continuer les blocages ?</h1>
+<p>Eishockey-Debatte zu den Schülerprotesten in Frankreich (Herbst 2026). Lest zuerst den Text, dann eure Rolle. Stand der Informationen: 3. November 2026.</p>
+</header>
+
+<nav class="steps" role="tablist" aria-label="Seiten">
+<button role="tab" data-tab="0" aria-selected="true"><span class="n">1</span><span class="t">Le contexte</span><span class="p">Text mit Vokabelhilfe</span></button>
+<button role="tab" data-tab="1" aria-selected="false"><span class="n">2</span><span class="t">Aufgabenstellung</span><span class="p">Ablauf und Regeln</span></button>
+<button role="tab" data-tab="2" aria-selected="false"><span class="n">3</span><span class="t">Les rôles</span><span class="p">Vier Rollenkarten</span></button>
+<button role="tab" data-tab="3" aria-selected="false"><span class="n">4</span><span class="t">Formules utiles</span><span class="p">Für den ersten Satz</span></button>
+</nav>
+
+<!-- 1 · Kontext -->
+<section class="tabpanel" data-panel="0">
+<div class="kontext">
+<aside class="seite k-s1">
+<div class="karte">
+<h3>La question du débat</h3>
+<p class="frage">Après les annonces du gouvernement : les lycéens doivent-ils continuer les blocages ?</p>
+<p class="frage-de">Nach den Ankündigungen der Regierung: Sollen die Lycéens die Blockaden fortsetzen?</p>
+</div>
+<div class="karte">
+<h3>Eure Aufgaben zum Text</h3>
+<p class="kt"><span class="mark ueb-mark">Aufgabe 1 · Partnerübersetzung</span><br>Partner A übersetzt den Abschnitt „Le début“ mündlich ins Deutsche. Partner B öffnet die deutsche Übersetzung, hilft bei Schwierigkeiten und kontrolliert. Beim ersten Absatz von „Le 17 octobre“ tauscht ihr die Rollen.</p>
+<p class="kt"><span class="mark vs-mark">Aufgabe 2 · Compréhension</span><br>Lest die übrigen Abschnitte und bearbeitet die gelben Aufgabenkästen direkt daneben (Teil A und Teil B).</p>
+</div>
+</aside>
+<div class="ktext k-t1">
+<div class="rubrik">Le contexte</div>
+<h2>La colère des lycéens</h2>
+<p class="hinweis">Touche un mot souligné en pointillé : la traduction allemande apparaît.</p>
+<div class="texte">
+<h3>Le début</h3>
+<div class="mark ueb-mark">Aufgabe 1 · Partner A übersetzt mündlich, Partner B kontrolliert</div>
+<p>Depuis la mi-septembre 2026, beaucoup de lycéens en France sont <span class="voc" data-d="être en colère" data-de="wütend sein">en colère</span>. Tout a commencé dans des lycées de la <span class="voc" data-d="la banlieue" data-de="die Vorstadt, der Vorort">banlieue</span> parisienne, par exemple à Créteil. Les élèves protestent contre des classes trop <span class="voc" data-d="chargé, e" data-de="voll, überfüllt">chargées</span>, contre des professeurs absents qui ne sont pas <span class="voc" data-d="remplacer qn" data-de="jdn. vertreten, ersetzen">remplacés</span> et contre des bâtiments <span class="voc" data-d="en mauvais état" data-de="in schlechtem Zustand">en mauvais état</span>. Beaucoup ont aussi peur de Parcoursup, la <span class="voc" data-d="la plateforme" data-de="die (Online-)Plattform">plateforme</span> qui décide de leurs études après le bac.</p>
+<div class="ueb">
+<button type="button" class="uebbtn" aria-expanded="false">Deutsche Übersetzung zeigen (nur Partner B)</button>
+<div class="uebtext" lang="de" hidden>Seit Mitte September 2026 sind viele Lycéens in Frankreich wütend. Alles begann in Lycées in den Pariser Vororten, zum Beispiel in Créteil. Die Schülerinnen und Schüler protestieren gegen zu volle Klassen, gegen abwesende Lehrkräfte, die nicht vertreten werden, und gegen Gebäude in schlechtem Zustand. Viele haben auch Angst vor Parcoursup, der Plattform, die über ihr Studium nach dem Abitur entscheidet.</div>
+</div>
+</div>
+</div>
+<div class="ktext k-t2"><div class="texte">
+<h3>Le mouvement</h3>
+<div class="mark vs-mark">Aufgabe 2 · Compréhension, Teil A</div>
+<p>Très vite, le mouvement <span class="voc" data-d="s’étendre à" data-de="sich ausbreiten auf">s’est étendu à</span> toute la France. Les élèves bloquent l’entrée de leur lycée avec des <span class="voc" data-d="la poubelle" data-de="die Mülltonne">poubelles</span> et des barrières : c’est un <span class="voc" data-d="le blocus" data-de="die Blockade (einer Schule)">blocus</span>. Début octobre, plus de 1 000 lycées étaient <span class="voc" data-d="perturbé, e" data-de="gestört, beeinträchtigt">perturbés</span>. La France compte environ 3 700 lycées. Mi-octobre, selon le ministre de l’Éducation, Édouard Geffray, environ un lycée sur trois avait été fortement perturbé.</p>
+<p>Attention : les cours ne se sont pas arrêtés partout. Souvent, un blocus dure quelques heures ou quelques jours. Mais 400 à 500 établissements ont dû fermer, et dans certains lycées, les cours ont eu lieu <span class="voc" data-d="à distance" data-de="aus der Ferne (Distanzunterricht)">à distance</span>. Selon le ministre, des centaines de milliers d’élèves ont perdu des semaines de cours.</p>
+<p>Les manifestations ont souvent été <span class="voc" data-d="tendu, e" data-de="angespannt">tendues</span>. Il y a eu des <span class="voc" data-d="le/la blessé(e)" data-de="der/die Verletzte">blessés</span> chez les élèves et chez les policiers. Début octobre, plus de 6 000 personnes avaient été <span class="voc" data-d="interpeller qn" data-de="jdn. festnehmen">interpellées</span>, surtout des <span class="voc" data-d="le/la mineur(e)" data-de="der/die Minderjährige">mineurs</span>.</p>
+</div></div>
+<div class="k-a">
+<div class="uebung" id="uA">
+<div class="ulabel">Aufgabe 2 · Compréhension · Teil A</div>
+<h3>« Le mouvement » : vrai ou faux ?</h3>
+<p class="uhint">Cherchez la réponse dans le texte, puis cliquez sur « Vérifier ».</p>
+<ol class="vf">
+<li><span>Le mouvement est resté dans la région parisienne.</span><select data-a="faux"></select></li>
+<li><span>Début octobre, plus de 1 000 lycées étaient perturbés.</span><select data-a="vrai"></select></li>
+<li><span>Pendant le mouvement, les cours se sont arrêtés dans tous les lycées.</span><select data-a="faux"></select></li>
+<li><span>Dans certains lycées, les élèves ont eu cours à distance.</span><select data-a="vrai"></select></li>
+<li><span>La plupart des personnes interpellées étaient des adultes.</span><select data-a="faux"></select></li>
+</ol>
+<button type="button" class="pruef">Vérifier</button>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Indice :</b> Lisez encore une fois le deuxième paragraphe (« Attention : … ») et la fin du troisième paragraphe (« surtout des mineurs »).</p>
+<button type="button" class="loes" hidden>Voir la solution</button>
+</div>
+</div>
+<div class="ktext k-t3"><div class="texte">
+<h3>Le 17 octobre</h3>
+<div class="mark ueb-mark">Aufgabe 1 · Rollentausch: Partner B übersetzt mündlich, Partner A kontrolliert</div>
+<p>Le samedi 17 octobre, une grande journée de manifestations a eu lieu dans toute la France. Elle avait été lancée sur les <span class="voc" data-d="les réseaux (m.) sociaux" data-de="die sozialen Netzwerke">réseaux sociaux</span> contre la <span class="voc" data-d="la vie chère" data-de="die hohen Lebenshaltungskosten">vie chère</span>, et beaucoup de jeunes y ont participé. Selon le ministère de l’Intérieur, 550 000 personnes ont manifesté. Dans plusieurs villes, la journée a fini dans la violence : à Limoges, l’<span class="voc" data-d="l’hôtel (m.) de ville" data-de="das Rathaus">hôtel de ville</span> a brûlé, à Lyon, l’office de tourisme a été <span class="voc" data-d="incendier qc" data-de="etw. in Brand setzen">incendié</span>, à Paris, des voitures ont brûlé et des magasins ont été <span class="voc" data-d="piller qc" data-de="etw. plündern">pillés</span>. Plus de 2 000 personnes ont été interpellées. Ensuite, plusieurs villes ont décidé un <span class="voc" data-d="le couvre-feu" data-de="die Ausgangssperre">couvre-feu</span>.</p>
+<div class="ueb">
+<button type="button" class="uebbtn" aria-expanded="false">Deutsche Übersetzung zeigen (nur Partner A)</button>
+<div class="uebtext" lang="de" hidden>Am Samstag, dem 17. Oktober, fand in ganz Frankreich ein großer Demonstrationstag statt. Dazu war in den sozialen Netzwerken gegen die hohen Lebenshaltungskosten aufgerufen worden, und viele junge Menschen nahmen daran teil. Nach Angaben des Innenministeriums demonstrierten 550 000 Menschen. In mehreren Städten endete der Tag in Gewalt: In Limoges brannte das Rathaus, in Lyon wurde das Fremdenverkehrsamt in Brand gesetzt, in Paris brannten Autos und Geschäfte wurden geplündert. Mehr als 2 000 Menschen wurden festgenommen. Danach verhängten mehrere Städte eine Ausgangssperre.</div>
+</div>
+</div></div>
+<div class="ktext k-t4"><div class="texte">
+<div class="mark vs-mark">Aufgabe 2 · Compréhension, Teil B (bis zum Ende des Textes)</div>
+<p>Le Premier ministre, Sébastien Lecornu, et le président, Emmanuel Macron, ont <span class="voc" data-d="accuser qn" data-de="jdn. beschuldigen">accusé</span> des groupes d’extrême gauche et des <span class="voc" data-d="le délinquant" data-de="der Straftäter, Kriminelle">délinquants</span>. Ces violences ont <span class="voc" data-d="faire du tort à qn/qc" data-de="jdm./etw. schaden">fait du tort</span> à l’image du mouvement lycéen : on a moins parlé des <span class="voc" data-d="la revendication" data-de="die Forderung">revendications</span> des élèves.</p>
+
+<h3>Et maintenant ?</h3>
+<p>Fin octobre, le gouvernement a fait des <span class="voc" data-d="l’annonce (f.)" data-de="die Ankündigung">annonces</span> : Parcoursup sera remplacé en 2028, les classes de seconde auront au maximum 28 élèves (à partir de 2027), 500 <span class="voc" data-d="le poste" data-de="die Stelle (Arbeitsplatz)">postes</span> de professeurs seront créés et des lycées seront <span class="voc" data-d="rénover qc" data-de="etw. renovieren, sanieren">rénovés</span>. Pour beaucoup de lycéens, ce n’est pas assez.</p>
+<p>Après les vacances de la Toussaint, le lundi 2 novembre, 41 lycées étaient encore bloqués, selon le ministère. Le ministre parle d’une mobilisation « <span class="voc" data-d="résiduel, le" data-de="restlich, nur noch vereinzelt">résiduelle</span> ». Mais les organisations lycéennes <span class="voc" data-d="appeler à qc" data-de="zu etw. aufrufen">appellent à</span> de nouveaux blocages cette semaine. La question est donc : faut-il continuer ?</p>
+</div></div>
+<div class="k-b">
+<div class="uebung" id="uB">
+<div class="ulabel">Aufgabe 2 · Compréhension · Teil B</div>
+<h3>« Le 17 octobre » (2<sup>e</sup> paragraphe) et « Et maintenant ? »</h3>
+<ol class="mc">
+<li><span>Qui est responsable des violences, selon le Premier ministre et le président ?</span>
+<select data-a="b"><option value="">Choisir…</option><option value="a">les lycéens</option><option value="b">des groupes d’extrême gauche et des délinquants</option><option value="c">les professeurs</option></select></li>
+<li><span>Pourquoi les violences ont-elles fait du tort au mouvement lycéen ?</span>
+<select data-a="c"><option value="">Choisir…</option><option value="a">parce que les lycées ont fermé</option><option value="b">parce que Parcoursup a disparu</option><option value="c">parce qu’on a moins parlé des revendications des élèves</option></select></li>
+<li><span>Que pensent beaucoup de lycéens des annonces du gouvernement ?</span>
+<select data-a="a"><option value="">Choisir…</option><option value="a">Ce n’est pas assez.</option><option value="b">C’est parfait.</option><option value="c">Ça ne les intéresse pas.</option></select></li>
+<li><span>Comment le ministre décrit-il la mobilisation le 2 novembre ?</span>
+<select data-a="b"><option value="">Choisir…</option><option value="a">très forte</option><option value="b">résiduelle</option><option value="c">terminée</option></select></li>
+</ol>
+<h3 class="unter">Associe chaque chiffre à l’information.</h3>
+<ol class="zz">
+<li><b>28</b><select data-a="c"></select></li>
+<li><b>500</b><select data-a="a"></select></li>
+<li><b>2028</b><select data-a="d"></select></li>
+<li><b>41</b><select data-a="b"></select></li>
+</ol>
+<button type="button" class="pruef">Vérifier</button>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Indice :</b> Tous les chiffres se trouvent dans la partie « Et maintenant ? ».</p>
+<button type="button" class="loes" hidden>Voir la solution</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 2 · Aufgabenstellung -->
+<section class="tabpanel" data-panel="1" hidden>
+<div class="haupt">
+<article class="blatt">
+<div class="rubrik">Aufgabenstellung · 2 Unterrichtsstunden à 45 Minuten</div>
+<h2>Die Eishockey-Debatte</h2>
+<p class="hinweis">Die Klasse wird in vier Gruppen eingeteilt: Zwei Gruppen sind für die Fortsetzung der Blockaden (pro), zwei Gruppen dagegen (contra).</p>
+
+<div class="stunde">1. Stunde</div>
+
+<div class="phase">
+<h3>Phase 1 · Le contexte <span class="zeit">15 Min.</span></h3>
+<p>Arbeitet zu zweit mit dem Text im Reiter 1.</p>
+<ol>
+<li><span class="mark ueb-mark">Aufgabe 1 · Partnerübersetzung</span> Partner A übersetzt den Abschnitt „Le début“ mündlich. Partner B öffnet die deutsche Übersetzung, hilft und kontrolliert. Beim ersten Absatz von „Le 17 octobre“ tauscht ihr die Rollen.</li>
+<li><span class="mark vs-mark">Aufgabe 2 · Compréhension</span> Bearbeitet die Verstehensaufgaben in den gelben Kästen neben dem Text (Teil A und Teil B).</li>
+</ol>
+</div>
+
+<div class="phase">
+<h3>Phase 2 · Erarbeitung der Rollen <span class="zeit">5 + 20 + 5 Min.</span></h3>
+<p><b>Gruppenbildung (5 Min.):</b> Findet euch in euren vier Gruppen zusammen.</p>
+<div class="regel">
+<b class="kl">Wichtig</b>
+In der Debatte muss <b>jede und jeder</b> aus eurer Gruppe mindestens einmal aufs Eis. Bereitet euch deshalb alle so vor, dass ihr eure Position selbst vertreten könnt.
+</div>
+<p><b>Erarbeitung (20 Min.):</b></p>
+<ol>
+<li><b>Aufgabe 1:</b> Erstellt einen Screenshot eurer Rollenkarte (Reiter 3) und fügt ihn in OneNote ein. Neben oder unter dem Screenshot macht ihr eure Notizen zu den folgenden Aufgaben.</li>
+<li><b>Aufgabe 2:</b> Beantwortet die Leitfragen eurer Rolle und notiert mindestens drei Argumente für eure Position. Belegt sie, wo möglich, mit Fakten aus dem Text.</li>
+<li><b>Aufgabe 3:</b> Überlegt, welche Argumente die Gegenseite bringen wird, und notiert zu jedem eine Antwort.</li>
+<li><b>Aufgabe 4:</b> Formuliert für jedes eurer Argumente einen kurzen französischen Einstiegssatz (Reiter 4: Formules utiles).</li>
+<li><b>Aufgabe 5:</b> Erst jetzt: Gebt den Code ein, den ihr von der Lehrkraft erhaltet, und vergleicht eure Argumente mit den Beispielen. Ergänzt in OneNote, was euch fehlt.</li>
+</ol>
+<p><b>Abschluss (5 Min.):</b> Bestimmt, wer zu Beginn der Debatte für eure Gruppe auf dem Eis sitzt. Prüft, ob alle ihre Notizen in OneNote gespeichert haben.</p>
+</div>
+
+<div class="stunde">2. Stunde</div>
+
+<div class="phase">
+<h3>Phase 3 · Eishockey-Debatte <span class="zeit">5 + 28 Min.</span></h3>
+<p><b>Vorbereitung (5 Min.):</b> Die Gruppen setzen sich zusammen und lesen ihre Notizen noch einmal. Die Stühle werden aufgestellt.</p>
+<ul>
+<li><b>Aufstellung:</b> In der Mitte stehen vier Stühle, das ist das Eis. Auf jedem sitzt eine Person aus einer der vier Gruppen. Die übrigen Gruppenmitglieder sitzen auf der Bank, direkt hinter ihrem Spieler oder ihrer Spielerin.</li>
+<li><b>Fliegender Wechsel:</b> Wie im Eishockey kann jederzeit gewechselt werden, und das ist ausdrücklich erwünscht. Wer von der Bank aufs Eis möchte, tippt der eigenen Person auf dem Stuhl leise auf die Schulter. Diese steht sofort auf, und ihr übernehmt den Platz. Der Wechsel geschieht leise, ohne Kommentar und ohne die Debatte zu unterbrechen. Gewechselt wird nur innerhalb der eigenen Gruppe.</li>
+<li><b>Alle aufs Eis:</b> Jede und jeder muss mindestens einmal aufs Eis und dort mindestens eine Wortmeldung machen. Ein zweites Mal darf jemand erst aufs Eis, wenn alle aus der eigenen Gruppe schon einmal dran waren.</li>
+</ul>
+<div class="regel">
+<b class="kl">Règle du jeu · Französisch-Regel</b>
+Der <b>erste Satz jeder Wortmeldung</b> wird auf Französisch gesprochen. Das darf ein kurzer Ausruf sein, zum Beispiel <i>« Ah non ! »</i>, <i>« Tu exagères. »</i> oder <i>« Le bac est en danger ! »</i>. Danach geht es auf Deutsch weiter. Hilfen findet ihr im Reiter 4.<br>
+<b>Strafbank (optional):</b> Wer den französischen Satz vergisst, wird sofort von der eigenen Bank ausgewechselt.
+</div>
+</div>
+
+<div class="phase">
+<h3>Phase 4 · Auswertung im Plenum <span class="zeit">12 Min.</span></h3>
+<ol>
+<li>Welches Argument hat euch am meisten überzeugt? Begründet eure Wahl.</li>
+<li>Löst euch von eurer Rolle: Wie beantwortet ihr selbst die Debattenfrage?</li>
+<li>Ist ein Blocus eine legitime Form politischer Beteiligung? Wo liegt für euch die Grenze?</li>
+</ol>
+</div>
+<p class="summe">1. Stunde: 15 Min. Le contexte · 5 Min. Gruppenbildung · 20 Min. Erarbeitung · 5 Min. Abschluss = 45 Min.<br>
+2. Stunde: 5 Min. Vorbereitung · 28 Min. Debatte · 12 Min. Auswertung = 45 Min.</p>
+</article>
+<aside class="seite">
+<div class="karte">
+<h3>La question du débat</h3>
+<p class="frage">Après les annonces du gouvernement : les lycéens doivent-ils continuer les blocages ?</p>
+<p class="frage-de">Nach den Ankündigungen der Regierung: Sollen die Lycéens die Blockaden fortsetzen?</p>
+</div>
+<div class="karte">
+<h3>Die Gruppen</h3>
+<dl class="zahlen">
+<div><dt style="color:var(--pro)">Pro A</dt><dd>Die protestierenden Lycéens</dd></div>
+<div><dt style="color:var(--pro)">Pro B</dt><dd>Vertreter einer Lehrergewerkschaft</dd></div>
+<div><dt style="color:var(--contra)">Contra C</dt><dd>Vertreter des Schulministeriums</dd></div>
+<div><dt style="color:var(--contra)">Contra D</dt><dd>Besorgte Eltern</dd></div>
+</dl>
+</div>
+<div class="karte">
+<h3>En chiffres</h3>
+<dl class="zahlen">
+<div><dt>≈ 3 700</dt><dd>lycées en France</dd></div>
+<div><dt>&gt; 1 000</dt><dd>lycées perturbés début octobre</dd></div>
+<div><dt>&gt; 6 000</dt><dd>personnes interpellées début octobre, surtout des mineurs</dd></div>
+<div><dt>550 000</dt><dd>manifestants le 17 octobre (ministère de l’Intérieur)</dd></div>
+<div><dt>41</dt><dd>lycées bloqués le 2 novembre (ministère de l’Éducation)</dd></div>
+</dl>
+</div>
+</aside>
+</div>
+</section>
+
+<!-- 3 · Rollen -->
+<section class="tabpanel" data-panel="2" hidden>
+<p class="hinweis">Jede Gruppe bearbeitet nur ihre eigene Karte. Erstellt zuerst einen Screenshot eurer Karte und fügt ihn in OneNote ein. Die Beispielargumente erscheinen erst nach Eingabe des Codes eurer Gruppe.</p>
+<div class="rollen">
+
+<article class="rolle pro">
+<div class="tag">Pro · Gruppe A</div>
+<h3>Die protestierenden Lycéens</h3>
+<p>Ihr blockiert seit Wochen euren Lycée. Die Ankündigungen der Regierung findet ihr zu schwach und zu spät. Ihr wollt weitermachen, bis sich in euren Schulen wirklich etwas ändert.</p>
+<p class="lf">Leitfragen</p>
+<ol>
+<li>Warum hat die Regierung erst nach Wochen reagiert? Was würde passieren, wenn ihr jetzt aufhört?</li>
+<li>Welche Maßnahmen kommen erst 2027 oder 2028? Was bedeutet das für euch, die jetzt im Lycée sitzt?</li>
+<li>Wie grenzt ihr euch von der Gewalt am 17. Oktober ab?</li>
+<li>Welche anderen Möglichkeiten habt ihr, gehört zu werden, wenn ihr noch nicht wählen dürft?</li>
+</ol>
+<p class="lf">Mots-clés</p>
+<div class="chips"><span>la colère</span><span>le blocus</span><span>les revendications</span><span>ce n’est pas assez</span><span>le droit de vote</span></div>
+<div class="code" data-role="A">
+<div class="zu"><label for="cA">Code der Gruppe A</label><input id="cA" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div>
+<p class="msg" aria-live="polite"></p>
+<div class="muster" hidden></div>
+</div>
+</article>
+
+<article class="rolle pro">
+<div class="tag">Pro · Gruppe B</div>
+<h3>Vertreter einer Lehrergewerkschaft</h3>
+<p>Ihr vertretet eine Gewerkschaft der Lehrkräfte. Ihr unterstützt die Lycéens, denn ihr erlebt dieselben Probleme im Schulalltag. Seit dem 6. Oktober rufen auch die Lehrergewerkschaften zu Protesten auf. Gewalt lehnt ihr klar ab.</p>
+<p class="lf">Leitfragen</p>
+<ol>
+<li>Welche Probleme erleben Lehrkräfte jeden Tag in den Lycées?</li>
+<li>Reichen 500 neue Stellen für rund 3 700 Lycées? Rechnet nach.</li>
+<li>Warum ist es wichtig, dass Lehrkräfte und Schüler gemeinsam protestieren?</li>
+<li>Wie kann der Protest weitergehen, ohne dass es zu Gewalt kommt?</li>
+</ol>
+<p class="lf">Mots-clés</p>
+<div class="chips"><span>le syndicat</span><span>les postes</span><span>la solidarité</span><span>ensemble</span><span>les conditions de travail</span></div>
+<div class="code" data-role="B">
+<div class="zu"><label for="cB">Code der Gruppe B</label><input id="cB" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div>
+<p class="msg" aria-live="polite"></p>
+<div class="muster" hidden></div>
+</div>
+</article>
+
+<article class="rolle contra">
+<div class="tag">Contra · Gruppe C</div>
+<h3>Vertreter des Schulministeriums</h3>
+<p>Ihr vertretet das französische Schulministerium (<i>ministère de l’Éducation nationale</i>). Die Regierung hat Ende Oktober Maßnahmen angekündigt. Jetzt wollt ihr, dass alle Schülerinnen und Schüler wieder normal Unterricht haben.</p>
+<p class="lf">Leitfragen</p>
+<ol>
+<li>Welche Maßnahmen hat die Regierung angekündigt? Warum sind sie ein Erfolg für die Lycéens?</li>
+<li>Was bedeutet der Unterrichtsausfall für das Abitur (le bac)?</li>
+<li>Welche Rolle spielen die Gewalt vom 17. Oktober und die Sicherheit an den Schulen?</li>
+<li>Welche anderen Wege gibt es, die Forderungen weiter einzubringen?</li>
+</ol>
+<p class="lf">Mots-clés</p>
+<div class="chips"><span>les annonces</span><span>le bac</span><span>retourner en cours</span><span>le dialogue</span><span>la sécurité</span></div>
+<div class="code" data-role="C">
+<div class="zu"><label for="cC">Code der Gruppe C</label><input id="cC" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div>
+<p class="msg" aria-live="polite"></p>
+<div class="muster" hidden></div>
+</div>
+</article>
+
+<article class="rolle contra">
+<div class="tag">Contra · Gruppe D</div>
+<h3>Besorgte Eltern</h3>
+<p>Eure Kinder besuchen einen Lycée. Ihr versteht ihre Forderungen, denn auch ihr wollt gute Schulen. Aber ihr macht euch Sorgen um ihre Sicherheit und um ihre Zukunft.</p>
+<p class="lf">Leitfragen</p>
+<ol>
+<li>Was bedeuten viele Wochen ohne normalen Unterricht für eure Kinder?</li>
+<li>Welche Gefahren gibt es bei Blockaden und Demonstrationen (Verletzungen, Festnahmen)?</li>
+<li>Was ist mit den Schülerinnen und Schülern, die lernen wollen?</li>
+<li>Wie könnten Eltern die Forderungen unterstützen, ohne dass die Schule blockiert wird?</li>
+</ol>
+<p class="lf">Mots-clés</p>
+<div class="chips"><span>les parents</span><span>la peur</span><span>les cours perdus</span><span>la sécurité</span><span>l’avenir</span></div>
+<div class="code" data-role="D">
+<div class="zu"><label for="cD">Code der Gruppe D</label><input id="cD" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div>
+<p class="msg" aria-live="polite"></p>
+<div class="muster" hidden></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- 4 · Formules -->
+<section class="tabpanel" data-panel="3" hidden>
+<p class="hinweis">Der erste Satz jeder Wortmeldung ist auf Französisch. Wählt hier einen Einstieg aus.</p>
+<div class="formules">
+<div class="fgruppe"><h3>Donner son avis · Meinung</h3><ul>
+<li><span class="f">Je pense que…</span><span class="d">Ich denke, dass …</span></li>
+<li><span class="f">Je trouve que…</span><span class="d">Ich finde, dass …</span></li>
+<li><span class="f">À mon avis, …</span><span class="d">Meiner Meinung nach …</span></li>
+<li><span class="f">Je trouve ça très bien.</span><span class="d">Das finde ich sehr gut.</span></li>
+<li><span class="f">Chez moi, on…</span><span class="d">Bei mir (zu Hause) …</span></li>
+</ul></div>
+<div class="fgruppe"><h3>Être d’accord · Zustimmen</h3><ul>
+<li><span class="f">C’est vrai.</span><span class="d">Das stimmt.</span></li>
+<li><span class="f">Tu as raison.</span><span class="d">Du hast recht.</span></li>
+<li><span class="f">C’est ça.</span><span class="d">Genau.</span></li>
+<li><span class="f">Mais oui !</span><span class="d">Aber ja!</span></li>
+<li><span class="f">Là, je suis d’accord avec toi.</span><span class="d">Da stimme ich dir zu.</span></li>
+</ul></div>
+<div class="fgruppe"><h3>Contredire · Widersprechen</h3><ul>
+<li><span class="f">Mais…</span><span class="d">Aber …</span></li>
+<li><span class="f">Ah non !</span><span class="d">Oh nein!</span></li>
+<li><span class="f">Ce n’est pas vrai.</span><span class="d">Das stimmt nicht.</span></li>
+<li><span class="f">N’importe quoi !</span><span class="d">So ein Unsinn!</span></li>
+<li><span class="f">Tu exagères.</span><span class="d">Du übertreibst.</span></li>
+<li><span class="f">Si, justement !</span><span class="d">Doch, gerade!</span></li>
+<li><span class="f">Là, je ne suis pas d’accord avec toi.</span><span class="d">Da bin ich anderer Meinung.</span></li>
+<li><span class="f">Ce n’est pas du tout réaliste.</span><span class="d">Das ist überhaupt nicht realistisch.</span></li>
+<li><span class="f">Ce n’est pas juste.</span><span class="d">Das ist nicht gerecht.</span></li>
+</ul></div>
+<div class="fgruppe"><h3>Demander · Nachfragen</h3><ul>
+<li><span class="f">Tu es sûr / sûre ?</span><span class="d">Bist du sicher?</span></li>
+<li><span class="f">Tu ne trouves pas ?</span><span class="d">Findest du nicht?</span></li>
+<li><span class="f">Qu’est-ce que tu en penses ?</span><span class="d">Was hältst du davon?</span></li>
+<li><span class="f">Tu penses vraiment que… ?</span><span class="d">Denkst du wirklich, dass …?</span></li>
+</ul></div>
+<div class="fgruppe"><h3>Nuancer · Abwägen</h3><ul>
+<li><span class="f">Ça dépend.</span><span class="d">Das kommt darauf an.</span></li>
+<li><span class="f">D’un côté, … D’un autre côté, …</span><span class="d">Einerseits … andererseits …</span></li>
+<li><span class="f">Ce n’est pas ce que je veux dire.</span><span class="d">Das meine ich nicht.</span></li>
+<li><span class="f">C’est une question de…</span><span class="d">Das ist eine Frage von …</span></li>
+<li><span class="f">Il ne suffit pas de…, il faut aussi…</span><span class="d">Es reicht nicht, … man muss auch …</span></li>
+</ul></div>
+<div class="fgruppe"><h3>Argumenter · Begründen</h3><ul>
+<li><span class="f">Par exemple, …</span><span class="d">Zum Beispiel …</span></li>
+<li><span class="f">En plus, …</span><span class="d">Außerdem …</span></li>
+<li><span class="f">Donc, …</span><span class="d">Also …</span></li>
+<li><span class="f">Il faut changer ça.</span><span class="d">Das muss sich ändern.</span></li>
+</ul></div>
+<div class="fgruppe spezial"><h3>Spécial débat · Zum Thema</h3><ul>
+<li><span class="f">Ce n’est pas assez !</span><span class="d">Das reicht nicht!</span></li>
+<li><span class="f">Il faut retourner en cours !</span><span class="d">Man muss zurück in den Unterricht!</span></li>
+<li><span class="f">Le bac est en danger !</span><span class="d">Das Abitur ist in Gefahr!</span></li>
+<li><span class="f">La violence, ce n’est pas une solution.</span><span class="d">Gewalt ist keine Lösung.</span></li>
+<li><span class="f">Nous ne sommes pas des casseurs !</span><span class="d">Wir sind keine Randalierer!</span></li>
+<li><span class="f">Le gouvernement a fait des annonces, mais…</span><span class="d">Die Regierung hat Ankündigungen gemacht, aber …</span></li>
+<li><span class="f">Nous n’avons pas le droit de vote !</span><span class="d">Wir dürfen nicht wählen!</span></li>
+</ul></div>
+</div>
+</section>
+
+<footer>
+<b>Quellen</b> (Stand 3. November 2026; Zahlen gerundet, Text vereinfacht):
+<ul>
+<li><a href="https://www.publicsenat.fr/actualites/politique/mouvement-lyceen-ou-en-est-on-des-blocus" target="_blank" rel="noopener">Public Sénat: Mouvement lycéen : où en est-on des blocus ? (2.11.2026)</a></li>
+<li><a href="https://www.sudradio.fr/societe/crise-dans-leducation-blocages-et-manifestations-en-vue-pour-la-reprise-des-cours" target="_blank" rel="noopener">Sud Radio / AFP: Blocages et manifestations en vue pour la reprise des cours (2.11.2026)</a></li>
+<li><a href="https://www.boursorama.com/bourse/actualites/france-les-blocages-de-lycees-sont-residuels-a-ce-stade-geffray-cc4a90701d9cc6b780fa92a0cea73a3b" target="_blank" rel="noopener">Reuters / Boursorama: Les blocages de lycées sont « résiduels » à ce stade (2.11.2026)</a></li>
+<li><a href="https://fr.euronews.com/2026/10/06/mobilisation-lyceenne-acte-iii-de-nombreux-etablissements-deja-bloques-la-crainte-dun-mard" target="_blank" rel="noopener">Euronews: Mobilisation lycéenne, acte III (6.10.2026)</a></li>
+<li><a href="https://www.aa.com.tr/en/europe/timeline-how-france-s-student-protests-grew-into-nationwide-unrest/4107049" target="_blank" rel="noopener">Anadolu: Timeline – how France’s student protests grew into nationwide unrest</a></li>
+<li><a href="https://en.wikipedia.org/wiki/2026_French_student_protests" target="_blank" rel="noopener">Wikipedia: 2026 French student protests</a></li>
+</ul>
+</footer>
+</div>
+
+<script>
+(function(){
+/* Reiter */
+var tabs=[].slice.call(document.querySelectorAll('nav.steps button'));
+var panels=[].slice.call(document.querySelectorAll('.tabpanel'));
+function zeige(n){
+  tabs.forEach(function(b){b.setAttribute('aria-selected', String(b.dataset.tab===String(n)));});
+  panels.forEach(function(p){p.hidden = p.dataset.panel!==String(n);});
+  try{localStorage.setItem('debat9f_tab',String(n));}catch(e){}
+}
+tabs.forEach(function(b){b.addEventListener('click',function(){zeige(b.dataset.tab);window.scrollTo({top:0});});});
+var start='0'; try{start=localStorage.getItem('debat9f_tab')||'0';}catch(e){}
+zeige(start);
+
+/* Vokabelhilfe im Text: Antippen zeigt die Übersetzung */
+[].slice.call(document.querySelectorAll('.texte .voc')).forEach(function(s){
+  s.setAttribute('role','button');s.setAttribute('tabindex','0');s.setAttribute('title','Aide lexicale');
+  function t(){
+    var g=s.querySelector('.gl');
+    if(g){g.remove();s.classList.remove('auf');}
+    else{g=document.createElement('span');g.className='gl';g.lang='de';g.textContent=s.dataset.de;s.appendChild(g);s.classList.add('auf');}
+  }
+  s.addEventListener('click',t);
+  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});
+});
+
+/* Partnerübersetzung */
+[].slice.call(document.querySelectorAll('.uebbtn')).forEach(function(b){
+  var box=b.nextElementSibling, label=b.textContent;
+  b.addEventListener('click',function(){
+    var auf=box.hidden; box.hidden=!auf;
+    b.setAttribute('aria-expanded',String(auf));
+    b.textContent=auf?'Übersetzung verbergen':label;
+  });
+});
+
+/* Verstehensaufgaben */
+var VF='<option value="">Choisir…</option><option value="vrai">vrai</option><option value="faux">faux</option>';
+[].slice.call(document.querySelectorAll('#uA select')).forEach(function(s){s.innerHTML=VF;});
+var ZZ='<option value="">Choisir…</option><option value="a">postes de professeurs créés</option><option value="b">lycées encore bloqués le 2 novembre</option><option value="c">élèves au maximum par classe de seconde</option><option value="d">l’année où Parcoursup sera remplacé</option>';
+[].slice.call(document.querySelectorAll('#uB ol.zz select')).forEach(function(s){s.innerHTML=ZZ;});
+[].slice.call(document.querySelectorAll('.uebung')).forEach(function(u){
+  var sel=[].slice.call(u.querySelectorAll('select')), msg=u.querySelector('.msg'),
+      ind=u.querySelector('.indice'), lo=u.querySelector('.loes'), versuche=0;
+  u.querySelector('.pruef').addEventListener('click',function(){
+    var gut=0;
+    sel.forEach(function(s){var ok=s.value===s.dataset.a;s.classList.remove('ok','ko');s.classList.add(ok?'ok':'ko');if(ok)gut++;});
+    if(gut===sel.length){msg.textContent='Tout est juste. Bravo !';msg.style.color='var(--ok)';ind.hidden=true;lo.hidden=true;return;}
+    versuche++;
+    msg.textContent=gut+' réponse(s) sur '+sel.length+' correcte(s). Corrigez les champs en rouge.';
+    msg.style.color='var(--warn)';
+    ind.hidden=false;
+    if(versuche>=2)lo.hidden=false;
+  });
+  lo.addEventListener('click',function(){
+    sel.forEach(function(s){s.value=s.dataset.a;s.classList.remove('ko');s.classList.add('ok');});
+    msg.textContent='Voici la solution. Cherchez dans le texte où se trouve la réponse.';
+    msg.style.color='var(--ok)'; lo.hidden=true;
+  });
+});
+
+/* Rollen: verschlüsselte Beispielargumente, je Gruppe eigener Code */
+var DATA={A:"fHRDcCdvZSoOHgT07vb/wdHI2tHapb+9+4qOgNdlcXF9ZdyaXFJIKyMyOkQiGh3z9+bq+6OEw4yF+7K46d+Pmc3DjHxudTtLR1ZEN3pxNRJBUa3XX8juuPVFJy3SsLfwo76szI6IiG1xNzYE5YgPbzA/LjJhSy8RHqfV8fDKxsLG0djsp7qvyI6FhHAnfXJDSw9cWVwjOHgMCAQcEu2jwOHw68ncz5u6rrawjYKBhy4jQGdyegtvSk4kLHQ/oMcEBxpf6fy78M3C2dLknaaggYSKgdyYbmx9eUJJGhcUJj49fygFHVsR7f/t44TGxtWoAHm9ubHHy4+SdWM0YUpGXFZMHyImODMcSwIa4+Lg9tTZ24GAkKei5ueLjsrLcHNxfT98QE5ISHVpMSVGWbHYoMrjr/r+3t+Y2K+murCGkdAwWJ4sYnpyRl9SWSUpJ3NBQ63UQFD4+/n1mYfi3qavtfOSvi9wlZpgZnJ5BEBWXzQmIW85LRgfWEm3taO3zMfVwZ+N/P3j9ci8noUkdHpnWkZBD11dLjl4MQITDgOj6v6zXCPOysndC3e7u5CCndNLb258b3pFBxhOKSN0Ig0QFQEaX8Dq8+nD2XQTorO284aGh4OZkSthfW9dUxoLbC85bWMzBVFHCPjq+bfHy9LAs/7tqa791SlT20loYWQDTVUTTFAhIj4oSBsWBKTj9uCAwM7cz9q+uav7xsc2TD8sY2N+cRIPf1ItaxAyEwYfB6Di4q+tqIWL99CzqLaykcOXmpGYLHl0aQhKW1shKnMlDw1PChUR7vm4+snD0cWmrfCXurKDgYiPempjfktJE1QlJCohfDcEAx1b1/Xx/tDGkNLKzOLvlrqGy5OWdmEzdVJKSktQVigjPXs0BBy0P+/14fbxwsrVm72ls/e3hJswvG9qfTxxQkhQT2cqPSNDMREdGx7g5v7pzdnZl6OrtrqDi5yKiIVuZTYnCEtdCX8vOW1jLBwOFVvr5/bk15qR1bLh8Q13/6WEjYgnafaXukJGXFFMbD86KEgHElfg9fz61IPLypzJpL+9+8bHNkw/LGNjfnESD25VPC4ld1VfUxdDP/3p+fGL3NHJ56m9tIuX0IQ8W2RjfnUGC3VbKyQ4MgQGAU8JEe+r3P7KyNrEt7Gxp7awgoqV23tieXMEQfCPMmM6IS9/DgIWHvWn8PLRg8fW0darqrX7v46QkignZn4AREpH/4k5P3ghEkcDEvHn9f2xo4PD0oX05KK72g==",B:"enJCdTlhZCcIGAXx4Oj+/NfO29Skq76w/YyPhdmbcGx7Y92fQlxJJiU0O0EsBBwO8eDr/p2KwoGD/bO95+GOhMvFjXlwezpGQVBFMnRvNC9HV6zSocnv5r1iD916FbSopvmxh4XViGRkYnlPCQwS//51YSoRBARLXc3j+ev20G4R38qs8bCoiYiTk28paXt4VkxCWyQragUvDgQdHBDnt7Xs8MvUxt+xt6WzwbqZl5FpbGA1AU5LRUg1MjR5D6HJABQbpbHv74XKw9kCVqjylomInYpkayQ1WUhDEX9SMCkwKysHFhAUpen05IHl1NF+bKygqsGWg5uZIWdkenUCWFtKWzs0dRwKHxUT8/zj9fjLh5KWraz06bGI2M2KjWNjNXpySEJGB2crI3Rfq8ZSPuCp4HshPM/GyeG2sKr9hpjVjZF8ZTVo5oRQWig6OTd9REmswr2q+eX8z5iRjI3y7bu8q4zRpo5gYX1zTwlL8YE3aTwsDwFKRl22tqG50dvOdhDbuuv1noSe0Z9yfS18dEZBWhkkLCQ4PA1GFBAT563G7fvF3dCaow5tpMGahJefYGcuSkJNX1lYL2hxHTwPBAFZEko15unRjcLfoqHttriXyaKcaXdvZ3BASFZcUWIjPDo2HVEXH+3o8/PPh5Gd0az38rWI29aGjWBoMXpxQ15GBBwvI3dkp8ZRM+/66P//ycyCma6r6rCulcaBlYhxLXN2bF1CFRtlj+pqThodExO7qd38yNGK1MiirvG9tIfNuZyWe3RnfUBaVEQqOi46PAMdCxeh//+1zdPJxdzOtqi7+b+cl4ePY2h/OgFAXkYdISw8eSUXHxYWoefk/73GxNCZ7Ky2vL+XmJ+RIW5oZXxGQV1cL2tqEjgMAxgXDuPg8Ou++cPazqC+pfaWgJ+ZiSs1IXVIGxZZVH96Iik8DE0WFR/64qi4w9+TiANi7ZuxxYeL2XJwbHN0VQZBWE5iKbfZxwgfGxXr7vTkjYnE3p2jqLutwYSfho5oJnB+dFADFfuFdX4mKgQDT1bHSjHgvcHAy5mToKS6q4iDg4yTZWh7OXlAU0EaID5xIA4bTRMR6ezjuerXz9HUtaP9+baHhJuc3m90Zm5AQxFsNDosNTgLSQi6Pfeq//jFw5Hq3qq4ubzwybeHk2BpfX9CQUhAHRU7IS0EFh5VFUIi/e29xszGmeqhtLi7xYyEkCFtaGA9cUhJXDIqODEzFAgWV13F6OL48t2R2d+to7S4wZ6EgN1kayAlDklDCwFuMz1n",C:"eHA4eztjXiEKGg8P4ur0+tXMwdqmqaS2/46Fm9uZemp5YeeRQF4zICc2MX8uBhYI8+Lx8J+I2IeB/7mj5eOEgsnHd3dyeQBAQ1JPTHZtPilFVbbco8v1s/3Cz4/ezLzrsrXEg5KZZ2Z9Mz0/6ZQEFDQ7NTldRzgGEefp/e/ryd7E3qqjtvezgIcwQJNufXF1SU5aFzYpNHMMAASsxxPt+bfzxcXW2eC0oLC0uoWDmZVgK0F5V0JCQVYgJDt7KQ0ZBxr39Oe5gOVsD86fvaa9t4LLnYR3J3RybANtTVJLPTl3MgpHNBLm4ufhsqOEw9GF+6e96d+UgJKRI29jemxbFhVdNmVtlctDIRwJDKvu7vTJ2JR0aqS/pqsgRc+Xmnsre2JH5JpSLjBhc57kV0ALC+blqrfnztWT7aarpr6tnYWQ22xmZzdSRk5UVVo5O2J7NwoGFOzy4uDq04zY0s2s67Kpl4KHjXQvL3vfqUhHS08iJSd3UV9QIBzrTzP3+tqLx8mr55i7gZCcltyWZS98flULZ1IgKD43Ok9MCB4P5Or578GH4MOlr6O2sqyfnZ2SZGNheURCXhNZIiAjPjFIHBIcqKemp5CDwdbJ2uucrL6Lh5GZLSdUdm0DfF1eUiEuJTYNCRoE9Ob9s+v2x8OY366u9JuahDNamm1/L35tRk5CT2QiPicGAgEUGRGlr9L+09HAl6q0pPOFhoWb25nLt2U7QEJdFwQqLj8zOEVTVxfutaj7ypmMwM+iou+4s4mYhMYmYWE1HuGEE3BeazkxNAsOGhTmq7Dw+oPCTTsmrbij+5SGgNd1bWozb3BHWkxSKCV6d6HcTFwM8+3hpb/7zt7P5KO2usDS2N3csGB7d3lCWRRQIiVwNixDLh242+bv8reE9990fK2rtq6qhYidlSd+enMDb0VdWyY+Oz5/Hg4FF+Hz6ePFg//c0NaxpquvgoXa11BkeGZzRkIPVvz0OCQ+CkcAHuPr6uH5v+TdzN7nqbiyioWVndE/I2NyIRRHXgV4NCM2DkMMHx0M+LK6/dWJinVo55O2/40Ob2Kae383a0VUE101MDs2fC8EGgpb6+7nt8LSxMHasOwMcrMrQ4Gedykz1ZsfAEBMXiVxeB4OBRFXwev/8PTCyMqb0aGmuq/EhoaUaCNrdnJ6RQ9cXilrATkXAgIBFuDk+7e/zMLSm6iiobmFjc+Ek5NnanY1B25HFyQuMid/AgILHg3tq8D+w8KJl5OgpxBgs46djp51f2ZyV1JeVFotYG8cOhsbBbgg5PvygM7Gx5zbrr34iYKMnZJxcn50MwNjQVdWJi56GQETFh7s6ujm8viFk5fXrvXo+JaLzg==",D:"dnM9dj1gYyQUGQry5On5/9vPxNegqrmzwY2Aht2ad293YuKcRl1OJTk1NEIoBRsN/eH0/ZmLxYL//Ly+4+CJh8fEcnp0ej1FXVFKMXBuMyxLVrPRpcni+IHFx9Tc0rHuuPiRj4CG3Scx0qIeAl9FXyd2cRgADU0y5O3m/O7o18/N0a6ksLr9kYSCnWdjLF9rTk1fXiktLj4EQBoRFQvg/LnuxNjZ0cm8pf75q4PMuZtnezFsQFZBWTNgLDszfFRbVDJCLv3m9MHUwpmsrK+9/o2Ng9pAfH16TlNAXVMcICc3PRNKMgYc6PDk/ILIxdvb6YCwtIHKzaFocillcnBJS1cUYS40Jy5GBB4K5//ptdXAxtXft+S+v4KIjIDdj2xgfTYdBVldA3o9OWdeHhwUEKnr/fvW15CUp7Lr7B93xbqM2HFve2d4VRFGSyMkITAwHUgAD+CkTjHAgMjb2dnl8fkaWtbah41nfy45cU5EWlBpCT88BAoKVs7r/f3/+deOzs2zrrC6/SVNkpxwLTo1LhkYEXcgKj41CQUHUhsZ9vr+/c/F2NnYqP3wtIeEn4HeRGF/fkBWR/XlKDs7OjlLTjwR7++10vjVxd7YqqCp9bWIhp/aY8exZAFKXFxaWWUDPDYSCR0RE6b04vfR2cmV+Kaktr+LxIWXY2VnPCEzSUcHBC0ja2guFhAeWeHh7ebtlIrXyOf6D33BrIyB3Z9qe2trAVpQRlkzInx5AQhMG5wJEfTp0YTd17Lgu7u4ssXP2Tq6NjpnbUdfDhkUJCk5O0k/Hhnt4eO2zsjH153Sqry0uY2Pm9SoaGV1a1BET11KaSQwKRYBA1by6er6vffE29SYr6u2vLWJnZWXLi1ucG1GRlVfNzdtIA4SSRYYEaXP+/HV38eagem9uefegYXLwnp4cHQFR0FXMjN0cDsuR1C706HOdxQE09+Q2gF5uBZ3xcgTeqMoLXLDoLBHUxwkOy0qBEoWt8nyUjm1gk8sE54Lc+31lpSMmD8gTHtzeVddXFE1OXUiOBQCBBzq6OK16cDakd6soe2QjpKNl4+Ja2l8dg0KUVFTKHExLAEFTAIX+6jm9cnIyNjhp7ymuPy2jZGNbW97Oj1nX1RcMCg+JjsAHAJa4u3v4oHF2pLX2bG0rfi7n4aVmmN/PjlnQVhQTCdoOpnTCgMT76BKLv/514781LWvp7qrg4OEi2d5eXt5TEYRTSAtOTMTQC0ACB/urvT5wsLQ2pHmvri3h82IlI16KHVzQAR+VSk1JTd9PgkBGhPo7+fgvdHYwt3s8eO5t9fU3o9pOg=="};
+function entschluessle(b64,code){
+  try{
+    var bin=atob(b64), k=new TextEncoder().encode(code), out=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++){out[i]=bin.charCodeAt(i)^((k[i%k.length]+i*7)&255);}
+    var s=new TextDecoder('utf-8').decode(out);
+    return s.indexOf('OK|')===0 ? s.slice(3) : null;
+  }catch(e){return null;}
+}
+[].slice.call(document.querySelectorAll('.code')).forEach(function(box){
+  var r=box.dataset.role, inp=box.querySelector('input'), btn=box.querySelector('button'),
+      msg=box.querySelector('.msg'), mu=box.querySelector('.muster');
+  function los(){
+    var code=(inp.value||'').trim();
+    var html=code.length===4 ? entschluessle(DATA[r],code) : null;
+    if(html){mu.innerHTML=html;mu.hidden=false;msg.textContent='';box.querySelector('.zu').hidden=true;}
+    else{msg.textContent='Dieser Code passt nicht zu eurer Gruppe.';}
+  }
+  btn.addEventListener('click',los);
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')los();});
+});
+})();
+</script>
+</body>
+</html>
