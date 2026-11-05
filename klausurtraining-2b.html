@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Klausurtraining Aufgabe 2b</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: wie das Q1-Methodentraining. Oben Schrittleiste, darunter Blatt (Aufgabe + M1/M2) links und Arbeitskarte rechts, darunter eine breite Übungskarte und die Formulierungshilfen. */
+:root{
+  --paper:#eceff2; --sheet:#ffffff; --ink:#17212c; --muted:#5f6b77; --rule:#d6dce3; --tint:#f3f5f8;
+  --accent:#27405f; --accent-ink:#ffffff;
+  --c1:#325f88; --c2:#447a58; --c3:#a05e14; --c4:#7a5a8c;
+  --c1-bg:rgba(50,95,136,.17); --c2-bg:rgba(68,122,88,.18); --c3-bg:rgba(160,94,20,.18); --c4-bg:rgba(122,90,140,.14);
+  --warn:#9a3a3a; --ok:#447a58; --mid:#a05e14;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141920; --sheet:#1c232c; --ink:#e3e7ec; --muted:#9aa4af; --rule:#333d49; --tint:#232b35;
+    --accent:#8fb0d8; --accent-ink:#121820;
+    --c1:#8fb6dd; --c2:#87c39d; --c3:#e0a45c; --c4:#c3a3d6;
+    --c1-bg:rgba(143,182,221,.2); --c2-bg:rgba(135,195,157,.2); --c3-bg:rgba(224,164,92,.22); --c4-bg:rgba(195,163,214,.18);
+    --warn:#e48b80; --ok:#87c39d; --mid:#e0a45c; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141920; --sheet:#1c232c; --ink:#e3e7ec; --muted:#9aa4af; --rule:#333d49; --tint:#232b35;
+  --accent:#8fb0d8; --accent-ink:#121820;
+  --c1:#8fb6dd; --c2:#87c39d; --c3:#e0a45c; --c4:#c3a3d6;
+  --c1-bg:rgba(143,182,221,.2); --c2-bg:rgba(135,195,157,.2); --c3-bg:rgba(224,164,92,.22); --c4-bg:rgba(195,163,214,.18);
+  --warn:#e48b80; --ok:#87c39d; --mid:#e0a45c; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.5}
+.wrap{max-width:76rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--c3);outline-offset:2px}
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin:0 0 .45rem;text-wrap:balance}
+.kopf p{margin:0;color:var(--muted);max-width:54rem}
+.lockstate{display:inline-block;margin-top:.6rem;font-size:.82rem;padding:.15rem .5rem;border:1px solid var(--rule);color:var(--muted)}
+.lockstate.on{border-color:var(--ok);color:var(--ok)}
+
+nav.steps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 1.3rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.6rem .7rem .65rem;cursor:pointer;color:var(--muted);min-width:0;position:relative}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.84rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.74rem;margin-top:.15rem}
+nav.steps .done{position:absolute;top:.45rem;right:.5rem;font-size:.75rem;color:var(--ok);font-weight:700}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t,nav.steps button[aria-selected="true"] .done{color:var(--accent-ink)}
+@media (max-width:56rem){nav.steps{grid-template-columns:repeat(4,minmax(0,1fr))}nav.steps button:nth-child(4){border-right:0}nav.steps button:nth-child(-n+4){border-bottom:1px solid var(--rule)}}
+@media (max-width:30rem){nav.steps{grid-template-columns:repeat(2,minmax(0,1fr))}nav.steps button{border-bottom:1px solid var(--rule)}nav.steps button:nth-child(2n){border-right:0}}
+
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 23rem;gap:1.4rem;align-items:start}
+@media (max-width:62rem){.haupt{grid-template-columns:1fr}}
+.blatt{background:var(--sheet);padding:1.2rem 1.4rem 1.5rem;box-shadow:0 1px 2px rgba(20,28,34,.05),0 10px 28px rgba(20,28,34,.09);min-width:0}
+.aufgabe{border:1px solid var(--rule);background:var(--tint);padding:.7rem .9rem;margin:0 0 1rem;font-family:var(--serif);font-size:.98rem;line-height:1.5}
+.aufgabe .lbl{display:block;font:700 .66rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.aufgabe .op{font-weight:600}
+.reiter{display:flex;gap:.3rem;border-bottom:1px solid var(--rule);margin-bottom:1rem}
+.reiter button{border:1px solid var(--rule);border-bottom:0;background:var(--tint);padding:.35rem .9rem;cursor:pointer;font-weight:600;font-size:.88rem;color:var(--muted);margin-bottom:-1px}
+.reiter button[aria-selected="true"]{background:var(--sheet);color:var(--ink);border-top:3px solid var(--accent)}
+.werkzeug{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center;padding-bottom:.7rem;margin-bottom:1rem;border-bottom:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+.leg{display:inline-flex;align-items:center;gap:.35rem}
+.leg i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px}
+.leg.c1 i{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.leg.c2 i{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.leg.c3 i{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.leg.c4 i{background:var(--c4-bg);box-shadow:inset 0 -2px var(--c4)}
+.werkzeug .still{font-style:italic}
+.schalter{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;color:var(--ink)}
+.schalter input{accent-color:var(--accent);width:1rem;height:1rem}
+
+.para{margin:0 0 1rem 2.6rem}
+.para .rubrik{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.para h2{font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.2;margin:.2rem 0 .3rem;text-wrap:balance}
+.para .byline{font-size:.9rem;color:var(--muted)}
+.texte{font-family:var(--serif);font-size:1.04rem;line-height:1.78}
+.abs{margin:0 0 .75rem}
+.z{display:block;position:relative;padding-left:2.6rem}
+.z::before{content:attr(data-z);position:absolute;left:0;width:1.7rem;text-align:right;font:600 .66rem/1.9rem var(--sans);color:var(--muted);user-select:none;-webkit-user-select:none}
+.z:not([data-show])::before{color:transparent}
+.zumautor{font-size:.8rem;color:var(--muted);margin:1rem 0 0 2.6rem;padding-top:.6rem;border-top:1px solid var(--rule)}
+.mk{border-radius:2px;padding:.05em 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mk.c1{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.mk.c2{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.mk.c3{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.mk.c4{background:var(--c4-bg);box-shadow:inset 0 -2px var(--c4);text-decoration:underline dotted var(--c4);text-underline-offset:.25em}
+.ziel{outline:2px dashed var(--c3);outline-offset:3px;border-radius:2px}
+
+/* M2 */
+.m2 h3{font-family:var(--serif);font-weight:600;font-size:1.08rem;line-height:1.3;margin:0 0 .5rem;text-wrap:balance}
+.m2 .block{margin-bottom:1.5rem}
+.tabwrap{overflow-x:auto}
+table.daten{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.daten th,table.daten td{border:1px solid var(--rule);padding:.4rem .6rem}
+table.daten th{background:var(--tint);font-weight:600;text-align:center;line-height:1.25}
+table.daten td{text-align:center}
+table.daten td:first-child{text-align:left;font-weight:600}
+.fuss{font-size:.8rem;color:var(--muted);margin:.4rem 0 0}
+.m2k{border-radius:2px;padding:.05em 0}
+.zeigen .m2k[data-k="c1"]{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.zeigen .m2k[data-k="c2"]{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.zeigen .m2k[data-k="c3"]{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+
+/* rechts */
+.rand{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.frage{font-family:var(--serif);font-size:1.12rem;line-height:1.35;margin:0 0 .7rem}
+.karte ul{margin:0;padding-left:1.1rem;font-size:.92rem}
+.karte li{margin:.25rem 0}
+.auftrag{border-left:4px solid var(--c3);padding:.4rem 0 .4rem .8rem;margin:.9rem 0 0;font-size:.92rem}
+.auftrag b{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c3);margin-bottom:.15rem}
+.merke{background:var(--tint);border-left:3px solid var(--c2);padding:.6rem .75rem;font-size:.9rem;margin-top:.8rem}
+.merke b{color:var(--c2)}
+
+/* Freischalten */
+.zu{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.9rem;color:var(--muted)}
+.zu input{width:6.5rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;letter-spacing:.2em}
+.msg{font-size:.82rem;color:var(--warn);min-height:1.1em;margin:.3rem 0 0}
+.knopf{border:1px solid var(--accent);background:var(--sheet);color:var(--accent);padding:.4rem .8rem;cursor:pointer;font-weight:500;border-radius:2px}
+.knopf.voll{background:var(--accent);color:var(--accent-ink)}
+.loesung{font-family:var(--serif);font-size:1rem;line-height:1.6;margin-top:.8rem;padding:.8rem 1rem;background:var(--tint);border-left:3px solid var(--ok)}
+.loesung p{margin:0 0 .6rem}.loesung p:last-child{margin:0}
+.loesung h4{font-family:var(--sans);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:.9rem 0 .3rem}
+.loesung h4:first-child{margin-top:0}
+.loesung .r{background:var(--c1-bg);padding:0 .15em;border-radius:2px}
+.loesung table{border-collapse:collapse;font-family:var(--sans);font-size:.88rem;font-variant-numeric:tabular-nums;margin:.3rem 0}
+.loesung td,.loesung th{border:1px solid var(--rule);padding:.2rem .5rem;text-align:center}
+
+/* Übung unten */
+.uebung{margin-top:1.4rem}
+.uebung .karte{border-top-color:var(--c3)}
+.uebung .karte h3{color:var(--c3)}
+.einl{font-size:.94rem;margin:0 0 .8rem;max-width:56rem}
+.items{display:grid;gap:.6rem}
+.item{border:1px solid var(--rule);padding:.65rem .8rem;display:grid;gap:.45rem;background:var(--sheet)}
+.item .aussage{font-family:var(--serif);font-size:1rem;line-height:1.4}
+.wahl{display:flex;flex-wrap:wrap;gap:.35rem}
+.wahl button{border:1px solid var(--rule);background:var(--tint);padding:.3rem .65rem;cursor:pointer;font-size:.88rem;border-radius:2px}
+.wahl button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fb{font-size:.88rem;margin:0}
+.fb.ok{color:var(--ok)}.fb.mid{color:var(--mid)}.fb.no{color:var(--warn)}
+.fb b{font-weight:600}
+.zwei{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:48rem){.zwei{grid-template-columns:1fr}}
+.vergleich{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
+@media (max-width:48rem){.vergleich{grid-template-columns:1fr}}
+.vergleich section{border:1px solid var(--rule);padding:.8rem .9rem;background:var(--sheet);min-width:0}
+.vergleich h4{margin:0 0 .4rem;font-size:.95rem}
+.vergleich ol{margin:0;padding-left:1.2rem;font-size:.9rem}
+.vergleich li{margin:.2rem 0}
+.vergleich section.ziel2b{border-color:var(--c3);border-top:3px solid var(--c3)}
+.raster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:.4rem 0 1rem}
+@media (max-width:40rem){.raster{grid-template-columns:1fr}}
+.raster div{border:1px solid var(--rule);padding:.6rem .7rem;background:var(--tint)}
+.raster b{display:block;font-family:var(--serif);font-size:1.5rem;line-height:1}
+.raster span{font-size:.86rem}
+.operator{font-family:var(--serif);border-left:4px solid var(--accent);padding:.5rem .8rem;margin:0 0 1rem;background:var(--tint)}
+.operator small{display:block;font-family:var(--sans);color:var(--muted);font-size:.78rem;margin-top:.2rem}
+
+/* Rechencheck */
+table.rechnen{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.94rem;width:100%}
+table.rechnen th,table.rechnen td{border:1px solid var(--rule);padding:.35rem .5rem;text-align:center;vertical-align:middle}
+table.rechnen th{background:var(--tint);font-weight:600}
+table.rechnen td:first-child{text-align:left}
+table.rechnen input{width:5.2rem;border:1px solid var(--rule);background:var(--sheet);padding:.25rem .4rem;text-align:right}
+.st{display:inline-block;width:1.2rem;font-weight:700}
+.st.ok{color:var(--ok)}.st.no{color:var(--warn)}
+.hinweisformel{font-size:.86rem;color:var(--muted);margin:.5rem 0 0}
+details.tipp{border:1px solid var(--rule);background:var(--sheet);margin:.4rem 0}
+details.tipp summary{cursor:pointer;padding:.45rem .7rem;font-weight:600;font-size:.9rem}
+details.tipp div{padding:0 .8rem .6rem;font-size:.92rem}
+
+/* Checkliste */
+.check fieldset{border:0;border-top:1px solid var(--rule);margin:0 0 .6rem;padding:.6rem 0 0;min-width:0}
+.check legend{font-weight:600;padding-right:.4rem}
+.check legend small{color:var(--muted);font-weight:400}
+.check label{display:flex;gap:.55rem;align-items:flex-start;margin:.3rem 0;cursor:pointer;font-size:.93rem}
+.check input{margin-top:.25rem;accent-color:var(--accent);width:1.05rem;height:1.05rem;flex:none}
+.check .pt{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.summe{display:flex;justify-content:space-between;align-items:baseline;font-weight:600;border-top:2px solid var(--ink);padding-top:.5rem;margin-top:.3rem}
+.summe span{font-family:var(--serif);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.note{font-size:.82rem;color:var(--muted);margin:.5rem 0 0}
+
+/* Formulierungshilfen */
+.rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:.3rem 1.4rem}
+.rm h4{font-size:.8rem;font-weight:600;margin:.4rem 0 .2rem;color:var(--muted)}
+.rm ul{list-style:none;padding:0;margin:0 0 .4rem;font-family:var(--serif);font-size:.95rem}
+.rm li{padding:.15rem 0;border-bottom:1px dotted var(--rule)}
+details.klapp{margin-top:1.4rem}
+details.klapp>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+details.klapp>summary::-webkit-details-marker{display:none}
+details.klapp>summary h3{border:0;padding:0;margin:0}
+details.klapp>summary span{font-size:.78rem;color:var(--muted)}
+details.klapp[open]>summary{margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+footer{margin-top:2.5rem;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="kopf">
+    <p class="eyebrow">Sozialwissenschaften · Q2 · Klausurtraining</p>
+    <h1>Aufgabe 2b): Aussagen mit Statistik überprüfen</h1>
+    <p>Übungstext: „Abschied von der Werkbank Welt“. Ihr geht die Schritte der Reihe nach durch. Geschrieben wird in OneNote; diese Seite gibt euch die Leitfragen, Übungen mit sofortiger Rückmeldung und, nach Freischaltung durch eure Lehrkraft, die Musterlösung.</p>
+    <span class="lockstate" id="lockState">Musterlösungen freigeschaltet: 0 / 6</span>
+  </header>
+
+  <nav class="steps" id="steps" role="tablist" aria-label="Schritte der Aufgabe 2b"></nav>
+
+  <div class="haupt">
+    <main class="blatt" id="blatt"></main>
+    <aside class="rand" id="rand"></aside>
+  </div>
+  <section class="uebung" id="uebung"></section>
+
+  <details class="klapp karte" id="rmKlapp">
+    <summary><h3>Formulierungshilfen für 2b)</h3><span>auf- und zuklappen</span></summary>
+    <div class="rm">
+      <div><h4>Formale Aspekte</h4><ul>
+        <li>Bei M 2a handelt es sich um eine Tabelle zum Thema …</li>
+        <li>Die Daten stammen von … / wurden herausgegeben von …</li>
+        <li>Angegeben sind absolute Werte in … / Anteile in Prozent.</li>
+        <li>Erfasst ist der Zeitraum von … bis … in …-Schritten.</li>
+        <li>Zu beachten ist, dass … (z. B. Mehrfachnennungen möglich).</li>
+      </ul></div>
+      <div><h4>Aussage des Autors wiedergeben</h4><ul>
+        <li>Der Autor behauptet, der Welthandel schrumpfe … (Z. …).</li>
+        <li>Laut Autor holten immer mehr Firmen … (Z. …).</li>
+        <li>Die Aussage enthält zwei Teile: zum einen …, zum anderen …</li>
+      </ul></div>
+      <div><h4>Daten nutzen und rechnen</h4><ul>
+        <li>Laut M 2a stieg … von … (2008) auf … (2025).</li>
+        <li>Daraus lässt sich der Anteil … berechnen: … ÷ … × 100 = … %.</li>
+        <li>Das entspricht einem Rückgang um … Prozentpunkte.</li>
+        <li>… hat sich mehr als verdoppelt / um rund die Hälfte erhöht.</li>
+      </ul></div>
+      <div><h4>Abgleichen und einschätzen</h4><ul>
+        <li>Die Aussage lässt sich mithilfe von M 2 im Wesentlichen / nur teilweise / nicht bestätigen.</li>
+        <li>Dies stützt die Aussage, dass …</li>
+        <li>Dem widerspricht jedoch, dass …</li>
+        <li>Ob ein Rückgang um … als „deutlich“ gelten kann, bleibt offen.</li>
+      </ul></div>
+      <div><h4>Grenzen der Daten</h4><ul>
+        <li>Einschränkend ist zu beachten, dass …</li>
+        <li>Eine Überprüfung von … ist mit dem Material nicht möglich, da …</li>
+        <li>Die Daten erfassen nur … / geben nur Pläne wieder, nicht …</li>
+      </ul></div>
+    </div>
+  </details>
+
+  <footer>
+    <p>Übungsmaterial: Der Kommentar, der Autor, die Zeitung und alle Zahlen in M 2 sind erfunden. Sie sind an reale Entwicklungen angelehnt, dürfen aber nicht als Fakten zitiert werden. Bewertungsraster wie in der Klausur: formale Aspekte 2 + erste Aussage 7 + zweite Aussage 7 = 16 Punkte (+1 weiteres Kriterium).</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Material ---------- */
+const META={titel:'Abschied von der Werkbank Welt',autor:'Jonas Hellwig',quelle:'Wirtschaftsblick',datum:'2. November 2026'};
+const LINES=[
+'Drei Jahrzehnte lang galt eine einfache Regel: Produziert wird dort,',
+'wo es am billigsten ist. Containerschiffe verbanden Shenzhen mit',
+'Hamburg, Lieferketten spannten sich um den halben Globus, und fast',
+'jedes Jahr wurde mehr gehandelt als im Jahr zuvor. Diese Zeit ist',
+'vorbei. Pandemie, Krieg und Zollstreit haben gezeigt, wie verletzlich',
+'eine Weltwirtschaft ist, die sich auf wenige Lieferanten verlässt.',
+'Die Zahlen sprechen eine klare Sprache: Der Welthandel schrumpft',
+'seit Jahren. Gemessen an der Wirtschaftsleistung der Welt wird heute',
+'deutlich weniger gehandelt als vor der Finanzkrise 2008. Die',
+'Globalisierung hat ihren Höhepunkt längst überschritten.',
+'Auch die Unternehmen haben dazugelernt. Wer 2021 wochenlang auf',
+'Chips aus Taiwan oder Bauteile aus China gewartet hat, setzt heute',
+'auf Nähe und Sicherheit statt auf den niedrigsten Preis. Immer mehr',
+'deutsche Firmen holen ihre Produktion zurück nach Deutschland. Die',
+'Ära der Verlagerung ins Ausland ist vorbei.',
+'Man mag einwenden, dass Deutschland als Exportnation vom offenen',
+'Welthandel lebt wie kaum ein anderes Land. Das ist richtig. Doch',
+'Offenheit, die uns erpressbar macht, ist keine Stärke, sondern',
+'Naivität. Wer seine Versorgung mit Medikamenten, Rohstoffen und',
+'Halbleitern vom Wohlwollen anderer Staaten abhängig macht, verliert',
+'im Ernstfall seine Handlungsfähigkeit.',
+'Die Politik sollte deshalb nicht länger einer Welt nachtrauern, die',
+'es so nicht mehr gibt. Statt um jeden Preis neue Freihandelsabkommen',
+'abzuschließen, muss Europa seinen Binnenmarkt vertiefen, kritische',
+'Produktion in die EU zurückholen und Lieferketten auf verlässliche',
+'Partner verteilen. Das kostet Geld und vielleicht etwas Wohlstand.',
+'Aber es ist der Preis dafür, in einer unsicheren Welt nicht wehrlos',
+'zu sein.'];
+const BREAKS=new Set([6,10,15,21]);
+const ZIEL={1:[7,8,9,10],5:[13,14,15]};
+
+const MARKS={
+ 1:[{c:'c1',l:7,t:'Der Welthandel schrumpft'},{c:'c2',l:8,t:'seit Jahren'},{c:'c2',l:8,t:'Gemessen an der Wirtschaftsleistung der Welt'},
+    {c:'c1',l:8,t:'wird heute'},{c:'c3',l:9,t:'deutlich'},{c:'c1',l:9,t:'weniger gehandelt'},{c:'c2',l:9,t:'als vor der Finanzkrise 2008'},
+    {c:'c4',l:9,t:'Die'},{c:'c4',l:10,t:'Globalisierung hat ihren Höhepunkt längst überschritten.'}],
+ 5:[{c:'c2',l:13,t:'Immer mehr'},{c:'c2',l:14,t:'deutsche Firmen'},{c:'c1',l:14,t:'holen ihre Produktion zurück nach Deutschland'},
+    {c:'c3',l:14,t:'Die'},{c:'c3',l:15,t:'Ära der Verlagerung ins Ausland ist vorbei.'}]
+};
+
+const M2HTML=`<div class="m2">
+ <div class="block">
+  <h3><span class="m2k" data-k="c1">M 2a: Weltweite Warenexporte und weltweite Wirtschaftsleistung</span></h3>
+  <div class="tabwrap"><table class="daten">
+   <thead><tr><th class="m2k" data-k="c3">Jahr</th><th>Warenexporte weltweit <span class="m2k" data-k="c2">(in Billionen US-Dollar)</span></th><th>Welt-BIP <span class="m2k" data-k="c2">(in Billionen US-Dollar)</span></th></tr></thead>
+   <tbody>
+    <tr><td><span class="m2k" data-k="c3">2005</span></td><td>10,5</td><td>47,5</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2007</span></td><td>14,0</td><td>58,0</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2008</span></td><td>16,2</td><td>64,0</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2009</span></td><td>12,6</td><td>60,5</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2015</span></td><td>16,6</td><td>75,5</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2020</span></td><td>17,6</td><td>85,5</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2022</span></td><td>25,0</td><td>101,0</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2025</span></td><td>24,4</td><td>112,0</td></tr>
+   </tbody></table></div>
+  <p class="fuss"><span class="m2k" data-k="c3">Nur Warenhandel, ohne Dienstleistungen. Nominale Werte (nicht preisbereinigt).</span> <span class="m2k" data-k="c1">Quelle: fiktive Übungsdaten, angelehnt an Angaben der Welthandelsorganisation (WTO) und des Internationalen Währungsfonds (IWF).</span></p>
+ </div>
+ <div class="block">
+  <h3><span class="m2k" data-k="c1">M 2b: Verlagerungspläne der Industrieunternehmen in Deutschland</span></h3>
+  <div class="tabwrap"><table class="daten">
+   <thead><tr><th class="m2k" data-k="c3">Jahr</th><th>Rückverlagerung von Produktion nach Deutschland geplant <span class="m2k" data-k="c2">(in % der Befragten)</span></th><th>Verlagerung von Produktion ins Ausland geplant <span class="m2k" data-k="c2">(in % der Befragten)</span></th></tr></thead>
+   <tbody>
+    <tr><td><span class="m2k" data-k="c3">2019</span></td><td>3</td><td>14</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2021</span></td><td>5</td><td>15</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2023</span></td><td>6</td><td>22</td></tr>
+    <tr><td><span class="m2k" data-k="c3">2025</span></td><td>7</td><td>27</td></tr>
+   </tbody></table></div>
+  <p class="fuss"><span class="m2k" data-k="c2">Befragt wurden jeweils rund 2.000 Industrieunternehmen.</span> <span class="m2k" data-k="c3">Mehrfachnennungen möglich.</span> <span class="m2k" data-k="c1">Quelle: fiktive Übungsdaten, angelehnt an Umfragen der Industrie- und Handelskammern.</span></p>
+ </div>
+</div>`;
+
+const AUFGABE='<span class="op">Überprüfen Sie</span> mithilfe des statistischen Materials M 2 zwei Aussagen des Autors zur Entwicklung der Globalisierung: zum einen seine Aussage zur Entwicklung des Welthandels (vgl. Z. 7–9), zum anderen seine Aussage zur Verlagerung von Produktion (vgl. Z. 13–15). <span style="white-space:nowrap">(16 Punkte)</span>';
+
+const CODES={1:'3150',2:'7294',3:'2508',4:'6617',5:'4832',6:'9073'};
+
+/* ---------- Musterlösungen ---------- */
+const L_FORMAL='Bei M 2 handelt es sich um zwei Tabellen (fiktive Übungsdaten). <span class="r">M 2a</span> stellt die weltweiten Warenexporte und das Welt-BIP in Billionen US-Dollar gegenüber, also absolute und nominale Werte, für acht ausgewählte Jahre zwischen 2005 und 2025. Den Anteil des Handels an der Wirtschaftsleistung muss man selbst berechnen; Dienstleistungen sind nicht erfasst. <span class="r">M 2b</span> gibt die Ergebnisse einer Umfrage unter rund 2.000 Industrieunternehmen in Deutschland wieder: den Anteil der Befragten in Prozent, die eine Rückverlagerung nach Deutschland bzw. eine Verlagerung ins Ausland planen, in Zweijahresschritten von 2019 bis 2025. Mehrfachnennungen waren möglich.';
+const L_A1='Der Autor behauptet, der Welthandel schrumpfe „seit Jahren“; gemessen an der Wirtschaftsleistung der Welt werde heute „deutlich weniger gehandelt als vor der Finanzkrise 2008“ (Z. 7–9). Die erste Teilaussage lässt sich mit M 2a nicht bestätigen: Die weltweiten Warenexporte sind von 16,2 Billionen US-Dollar (2008) auf 24,4 Billionen US-Dollar (2025) und damit um rund 51 % gestiegen; nur seit 2022 sind sie leicht gesunken (–2,4 %). Für die zweite Teilaussage muss man den Anteil der Exporte am Welt-BIP berechnen (Exporte ÷ BIP × 100). Vor der Finanzkrise lag er bei 24,1 % (2007) bzw. 25,3 % (2008), 2025 dagegen bei 21,8 %, also um rund 2,3 bzw. 3,5 Prozentpunkte niedriger. Im Verhältnis zur Wirtschaftsleistung wird heute also tatsächlich weniger gehandelt; ob ein Rückgang in dieser Größenordnung „deutlich“ ist, bleibt allerdings Ansichtssache und hängt auch vom gewählten Vergleichsjahr ab. Einen stetigen Rückgang zeigt die Reihe nicht: Nach den Einbrüchen 2009 (20,8 %) und 2020 (20,6 %) stieg der Anteil 2022 wieder auf 24,8 % und damit fast auf den Wert von 2008. Die Aussage trifft also nur teilweise zu: Der Rückgang gegenüber 2008 ist belegbar, ein seit Jahren schrumpfender Welthandel nicht. Einschränkend ist zu beachten, dass M 2a nur den Warenhandel erfasst, dass die Dollarwerte nominal, also nicht preisbereinigt sind und dass das Ergebnis je nach Vergleichsjahr (2007 oder das Krisenjahr 2008) unterschiedlich ausfällt.';
+const L_A2='Laut Autor holen „immer mehr deutsche Firmen ihre Produktion zurück nach Deutschland“; die „Ära der Verlagerung ins Ausland“ sei „vorbei“ (Z. 13–15). Der erste Teil der Aussage wird durch M 2b gestützt: Der Anteil der Unternehmen, die eine Rückverlagerung planen, hat sich von 3 % (2019) auf 7 % (2025) mehr als verdoppelt. Der zweite Teil wird dagegen widerlegt: Der Anteil der Unternehmen, die Produktion ins Ausland verlagern wollen, stieg im selben Zeitraum von 14 % auf 27 %, also um 13 Prozentpunkte und damit deutlich stärker. 2025 kommen auf ein Unternehmen mit Rückverlagerungsplänen fast vier Unternehmen mit Verlagerungsplänen (27 ÷ 7 ≈ 3,9). Von einem Ende der Verlagerung ins Ausland kann daher keine Rede sein; das Material zeigt eher das Gegenteil. Einschränkend ist zu beachten, dass die Umfrage nur Pläne erfasst und nicht, ob sie umgesetzt werden, dass nur Industrieunternehmen befragt wurden und dass wegen möglicher Mehrfachnennungen dieselben Unternehmen beides planen können.';
+
+const STEPS=[
+ {n:0,t:'Auftrag verstehen',p:'Start',blatt:'m1',
+  frage:'Was verlangt der Operator „überprüfen“ – und was ist anders als bei der Statistikbearbeitung, die ihr kennt?',
+  hinweise:['Lest zuerst die Aufgabenstellung oben auf dem Blatt.','Vergleicht unten euer Methodenblatt „Schritte der Statistikbearbeitung“ aus dem Unterricht (ihr findet es in OneNote) mit dem, was 2b) verlangt.','Merkt euch das Raster: 2 + 7 + 7 Punkte.'],
+  auftrag:'Bearbeitet die Sortierübung unten. Ihr bekommt sofort eine Rückmeldung.'},
+ {n:1,t:'Aussage zerlegen',p:'Aussage 1',blatt:'m1',
+  frage:'Was genau behauptet der Autor in Z. 7–9 – und woran kann man das in M 2 messen?',
+  hinweise:['Lest Z. 7–10 und markiert in OneNote mit drei Farben: <b>Was</b> wird behauptet? <b>Woran</b> wird gemessen, mit welchem <b>Zeitbezug</b>? Welche Wörter <b>spitzen zu</b>?','Die Stelle enthält zwei Teilbehauptungen. Trennt sie, denn sie lassen sich unterschiedlich prüfen.','Nicht jeder Satz ist mit Zahlen prüfbar. Eine Deutung des Autors kann man nur abwägend einschätzen.'],
+  auftrag:'Notiert in OneNote die zwei Teilbehauptungen in eigenen Worten und schreibt die Signalwörter dazu.',
+  legende:[['c1','Behauptung'],['c2','Maßstab und Zeitbezug'],['c3','Zuspitzung'],['c4','Deutung, nicht direkt prüfbar']],
+  loesung:'<h4>Zwei Teilbehauptungen</h4><p><b>A:</b> Der Welthandel schrumpfe seit Jahren. Prüfbar mit der Spalte „Warenexporte“ in M 2a (Entwicklung der absoluten Werte über mehrere Jahre).</p><p><b>B:</b> Gemessen an der Wirtschaftsleistung werde heute deutlich weniger gehandelt als vor der Finanzkrise 2008. Prüfbar nur über den <b>Anteil</b> der Exporte am Welt-BIP, den man selbst berechnen muss; Vergleich der Jahre vor der Krise (2007, 2008) mit 2025.</p><h4>Prüfsteine im Wortlaut</h4><p>„seit Jahren“ → Gibt es einen stetigen Rückgang? · „gemessen an der Wirtschaftsleistung“ → Quote berechnen · „vor der Finanzkrise 2008“ → Vergleichsjahr (2007 oder 2008?) · „deutlich“ → Wie groß ist der Unterschied?</p><h4>Nicht direkt prüfbar</h4><p>„Die Globalisierung hat ihren Höhepunkt längst überschritten“ ist eine Deutung. Die Daten können sie stützen oder schwächen, aber nicht beweisen.</p>'},
+ {n:2,t:'Formale Aspekte',p:'2 P.',blatt:'m2',
+  frage:'Was muss man über M 2 wissen, um die Zahlen richtig zu lesen?',
+  hinweise:['Nutzt euer Methodenblatt „Schritte der Statistikbearbeitung“ (OneNote), Schritt 1 – aber <b>knapp</b>: Für 2 Punkte reichen zwei bis vier Sätze.','Pflicht: Darstellungsform, Thema, Quelle, Einheit (absolut oder Prozent?), Zeitraum.','Achtet besonders auf das, was für die Prüfung wichtig ist: Muss man etwas selbst berechnen? Was ist <b>nicht</b> erfasst? Gibt es Fußnoten?'],
+  auftrag:'Formuliert die formalen Aspekte für M 2a und M 2b in OneNote (zusammen zwei bis vier Sätze).',
+  legende:[['c1','Titel und Quelle'],['c2','Einheit und Bezugsgröße'],['c3','Zeitraum und Hinweise']],
+  loesung:'<p>'+L_FORMAL+'</p>'},
+ {n:3,t:'Daten wählen und rechnen',p:'Aussage 1',blatt:'m2',
+  frage:'Welche Werte aus M 2a braucht ihr für Teilbehauptung A und B – und was müsst ihr ausrechnen?',
+  hinweise:['Für A reicht die Spalte „Warenexporte“: Vergleicht die Jahre vor der Krise mit 2025 und schaut euch den Verlauf an.','Für B braucht ihr den <b>Anteil</b> der Exporte am Welt-BIP. Er steht nicht in der Tabelle: Exporte ÷ BIP × 100.','Nennt im Text nicht alle Werte, sondern nur die, die für die Aussage wichtig sind (Anfangs-, End-, Extremwerte).'],
+  auftrag:'Rechnet mit dem Taschenrechner und tragt eure Ergebnisse unten in den Rechencheck ein (eine Nachkommastelle).',
+  loesung:'<table><tr><th>Jahr</th><th>Anteil der Exporte am Welt-BIP</th></tr><tr><td>2005</td><td>22,1 %</td></tr><tr><td>2007</td><td>24,1 %</td></tr><tr><td>2008</td><td>25,3 %</td></tr><tr><td>2009</td><td>20,8 %</td></tr><tr><td>2015</td><td>22,0 %</td></tr><tr><td>2020</td><td>20,6 %</td></tr><tr><td>2022</td><td>24,8 %</td></tr><tr><td>2025</td><td>21,8 %</td></tr></table><p>Exporte 2008 → 2025: 16,2 → 24,4 Bio. US-$ = <b>+50,6 %</b>. Seit 2022: 25,0 → 24,4 = –2,4 %.</p><p>Anteil 2007 → 2025: 24,1 % → 21,8 % = <b>rund –2,3 Prozentpunkte</b>; Anteil 2008 → 2025: 25,3 % → 21,8 % = <b>–3,5 Prozentpunkte</b>. Das Vergleichsjahr verändert also das Ergebnis.</p>'},
+ {n:4,t:'Einschätzen und Grenzen',p:'7 P.',blatt:'m2',
+  frage:'Trifft die Aussage zu – ganz, teilweise oder nicht? Und was können die Daten gar nicht zeigen?',
+  hinweise:['Prüft jede Teilbehauptung einzeln gegen den <b>genauen Wortlaut</b> des Autors.','Ein „teils/teils“ ist kein Ausweichen, sondern oft das genaueste Ergebnis – wenn ihr es begründet.','Zum Schluss: Grenzen der Daten (euer Methodenblatt „Schritte der Statistikbearbeitung“, Schritt 3). Aber nur Grenzen, die das Ergebnis betreffen.'],
+  auftrag:'Schreibt nun die vollständige Überprüfung der ersten Aussage in OneNote: Aussage mit Zeile – Daten und Rechnung – Abgleich – Ergebnis – Grenzen.',
+  loesung:'<p>'+L_A1+'</p>'},
+ {n:5,t:'Aussage 2 selbstständig',p:'7 P.',blatt:'m1',
+  frage:'Jetzt allein: Überprüft die Aussage in Z. 13–15 mit M 2b.',
+  hinweise:['Geht genauso vor wie bei Aussage 1: zerlegen – Daten wählen und rechnen – abgleichen – einschätzen – Grenzen.','Die gestuften Tipps unten helfen nur, wenn ihr nicht weiterkommt. Erst selbst probieren!','Vorsicht: Bei Prozentanteilen rechnet man Veränderungen in <b>Prozentpunkten</b>.'],
+  auftrag:'Schreibt die Überprüfung der zweiten Aussage in OneNote. Prüft eure Rechnung im Rechencheck unten.',
+  legende:[['c1','Teilbehauptung 1'],['c2','Wer und welche Entwicklung'],['c3','Teilbehauptung 2 (Zuspitzung)']],
+  loesung:'<p>'+L_A2+'</p>'},
+ {n:6,t:'Selbstcheck',p:'16 P.',blatt:'m1',
+  frage:'Habt ihr alles, was der Erwartungshorizont verlangt?',
+  hinweise:['Hakt unten ab, was eure Lösung in OneNote wirklich enthält.','Die Teilpunkte sind eine Orientierung, keine amtliche Bewertung.','Vergleicht danach mit der vollständigen Musterlösung.'],
+  auftrag:'Überarbeitet eure Lösung an den Stellen, die ihr nicht abhaken konntet.',
+  loesung:'<h4>Formale Aspekte</h4><p>'+L_FORMAL+'</p><h4>Erste Aussage</h4><p>'+L_A1+'</p><h4>Zweite Aussage</h4><p>'+L_A2+'</p>'}
+];
+
+/* ---------- Zustand ---------- */
+const S={step:0,sheet:'m1',unlocked:new Set(),show:true,checks:new Set(),wahl:{}};
+try{JSON.parse(localStorage.getItem('t2b-unlocked')||'[]').forEach(x=>S.unlocked.add(x));}catch(e){}
+try{JSON.parse(localStorage.getItem('t2b-checks')||'[]').forEach(x=>S.checks.add(x));}catch(e){}
+function save(){try{localStorage.setItem('t2b-unlocked',JSON.stringify([...S.unlocked]));localStorage.setItem('t2b-checks',JSON.stringify([...S.checks]));}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const marksOn=()=>S.show&&S.unlocked.has(S.step)&&(S.step===1||S.step===2||S.step===5);
+
+/* ---------- Schrittleiste ---------- */
+function renderSteps(){
+  $('steps').innerHTML=STEPS.map(s=>'<button role="tab" aria-selected="'+(s.n===S.step)+'" data-s="'+s.n+'"><span class="n">'+s.n+'</span><span class="t">'+s.t+'</span><span class="p">'+s.p+'</span>'+(S.unlocked.has(s.n)?'<span class="done">✓</span>':'')+'</button>').join('');
+  const n=S.unlocked.size; const ls=$('lockState'); ls.textContent='Musterlösungen freigeschaltet: '+n+' / 6'; ls.classList.toggle('on',n>0);
+}
+
+/* ---------- Blatt ---------- */
+function renderM1(){
+  const list=marksOn()?(MARKS[S.step]||[]):[];
+  const ziel=ZIEL[S.step]?new Set(ZIEL[S.step]):null;
+  let h='<div class="para"><span class="rubrik">M 1 · Kommentar</span><h2>'+META.titel+'</h2><span class="byline">Von '+META.autor+' · '+META.quelle+', '+META.datum+'</span></div><div class="texte"><p class="abs">';
+  LINES.forEach((txt,i)=>{
+    const z=i+1;
+    const segs=[]; list.filter(m=>m.l===z).forEach(m=>{const a=txt.indexOf(m.t); if(a>=0) segs.push([a,a+m.t.length,m.c]);});
+    segs.sort((x,y)=>x[0]-y[0]);
+    let line='',pos=0; segs.forEach(([a,b,c])=>{ if(a<pos) return; line+=esc(txt.slice(pos,a))+'<span class="mk '+c+'">'+esc(txt.slice(a,b))+'</span>'; pos=b; });
+    line+=esc(txt.slice(pos));
+    const zl=(ziel&&ziel.has(z)&&!list.length)?' ziel':'';
+    h+='<span class="z'+zl+'" data-z="'+z+'"'+(z===1||z%5===0?' data-show':'')+'>'+line+'</span>';
+    if(BREAKS.has(z)) h+='</p><p class="abs">';
+  });
+  h+='</p></div><p class="zumautor">Zum Autor: Jonas Hellwig ist Wirtschaftsjournalist. Text, Autor und Zeitung sind für diese Übung erfunden.</p>';
+  return h;
+}
+function renderBlatt(){
+  const st=STEPS[S.step];
+  let leg='';
+  if(st.legende){
+    if(marksOn()) leg=st.legende.map(([c,t])=>'<span class="leg '+c+'"><i></i>'+t+'</span>').join('');
+    else leg='<span class="still">Farbige Markierungen der Musterlösung erscheinen nach der Freischaltung.</span>';
+    if(S.unlocked.has(S.step)) leg+='<label class="schalter"><input type="checkbox" id="zeigMk"'+(S.show?' checked':'')+'> Markierungen zeigen</label>';
+  } else if(ZIEL[S.step]) leg='';
+  const body=S.sheet==='m1'?renderM1():M2HTML;
+  $('blatt').innerHTML='<div class="aufgabe"><span class="lbl">Aufgabenstellung 2b)</span>'+AUFGABE+'</div>'+
+    '<div class="reiter" role="tablist"><button role="tab" data-sheet="m1" aria-selected="'+(S.sheet==='m1')+'">M 1 · Text</button><button role="tab" data-sheet="m2" aria-selected="'+(S.sheet==='m2')+'">M 2 · Statistik</button></div>'+
+    (leg?'<div class="werkzeug">'+leg+'</div>':'')+
+    '<div id="sheetBody" class="'+(S.sheet==='m2'&&marksOn()&&S.step===2?'zeigen':'')+'">'+body+'</div>';
+  const zm=$('zeigMk'); if(zm) zm.addEventListener('change',e=>{S.show=e.target.checked;renderBlatt();});
+}
+
+/* ---------- Rand ---------- */
+function renderRand(){
+  const st=STEPS[S.step];
+  let h='<div class="karte"><h3>Schritt '+st.n+' · '+st.t+'</h3><p class="frage">'+st.frage+'</p><ul>'+st.hinweise.map(x=>'<li>'+x+'</li>').join('')+'</ul><p class="auftrag"><b>Auftrag</b>'+st.auftrag+'</p>';
+  if(S.step===3||S.step===5) h+='<div class="merke"><b>Prozent oder Prozentpunkte?</b> Steigt ein Anteil von 3 % auf 7 %, ist das ein Plus von 4 <b>Prozentpunkten</b> – aber ein Anstieg um rund 133 <b>Prozent</b>. Bei Anteilen in der Regel mit Prozentpunkten argumentieren.</div>';
+  h+='</div>';
+  if(st.loesung){
+    h+='<div class="karte"><h3>Musterlösung</h3>';
+    if(S.unlocked.has(S.step)) h+='<div class="loesung">'+st.loesung+'</div>';
+    else h+='<p style="margin:0 0 .5rem;font-size:.9rem">Erst selbst arbeiten. Den Code nennt eure Lehrkraft.</p><form class="zu" id="codeForm"><label for="codeIn">Code</label><input id="codeIn" inputmode="numeric" autocomplete="off" maxlength="4"><button class="knopf voll" type="submit">Freischalten</button></form><p class="msg" id="codeMsg"></p>';
+    h+='</div>';
+  }
+  $('rand').innerHTML=h;
+  const f=$('codeForm');
+  if(f) f.addEventListener('submit',e=>{e.preventDefault(); const v=$('codeIn').value.trim();
+    if(v===CODES[S.step]){S.unlocked.add(S.step);save();renderAll();}
+    else $('codeMsg').textContent='Dieser Code passt nicht zu Schritt '+S.step+'.';});
+}
+
+/* ---------- Übungen ---------- */
+function wahlItems(key,items,opts){
+  return '<div class="items">'+items.map((it,i)=>{
+    const sel=S.wahl[key+i];
+    let fb='';
+    if(sel!==undefined){ const r=it.r[sel]; fb='<p class="fb '+r[0]+'"><b>'+({ok:'Richtig.',mid:'Vertretbar.',no:'Noch nicht.'})[r[0]]+'</b> '+r[1]+'</p>'; }
+    return '<div class="item"><div class="aussage">'+it.a+'</div><div class="wahl">'+opts.map((o,j)=>'<button type="button" data-w="'+key+i+'" data-v="'+j+'" aria-pressed="'+(sel===j)+'">'+o+'</button>').join('')+'</div>'+fb+'</div>';
+  }).join('')+'</div>';
+}
+const Q0=[
+ {a:'Ich nenne alle wichtigen Ergebnisse der Statistik.',r:[['ok','Das gehört zur allgemeinen Statistikanalyse. In 2b) wählt ihr nur die Werte, die die Aussage des Autors betreffen.'],['no','In 2b) nennt ihr nur die Werte, die für die Aussage wichtig sind. Alles andere kostet Zeit und bringt keine Punkte.']]},
+ {a:'Ich wähle nur die Werte aus, die die Aussage des Autors betreffen.',r:[['no','Genau das ist das Neue an 2b): Die Aussage bestimmt, welche Daten ihr braucht.'],['ok','Die Aussage des Autors bestimmt, welche Daten ihr auswählt.']]},
+ {a:'Ich beschreibe Kopfzeile, Seitenspalte und Aufbau der Tabelle ausführlich.',r:[['ok','Das ist allgemeine Statistikbearbeitung. In 2b) gibt es dafür nur 2 Punkte, also knapp halten.'],['mid','Auch in 2b) gehören formale Aspekte dazu, aber nur knapp (2 Punkte) und mit Blick auf das, was für die Prüfung wichtig ist.']]},
+ {a:'Ich berechne eine Kennzahl selbst, wenn die Aussage es verlangt (z. B. einen Anteil).',r:[['no','Das ist typisch für 2b): Die Aussage des Autors steht oft in einer anderen Größe als die Tabelle. Dann müsst ihr rechnen.'],['ok','In den Abiturklausuren musste man z. B. die Sozialleistungsquote erst aus zwei Spalten berechnen.']]},
+ {a:'Am Ende beurteile ich, ob die Aussage des Autors zutrifft.',r:[['no','Das ist der Kern von 2b): Das Urteil betrifft die Aussage des Autors, nicht die Statistik als Ganze.'],['ok','Das Urteil lautet z. B.: bestätigt, nur teilweise bestätigt oder nicht bestätigt – jeweils begründet.']]},
+ {a:'Ich beurteile, wie aussagekräftig die Statistik insgesamt ist.',r:[['ok','Das ist AFB III der allgemeinen Statistikbearbeitung. In 2b) taucht es nur als „Grenzen der Daten“ auf, bezogen auf die Aussage.'],['mid','In 2b) braucht ihr das nur als „Grenzen der Daten“: Was kann das Material für diese Aussage nicht zeigen?']]}
+];
+const Q1=[
+ {a:'„Der Welthandel schrumpft seit Jahren.“',r:[['ok','Mit der Spalte „Warenexporte“ in M 2a prüfbar.'],['no','Diese Behauptung lässt sich mit Zahlen prüfen: Wie entwickeln sich die Exporte?'],['no','M 2a enthält genau die Werte, die man dafür braucht.']]},
+ {a:'„Gemessen an der Wirtschaftsleistung der Welt wird heute … weniger gehandelt als vor der Finanzkrise 2008.“',r:[['ok','Prüfbar – aber nur, wenn ihr den Anteil der Exporte am Welt-BIP selbst berechnet.'],['no','Prüfbar: Ihr müsst den Anteil berechnen und die Jahre vor der Krise (2007, 2008) mit 2025 vergleichen.'],['no','M 2a enthält Exporte und BIP; daraus lässt sich der Anteil berechnen.']]},
+ {a:'Das Wort „deutlich“ (Z. 9)',r:[['mid','Die Zahl selbst ist prüfbar, das Wort „deutlich“ aber ist eine Wertung, die ihr abwägend einschätzen müsst.'],['ok','Ob ein Unterschied „deutlich“ ist, entscheidet keine Zahl allein. Ihr müsst begründet einschätzen.'],['no','Die Daten zeigen, wie groß der Unterschied ist. Ob das „deutlich“ ist, könnt ihr abwägend einschätzen.']]},
+ {a:'„Die Globalisierung hat ihren Höhepunkt längst überschritten.“',r:[['no','Das ist eine Deutung. Die Daten können sie stützen oder schwächen, aber nicht beweisen.'],['mid','Man kann sie nur indirekt über die Quote einschätzen. Im Kern ist sie aber eine Deutung, die M 2 nicht prüft.'],['ok','Eine Deutung des Autors. Für 2b) konzentriert ihr euch auf die beiden prüfbaren Teilbehauptungen.']]},
+ {a:'„Pandemie, Krieg und Zollstreit haben gezeigt, wie verletzlich eine Weltwirtschaft ist …“ (Z. 5 f.)',r:[['no','M 2 enthält dazu keine Daten.'],['no','Dazu enthält M 2 nichts. Diese Stelle gehört nicht zur Aufgabe.'],['ok','Richtig: Diese Aussage ist mit M 2 nicht prüfbar und gehört nicht zur Aufgabe.']]}
+];
+const Q4=[
+ {a:'Teilbehauptung A: „Der Welthandel schrumpft seit Jahren.“',r:[['no','Die Exporte sind seit 2008 um rund 51 % gestiegen.'],['mid','Vertretbar, wenn ihr nur 2022–2025 betrachtet (–2,4 %). Über die ganze Reihe gilt aber: kein Schrumpfen „seit Jahren“.'],['ok','In absoluten Zahlen ist der Welthandel seit 2008 um rund die Hälfte gewachsen. Nur seit 2022 gibt es einen leichten Rückgang.']]},
+ {a:'Teilbehauptung B: Relativ zur Wirtschaftsleistung wird heute weniger gehandelt als vor der Finanzkrise 2008.',r:[['ok','Der Anteil sank von 24,1 % (2007) bzw. 25,3 % (2008) auf 21,8 % (2025).'],['mid','Der Vergleich 2008–2025 bestätigt die Aussage. Einschränken könnt ihr sie erst beim Wort „deutlich“ und bei den Grenzen.'],['no','Die berechneten Anteile zeigen einen Rückgang von 24,1 % bzw. 25,3 % auf 21,8 %.']]},
+ {a:'Das Wort „deutlich“: rund –2,3 (ggü. 2007) bzw. –3,5 Prozentpunkte (ggü. 2008)',r:[['mid','Vertretbar, aber 2022 lag der Anteil mit 24,8 % fast wieder auf dem Niveau von 2008.'],['ok','Diesen Rückgang kann man so oder so sehen, zumal er vom Vergleichsjahr abhängt. Entscheidend ist, dass ihr eure Einschätzung begründet.'],['mid','Vertretbar, wenn ihr begründet, warum 2,3 bis 3,5 Prozentpunkte für euch nicht „deutlich“ sind.']]},
+ {a:'Gesamturteil zur ersten Aussage',r:[['no','Teilbehauptung A lässt sich nicht bestätigen.'],['ok','Der Rückgang gegenüber 2008 ist belegt, das Schrumpfen „seit Jahren“ nicht.'],['no','Teilbehauptung B wird durch die Anteile gestützt.']]}
+];
+const G4=[
+ {a:'M 2a erfasst nur den Warenhandel, keine Dienstleistungen.',ok:true,f:'Wichtig: Der Handel mit Dienstleistungen ist in den letzten Jahren stark gewachsen.'},
+ {a:'Nominale Dollarwerte: Die Werte sind nicht preisbereinigt.',ok:true,f:'Ein Anstieg oder Rückgang kann auch an Preisveränderungen liegen, nicht nur an mehr oder weniger gehandelten Gütern.'},
+ {a:'Der Autor nennt kein genaues Vergleichsjahr; 2008 ist selbst schon das Krisenjahr.',ok:true,f:'Das Vergleichsjahr beeinflusst das Ergebnis: gegenüber 2007 rund –2,3, gegenüber 2008 –3,5 Prozentpunkte.'},
+ {a:'Zwischen den Stützjahren fehlen Werte.',ok:true,f:'Der genaue Verlauf zwischen 2009 und 2015 oder 2015 und 2020 ist nicht erkennbar.'},
+ {a:'Die Zahlen sind nicht glaubwürdig, weil sie in einer Tabelle stehen.',ok:false,f:'Das ist kein Argument. Grenzen müssen sich auf den Inhalt der Daten beziehen.'},
+ {a:'Der Autor ist Journalist, also stimmt seine Aussage nicht.',ok:false,f:'Ihr prüft die Aussage, nicht die Person. Das Urteil muss aus den Daten kommen.'}
+];
+const CHECK=[
+ ['Formale Aspekte',2,[['f1','Darstellungsform, Thema und Quelle beider Tabellen genannt',1],['f2','Einheit (absolut / Prozent), Zeitraum und Besonderheit (selbst rechnen, nur Waren, Mehrfachnennungen) genannt',1]]],
+ ['Erste Aussage (Z. 7–9)',7,[['a1','Aussage mit Zeilenangabe wiedergegeben, beide Teilbehauptungen getrennt',1],['a2','Passende Werte ausgewählt, nicht alle Werte aufgezählt',1],['a3','Anteil der Exporte am BIP berechnet (z. B. 24,1 % bzw. 25,3 % → 21,8 %)',2],['a4','Jede Teilbehauptung mit dem Wortlaut abgeglichen („seit Jahren“, „deutlich“)',1],['a5','Begründetes Gesamturteil (nur teilweise bestätigt)',1],['a6','Mindestens eine passende Grenze der Daten',1]]],
+ ['Zweite Aussage (Z. 13–15)',7,[['b1','Aussage mit Zeilenangabe wiedergegeben, beide Teile getrennt',1],['b2','Rückverlagerung: 3 % → 7 %, also mehr als verdoppelt',1],['b3','Verlagerung ins Ausland: 14 % → 27 %, also +13 Prozentpunkte',2],['b4','Vergleich beider Werte (z. B. 27 ÷ 7 ≈ 3,9)',1],['b5','Begründetes Gesamturteil (Teil 1 gestützt, Teil 2 widerlegt)',1],['b6','Mindestens eine passende Grenze (nur Pläne, nur Industrie, Mehrfachnennungen)',1]]]
+];
+
+function rechenTab(key,rows){
+  return '<div class="tabwrap"><table class="rechnen"><thead><tr><th>Größe</th><th>Rechnung</th><th>Euer Ergebnis</th><th></th></tr></thead><tbody>'+
+   rows.map((r,i)=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td><input id="'+key+i+'" inputmode="decimal" autocomplete="off" aria-label="'+r[0]+'"> '+r[3]+'</td><td><span class="st" id="'+key+i+'s"></span></td></tr>').join('')+'</tbody></table></div>';
+}
+function bindRechen(key,rows){
+  rows.forEach((r,i)=>{const inp=$(key+i); if(!inp) return; inp.addEventListener('input',()=>{
+    const v=parseFloat(inp.value.replace(',','.').replace('%','').replace('+','').trim()); const s=$(key+i+'s');
+    if(isNaN(v)){s.textContent='';s.className='st';return;}
+    const ok=Math.abs(v-r[2])<=r[4]; s.textContent=ok?'✓':'✗'; s.className='st '+(ok?'ok':'no'); s.title=ok?'stimmt':'noch nicht';
+  });});
+}
+const R3=[
+ ['Anteil 2007','14,0 ÷ 58,0 × 100',24.1,'%',0.1],
+ ['Anteil 2008','16,2 ÷ 64,0 × 100',25.3,'%',0.1],
+ ['Anteil 2009','12,6 ÷ 60,5 × 100',20.8,'%',0.1],
+ ['Anteil 2020','17,6 ÷ 85,5 × 100',20.6,'%',0.1],
+ ['Anteil 2022','25,0 ÷ 101,0 × 100',24.75,'%',0.1],
+ ['Anteil 2025','24,4 ÷ 112,0 × 100',21.8,'%',0.1],
+ ['Veränderung des Anteils 2007 → 2025','Anteil 2025 – Anteil 2007',-2.35,'Prozentpunkte',0.15],
+ ['Veränderung des Anteils 2008 → 2025','Anteil 2025 – Anteil 2008',-3.5,'Prozentpunkte',0.15],
+ ['Veränderung der Exporte 2008 → 2025','(24,4 ÷ 16,2 – 1) × 100',50.6,'%',0.6]
+];
+const R5=[
+ ['Rückverlagerung 2019 → 2025','7 – 3',4,'Prozentpunkte',0.01],
+ ['Verlagerung ins Ausland 2019 → 2025','27 – 14',13,'Prozentpunkte',0.01],
+ ['Verhältnis Ausland : Rückverlagerung 2025','27 ÷ 7',3.9,': 1',0.06]
+];
+
+function renderUebung(){
+  let h='';
+  if(S.step===0){
+    h='<div class="karte"><h3>Übung · Was ist bei 2b) anders?</h3>'+
+     '<p class="operator">„überprüfen“: Inhalte, Sachverhalte, Vermutungen oder Hypothesen auf der Grundlage eigener Kenntnisse oder mithilfe zusätzlicher Materialien auf ihre sachliche Richtigkeit bzw. auf ihre innere Logik hin untersuchen.<small>Operatorenliste Sozialwissenschaften, Abitur NRW · AFB II–III</small></p>'+
+     '<div class="vergleich"><section><h4>Statistikbearbeitung allgemein: Methodenblatt „Schritte der Statistikbearbeitung“ (aus dem Unterricht, in OneNote)</h4><ol><li>Statistik darstellen: alle formalen Aspekte (AFB I)</li><li>Statistik analysieren: wichtigste Ergebnisse, Verlauf, zentrale Aussagen (AFB II)</li><li>Statistik beurteilen: Aussagekraft und Qualität der Statistik (AFB III)</li></ol><p class="note">Die <b>Statistik</b> gibt die Richtung vor.</p></section>'+
+     '<section class="ziel2b"><h4>Aufgabe 2b): Aussage überprüfen</h4><ol><li>Aussage des Autors genau erfassen und zerlegen</li><li>Formale Aspekte knapp, mit Blick auf die Prüfung</li><li>Nur passende Werte auswählen, wenn nötig selbst rechnen</li><li>Mit dem Wortlaut abgleichen: bestätigt, teilweise, nicht bestätigt</li><li>Grenzen der Daten für diese Aussage</li></ol><p class="note">Die <b>Aussage des Autors</b> gibt die Richtung vor.</p></section></div>'+
+     '<div class="raster"><div><b>2</b><span>Punkte: formale Aspekte</span></div><div><b>7</b><span>Punkte: erste Aussage überprüfen</span></div><div><b>7</b><span>Punkte: zweite Aussage überprüfen</span></div></div>'+
+     '<p class="einl">Ordnet zu: Gehört das zur allgemeinen Statistikbearbeitung oder zu Aufgabe 2b)?</p>'+wahlItems('q0',Q0,['allgemein','2b)'])+'</div>';
+  }
+  else if(S.step===1){
+    h='<div class="karte"><h3>Übung · Was lässt sich mit M 2 prüfen?</h3><p class="einl">Nicht jeder Satz im Text ist ein Fall für die Statistik. Entscheidet für jede Stelle.</p>'+wahlItems('q1',Q1,['mit M 2 prüfbar','nur abwägend einschätzbar','mit M 2 nicht prüfbar'])+'</div>';
+  }
+  else if(S.step===2){
+    h='<div class="karte"><h3>Übung · Fallen in M 2 finden</h3><p class="einl">Drei Details in M 2 entscheiden darüber, ob ihr die Zahlen richtig lest. Klappt erst auf, wenn ihr selbst gesucht habt.</p>'+
+     '<details class="tipp"><summary>1. Was steht in M 2a nicht in der Tabelle?</summary><div>Der Anteil des Handels an der Wirtschaftsleistung. Der Autor spricht aber genau davon („gemessen an der Wirtschaftsleistung“). Ihr müsst ihn also selbst berechnen.</div></details>'+
+     '<details class="tipp"><summary>2. Was bedeutet „nominale Werte“?</summary><div>Die Werte sind nicht um Preissteigerungen bereinigt. Steigen die Preise, steigen die Exportwerte, auch wenn nicht mehr Güter gehandelt werden.</div></details>'+
+     '<details class="tipp"><summary>3. Was bedeutet „Mehrfachnennungen möglich“ in M 2b?</summary><div>Ein Unternehmen kann beides planen: zurückverlagern und ins Ausland verlagern. Deshalb darf man die beiden Spalten nicht addieren oder voneinander abziehen, als wären es getrennte Gruppen.</div></details>'+
+     '<details class="tipp"><summary>4. Worauf beziehen sich die Prozentzahlen in M 2b?</summary><div>Auf die rund 2.000 befragten Industrieunternehmen (euer Methodenblatt „Schritte der Statistikbearbeitung“, Punkt 6: Gesamtzahl). 7 % sind also etwa 140 Unternehmen.</div></details></div>';
+  }
+  else if(S.step===3){
+    h='<div class="karte"><h3>Rechencheck · M 2a</h3><p class="einl">Tragt eure Ergebnisse ein, gerundet auf eine Nachkommastelle. Ein Häkchen zeigt, ob es stimmt.</p>'+rechenTab('r3',R3)+'<p class="hinweisformel">Formel für den Anteil: Warenexporte ÷ Welt-BIP × 100. Komma oder Punkt sind beide erlaubt.</p></div>';
+  }
+  else if(S.step===4){
+    h='<div class="zwei"><div class="karte"><h3>Übung · Abgleich mit dem Wortlaut</h3><p class="einl">Wie lautet euer Urteil? Es gibt nicht immer nur eine richtige Antwort, aber immer eine gut begründete.</p>'+wahlItems('q4',Q4,['bestätigt','teilweise bestätigt','nicht bestätigt'])+'</div>'+
+      '<div class="karte"><h3>Übung · Welche Grenzen sind sinnvoll?</h3><p class="einl">Tippt die Aussagen an, die eine sinnvolle Grenze der Daten für Aussage 1 beschreiben.</p><div class="items">'+
+      G4.map((g,i)=>{const sel=S.wahl['g4'+i]; let fb=''; if(sel!==undefined){const right=(sel===1)===g.ok; fb='<p class="fb '+(right?'ok':'no')+'"><b>'+(right?'Richtig.':'Noch nicht.')+'</b> '+g.f+'</p>';}
+        return '<div class="item"><div class="aussage">'+g.a+'</div><div class="wahl"><button type="button" data-w="g4'+i+'" data-v="1" aria-pressed="'+(sel===1)+'">sinnvolle Grenze</button><button type="button" data-w="g4'+i+'" data-v="0" aria-pressed="'+(sel===0)+'">keine Grenze</button></div>'+fb+'</div>';}).join('')+
+      '</div></div></div>';
+  }
+  else if(S.step===5){
+    h='<div class="zwei"><div class="karte"><h3>Gestufte Tipps · nur bei Bedarf</h3>'+
+      '<details class="tipp"><summary>Tipp 1: Zerlegen</summary><div>Teil 1: Immer mehr Firmen holen Produktion zurück. Teil 2: Die Verlagerung ins Ausland ist „vorbei“. Für Teil 2 braucht ihr die <b>andere</b> Spalte von M 2b.</div></details>'+
+      '<details class="tipp"><summary>Tipp 2: Welche Werte?</summary><div>Vergleicht für beide Spalten den ersten und den letzten Wert (2019 und 2025). Der Verlauf dazwischen zeigt, ob die Entwicklung stetig ist.</div></details>'+
+      '<details class="tipp"><summary>Tipp 3: Was rechnen?</summary><div>Die Veränderung in Prozentpunkten für beide Spalten – und das Verhältnis beider Werte im Jahr 2025.</div></details>'+
+      '<details class="tipp"><summary>Tipp 4: Urteil und Grenzen</summary><div>Ein Teil wird gestützt, der andere widerlegt. Grenzen: Pläne sind keine Taten, nur Industrieunternehmen, Mehrfachnennungen.</div></details></div>'+
+      '<div class="karte"><h3>Rechencheck · M 2b</h3><p class="einl">Prüft eure Rechnung.</p>'+rechenTab('r5',R5)+'</div></div>';
+  }
+  else if(S.step===6){
+    let sum=0; CHECK.forEach(g=>g[2].forEach(c=>{if(S.checks.has(c[0])) sum+=c[2];}));
+    h='<div class="karte check"><h3>Selbstcheck nach dem Erwartungshorizont</h3>'+
+      CHECK.map(g=>'<fieldset><legend>'+g[0]+' <small>(max. '+g[1]+' P.)</small></legend>'+g[2].map(c=>'<label><input type="checkbox" data-c="'+c[0]+'"'+(S.checks.has(c[0])?' checked':'')+'> <span>'+c[1]+'</span><span class="pt">'+c[2]+' P.</span></label>').join('')+'</fieldset>').join('')+
+      '<div class="summe">Eure Einschätzung <span id="sumOut">'+sum+' / 16</span></div><p class="note">Dazu kann 1 Punkt für ein weiteres aufgabenbezogenes Kriterium kommen. Die Teilpunkte dienen nur der Orientierung.</p>'+
+      '<p style="margin:.8rem 0 0"><button type="button" class="knopf" id="resetCheck">Haken zurücksetzen</button></p></div>';
+  }
+  $('uebung').innerHTML=h;
+  if(S.step===3) bindRechen('r3',R3);
+  if(S.step===5) bindRechen('r5',R5);
+  $('uebung').querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{S.wahl[b.dataset.w]=+b.dataset.v;renderUebung();}));
+  $('uebung').querySelectorAll('[data-c]').forEach(b=>b.addEventListener('change',()=>{b.checked?S.checks.add(b.dataset.c):S.checks.delete(b.dataset.c);save();
+    let s=0; CHECK.forEach(g=>g[2].forEach(c=>{if(S.checks.has(c[0])) s+=c[2];})); $('sumOut').textContent=s+' / 16';}));
+  const rc=$('resetCheck'); if(rc) rc.addEventListener('click',()=>{S.checks.clear();save();renderUebung();});
+}
+
+function renderAll(){renderSteps();renderBlatt();renderRand();renderUebung();}
+
+$('steps').addEventListener('click',e=>{const b=e.target.closest('button[data-s]'); if(!b) return; S.step=+b.dataset.s; S.sheet=STEPS[S.step].blatt; S.show=true; renderAll(); try{location.hash='schritt-'+S.step;}catch(err){}});
+$('blatt').addEventListener('click',e=>{const b=e.target.closest('button[data-sheet]'); if(!b) return; S.sheet=b.dataset.sheet; renderBlatt();});
+
+const m=(location.hash||'').match(/^#schritt-([0-6])$/); if(m){S.step=+m[1];S.sheet=STEPS[S.step].blatt;}
+renderAll();
+})();
+</script>
+</body>
+</html>
