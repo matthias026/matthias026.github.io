@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Was steht im Grundgesetz?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eceef1; --sheet:#ffffff; --ink:#1a2029; --muted:#5d6672; --rule:#d7dbe1; --tint:#f3f4f7;
+  --accent:#8c2a2a; --accent-ink:#ffffff;
+  --gold:#8a6a12; --gold-bg:rgba(176,136,22,.14);
+  --blue:#1f4e8c; --blue-bg:rgba(31,78,140,.10);
+  --ok:#2e7a55; --ok-bg:rgba(46,122,85,.10); --warn:#a8432f; --warn-bg:rgba(168,67,47,.10);
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+    --accent:#ee9a8b; --accent-ink:#1a1213;
+    --gold:#e2c063; --gold-bg:rgba(226,192,99,.14);
+    --blue:#8fb4ea; --blue-bg:rgba(143,180,234,.12);
+    --ok:#7fcca3; --ok-bg:rgba(127,204,163,.12); --warn:#ee9a8b; --warn-bg:rgba(238,154,139,.12); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+  --accent:#ee9a8b; --accent-ink:#1a1213;
+  --gold:#e2c063; --gold-bg:rgba(226,192,99,.14);
+  --blue:#8fb4ea; --blue-bg:rgba(143,180,234,.12);
+  --ok:#7fcca3; --ok-bg:rgba(127,204,163,.12); --warn:#ee9a8b; --warn-bg:rgba(238,154,139,.12); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.02rem;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:70rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.65rem,4vw,2.4rem);line-height:1.15;margin:0 0 .5rem;text-wrap:balance}
+.kopf p{margin:0;color:var(--muted);max-width:54rem}
+
+nav.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 1.4rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.65rem .8rem .7rem;cursor:pointer;color:var(--muted);min-width:0}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.92rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.76rem;margin-top:.15rem}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t{color:var(--accent-ink)}
+@media (max-width:36rem){nav.steps .p{display:none}}
+
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 20rem;gap:1.4rem;align-items:start}
+@media (max-width:58rem){.haupt{grid-template-columns:1fr}.haupt .seite.vorn{order:-1}}
+.spalte{display:grid;gap:1.2rem;min-width:0}
+.seite{display:grid;gap:1.2rem}
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.karte p{margin:0 0 .6rem;font-size:.92rem}
+.karte p:last-child{margin-bottom:0}
+.karte ol{margin:0;padding-left:1.2rem;font-size:.92rem}
+.karte li{margin:.3rem 0}
+
+.uebung{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--gold);padding:1rem 1.15rem 1.1rem;box-shadow:0 1px 2px rgba(20,24,30,.05);min-width:0}
+.ulabel{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.uebung h2{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.3;margin:0 0 .3rem}
+.uhint{font-size:.88rem;color:var(--muted);margin:0 0 .8rem}
+.uebung ol{margin:0;padding-left:1.4rem}
+.uebung li{margin:.6rem 0}
+.zeile{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center;justify-content:space-between}
+.zeile>span{flex:1 1 18rem}
+.uebung select{background:var(--sheet);border:1px solid var(--rule);padding:.32rem .5rem;max-width:100%}
+.uebung select.ok{border-color:var(--ok);background:var(--ok-bg)}
+.uebung select.ko{border-color:var(--warn);background:var(--warn-bg)}
+.mc li>span{display:block;margin-bottom:.3rem}
+.mc select{width:100%}
+.art li{display:grid;grid-template-columns:minmax(0,1fr);gap:.25rem}
+.art li b{font-family:var(--serif)}
+.art select{width:100%}
+.pruef,.loes{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;padding:.45rem 1rem;cursor:pointer;margin-top:.9rem}
+.loes{background:transparent;color:var(--accent);border:1px solid var(--accent);margin-top:.4rem}
+.msg{font-weight:600;min-height:1.3em;margin:.5rem 0 0}
+.indice{background:var(--tint);padding:.5rem .8rem;font-size:.9rem;margin:.4rem 0 0}
+
+.auftrag{background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:1rem 1.15rem}
+.auftrag h2{font-family:var(--serif);font-weight:600;font-size:1.25rem;margin:0 0 .4rem}
+.auftrag p{margin:0 0 .6rem}
+.auftrag ol{margin:.3rem 0 0;padding-left:1.3rem}
+.auftrag li{margin:.4rem 0}
+.onenote{display:inline-block;background:var(--blue-bg);color:var(--blue);font-weight:600;font-size:.78rem;padding:.1rem .5rem;border-radius:2px;margin-right:.3rem}
+
+/* Französisch */
+.brief{font-family:var(--serif);font-size:1.15rem;line-height:1.4;font-weight:600;margin:.2rem 0 .5rem}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1rem}
+.wg{background:var(--sheet);border:1px solid var(--rule);padding:.85rem 1rem}
+.wg h3{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.wg ul{list-style:none;margin:0;padding:0}
+.wg li{padding:.28rem 0;border-bottom:1px dotted var(--rule)}
+.wg li:last-child{border-bottom:0}
+.wg .f{font-family:var(--serif);font-weight:600}
+.wg .d{display:block;font-size:.82rem;color:var(--muted)}
+.wg.struktur{border-top:3px solid var(--gold)}
+.wg.struktur h3{color:var(--gold)}
+.check{list-style:none;padding:0;margin:0}
+.check li{padding-left:1.6rem;position:relative;margin:.35rem 0;font-size:.92rem}
+.check li::before{content:"☐";position:absolute;left:0;color:var(--muted)}
+.tip{font-size:.85rem;color:var(--muted);margin-top:.5rem}
+
+.aktion{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem}
+.upunkte{font-size:.88rem;color:var(--muted);margin-top:.9rem}
+.uebung select:disabled{opacity:1;color:var(--ink)}
+.punktekarte{border-top-color:var(--gold)}
+.punktekarte h3{color:var(--gold)}
+.namefeld{display:block;font-size:.82rem;color:var(--muted);margin-bottom:.6rem}
+.namefeld input{display:block;width:100%;margin-top:.2rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;font-size:1rem}
+.gesamt{font-family:var(--serif);font-size:1rem;margin:0 0 .4rem!important}
+.gesamt .pges{font-size:2rem;font-weight:600}
+.pbar{height:.35rem;background:var(--rule);margin-bottom:.7rem}
+.pbar i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+.pliste{list-style:none;margin:0 0 .6rem;padding:0;font-size:.88rem}
+.pliste li{display:flex;justify-content:space-between;gap:.5rem;padding:.25rem 0;border-bottom:1px dotted var(--rule)}
+.regeln{font-size:.8rem!important;color:var(--muted)}
+.fertig{font-weight:600;color:var(--ok)}
+.karte a{color:var(--accent)}
+
+.begriff{border-bottom:1.5px dotted var(--muted);cursor:pointer;position:relative}
+.begriff.auf{border-bottom-color:var(--accent);background:var(--tint)}
+.erkl{position:absolute;left:0;bottom:calc(100% + 4px);z-index:6;width:max-content;max-width:min(18rem,80vw);font-size:.82rem;font-weight:500;line-height:1.35;color:var(--accent-ink);background:var(--accent);padding:.35rem .55rem;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.2);pointer-events:none}
+
+footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="kopf">
+<p class="eyebrow">Klasse 8 · Politik bilingual · Das Grundgesetz</p>
+<h1>Was steht im Grundgesetz?</h1>
+<p>Arbeit mit dem Video „#kurzerklärt: Was steht im Grundgesetz?“ (tagesschau). Ihr findet das Video im OneNote-Kursnotizbuch.</p>
+</header>
+
+<nav class="steps" role="tablist" aria-label="Seiten">
+<button role="tab" data-tab="0" aria-selected="true"><span class="n">1</span><span class="t">Das Video verstehen</span><span class="p">Aufgaben A bis C</span></button>
+<button role="tab" data-tab="1" aria-selected="false"><span class="n">2</span><span class="t">Nachdenken</span><span class="p">Aufgaben D und E</span></button>
+<button role="tab" data-tab="2" aria-selected="false"><span class="n">3</span><span class="t">À ton corres</span><span class="p">Ein Text auf Französisch</span></button>
+</nav>
+
+<!-- 1 · Video -->
+<section class="tabpanel" data-panel="0">
+<div class="haupt">
+<div class="spalte">
+
+<div class="uebung" id="uA">
+<div class="ulabel">Aufgabe A · Zwei große Themen</div>
+<h2>Grundrechte oder Organisation des Staates?</h2>
+<p class="uhint">Das Grundgesetz hat zwei große Themen. Ordnet jeden Begriff einem Thema zu.</p>
+<ol>
+<li class="zeile"><span>Menschenwürde</span><select data-a="g"></select></li>
+<li class="zeile"><span>Bundesstaat</span><select data-a="s"></select></li>
+<li class="zeile"><span>Meinungsfreiheit</span><select data-a="g"></select></li>
+<li class="zeile"><span>Gewaltenteilung</span><select data-a="s"></select></li>
+<li class="zeile"><span>Religionsfreiheit</span><select data-a="g"></select></li>
+<li class="zeile"><span>Aufgaben von Bundestag und Bundesrat</span><select data-a="s"></select></li>
+<li class="zeile"><span>Versammlungsfreiheit</span><select data-a="g"></select></li>
+<li class="zeile"><span>Demokratie</span><select data-a="s"></select></li>
+<li class="zeile"><span>Recht auf Eigentum</span><select data-a="g"></select></li>
+<li class="zeile"><span>Rechtsstaat</span><select data-a="s"></select></li>
+</ol>
+<div class="aktion"><button type="button" class="pruef">Prüfen</button><span class="upunkte"></span></div>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Tipp:</b> Grundrechte sind Rechte, die jeder einzelne Mensch hat. Die Organisation des Staates beschreibt, wie der Staat aufgebaut ist und wer was entscheidet.</p>
+<button type="button" class="loes" hidden>Lösung zeigen (offene Felder: 0 Punkte)</button>
+</div>
+
+<div class="uebung" id="uB">
+<div class="ulabel">Aufgabe B · Wichtige Artikel</div>
+<h2>Was steht in welchem Artikel?</h2>
+<p class="uhint">Ordnet jedem Artikel den passenden Inhalt zu.</p>
+<ol class="art">
+<li><b>Art. 1</b><select data-a="a"></select></li>
+<li><b>Art. 1 bis 19</b><select data-a="b"></select></li>
+<li><b>Art. 20</b><select data-a="c"></select></li>
+<li><b>Art. 20a</b><select data-a="d"></select></li>
+<li><b>Art. 23</b><select data-a="e"></select></li>
+<li><b>Art. 79 Abs. 3</b><select data-a="f"></select></li>
+<li><b>Art. 146</b><select data-a="h"></select></li>
+</ol>
+<div class="aktion"><button type="button" class="pruef">Prüfen</button><span class="upunkte"></span></div>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Tipp:</b> Der „Europa-Artikel“ hat die Nummer 23. Der letzte Artikel des Grundgesetzes ist Art. 146.</p>
+<button type="button" class="loes" hidden>Lösung zeigen (offene Felder: 0 Punkte)</button>
+</div>
+
+<div class="uebung" id="uC">
+<div class="ulabel">Aufgabe C · Richtig oder falsch?</div>
+<h2>Stimmt das?</h2>
+<p class="uhint">Entscheidet bei jeder Aussage, ob sie richtig oder falsch ist. Tippt auf ein gepunktet unterstrichenes Wort, um eine Erklärung zu sehen.</p>
+<ol>
+<li class="zeile"><span>Artikel 1 ist eine bewusste Reaktion auf die Zeit des Nationalsozialismus.</span><select data-a="r"></select></li>
+<li class="zeile"><span>Die Grundrechte sind schön klingende Sätze, an die sich der Staat nicht halten muss.</span><select data-a="f"></select></li>
+<li class="zeile"><span>Mit einer <span class="begriff" tabindex="0" role="button" data-e="Verfassungsbeschwerde: Klage beim Bundesverfassungsgericht, wenn jemand meint, dass der Staat seine Grundrechte verletzt hat.">Verfassungsbeschwerde</span> kann man seine Grundrechte beim Bundesverfassungsgericht einklagen.</span><select data-a="r"></select></li>
+<li class="zeile"><span>Die Grundrechte spielen keine Rolle, wenn zwei Bürger miteinander vor Gericht streiten.</span><select data-a="f"></select></li>
+<li class="zeile"><span>Die Ewigkeitsgarantie schützt alle Artikel von 1 bis 20.</span><select data-a="f"></select></li>
+<li class="zeile"><span>Für eine Änderung des Grundgesetzes braucht man eine <span class="begriff" tabindex="0" role="button" data-e="Zweidrittelmehrheit: Mindestens zwei von drei Stimmen müssen zustimmen.">Zweidrittelmehrheit</span> in Bundestag und Bundesrat.</span><select data-a="r"></select></li>
+<li class="zeile"><span>Das Grundgesetz ist bis heute nur ein <span class="begriff" tabindex="0" role="button" data-e="Provisorium: eine vorläufige Lösung, die nur für eine gewisse Zeit gelten soll.">Provisorium</span>.</span><select data-a="f"></select></li>
+<li class="zeile"><span>Deutschland darf <span class="begriff" tabindex="0" role="button" data-e="Befugnisse: das Recht, über bestimmte Dinge zu entscheiden.">Befugnisse</span> an die EU übertragen, bleibt aber ein eigenständiger Staat.</span><select data-a="r"></select></li>
+</ol>
+<div class="aktion"><button type="button" class="pruef">Prüfen</button><span class="upunkte"></span></div>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Tipp:</b> Achtet genau auf die Ewigkeitsgarantie: Sie gilt für Artikel 1 und Artikel 20, nicht für alles dazwischen.</p>
+<button type="button" class="loes" hidden>Lösung zeigen (offene Felder: 0 Punkte)</button>
+</div>
+
+</div>
+<aside class="seite vorn">
+<div class="karte punktekarte">
+<h3>Dein Punktestand</h3>
+<label class="namefeld">Dein Vorname <input type="text" class="name" autocomplete="off" placeholder="Vorname"></label>
+<p class="gesamt"><span class="pges">0</span> <span class="pmax">/ 58</span> Punkte</p>
+<div class="pbar"><i></i></div>
+<ul class="pliste">
+<li><span>A · Zwei große Themen</span><b data-u="uA">0 / 20</b></li>
+<li><span>B · Wichtige Artikel</span><b data-u="uB">0 / 14</b></li>
+<li><span>C · Richtig oder falsch?</span><b data-u="uC">0 / 16</b></li>
+<li><span>D · Genauer verstehen</span><b data-u="uD">0 / 8</b></li>
+</ul>
+<p class="regeln">1. Versuch richtig: 2 Punkte · 2. Versuch: 1 Punkt · danach oder über „Lösung zeigen“: 0 Punkte</p>
+<p class="fertig" hidden>Geschafft! Mach jetzt einen Screenshot dieser Karte und füge ihn in OneNote ein.</p>
+</div>
+<div class="karte">
+<h3>So geht ihr vor</h3>
+<ol>
+<li>Installiert auf eurem iPad aus dem Schul-App-Store die kostenlose App <b>„bpb: Das Grundgesetz“</b> der Bundeszentrale für politische Bildung. Dort könnt ihr einzelne Artikel nachschlagen.</li>
+<li>Lest zuerst die Aufgaben A bis C.</li>
+<li>Seht euch das Video im OneNote-Kursnotizbuch einmal ganz an.</li>
+<li>Bearbeitet die Aufgaben A bis D. Seht euch das Video dabei ein zweites Mal an und haltet es an, wenn ihr etwas sucht.</li>
+<li>Sammelt Punkte: Für jede Antwort, die beim ersten Versuch richtig ist, gibt es 2 Punkte, beim zweiten Versuch 1 Punkt, danach 0 Punkte. Überlegt also gut, bevor ihr auf „Prüfen“ klickt.</li>
+<li>Wenn ihr fertig seid: Macht einen Screenshot eures Punktestands und fügt ihn in OneNote ein.</li>
+</ol>
+</div>
+<div class="karte">
+<h3>Gut zu wissen</h3>
+<p>Das Video ist vom Mai 2019, zum 70. Geburtstag des Grundgesetzes. Die genannte Zahl von 63 Änderungen ist inzwischen überholt: Seitdem wurde das Grundgesetz noch mehrmals geändert.</p>
+</div>
+</aside>
+</div>
+</section>
+
+<!-- 2 · Nachdenken -->
+<section class="tabpanel" data-panel="1" hidden>
+<div class="haupt">
+<div class="spalte">
+
+<div class="uebung" id="uD">
+<div class="ulabel">Aufgabe D · Genauer verstehen</div>
+<h2>Warum ist das so?</h2>
+<p class="uhint">Wählt jeweils die passende Antwort.</p>
+<ol class="mc">
+<li><span>Warum steht die Menschenwürde ganz am Anfang des Grundgesetzes?</span>
+<select data-a="b"><option value="">Auswählen …</option><option value="a">Weil sie das kürzeste Grundrecht ist.</option><option value="b">Als Antwort auf das Grauen der Nazizeit und als Zeichen für einen Neubeginn.</option><option value="c">Weil die EU das verlangt hat.</option></select></li>
+<li><span>Was sind die „Schranken“ der Grundrechte?</span>
+<select data-a="c"><option value="">Auswählen …</option><option value="a">Grundrechte, die nur für Erwachsene gelten.</option><option value="b">Artikel, die man nie ändern darf.</option><option value="c">Regeln, unter welchen Bedingungen der Staat in ein Grundrecht eingreifen darf.</option></select></li>
+<li><span>Warum nannte man die Verfassung 1949 „Grundgesetz“?</span>
+<select data-a="a"><option value="">Auswählen …</option><option value="a">Es sollte nur vorläufig gelten (ein Provisorium), solange Deutschland geteilt war.</option><option value="b">Weil es weniger wichtig ist als eine Verfassung.</option><option value="c">Weil es nur die Grundrechte enthält.</option></select></li>
+<li><span>Was gilt seit der Wiedervereinigung 1990?</span>
+<select data-a="b"><option value="">Auswählen …</option><option value="a">Die DDR-Verfassung gilt in Ostdeutschland weiter.</option><option value="b">Das Grundgesetz ist die Verfassung für ganz Deutschland und kein Provisorium mehr.</option><option value="c">Es gibt eine ganz neue Verfassung.</option></select></li>
+</ol>
+<div class="aktion"><button type="button" class="pruef">Prüfen</button><span class="upunkte"></span></div>
+<p class="msg" aria-live="polite"></p>
+<p class="indice" hidden><b>Tipp:</b> Die Antworten zu Frage 3 und 4 kommen gegen Ende des Videos, wenn es um Artikel 146 geht.</p>
+<button type="button" class="loes" hidden>Lösung zeigen (offene Felder: 0 Punkte)</button>
+</div>
+
+<div class="auftrag">
+<div class="ulabel" style="color:var(--accent)">Aufgabe E · Erklären</div>
+<h2>Warum gibt es eine Ewigkeitsgarantie?</h2>
+<p><span class="onenote">OneNote</span>Erklärt in drei bis fünf Sätzen:</p>
+<ol>
+<li>Welche Teile des Grundgesetzes dürfen nie verändert werden?</li>
+<li>Warum haben die Mütter und Väter des Grundgesetzes 1949 diese Absicherung eingebaut? Denkt dabei an die Nazizeit, über die das Video am Anfang spricht.</li>
+</ol>
+<p class="tip">Satzanfänge: „Nach Artikel 79 Absatz 3 darf man … nicht ändern.“ · „Das ist wichtig, weil …“ · „So soll verhindert werden, dass …“</p>
+</div>
+
+</div>
+<aside class="seite vorn">
+<div class="karte punktekarte">
+<h3>Dein Punktestand</h3>
+<label class="namefeld">Dein Vorname <input type="text" class="name" autocomplete="off" placeholder="Vorname"></label>
+<p class="gesamt"><span class="pges">0</span> <span class="pmax">/ 58</span> Punkte</p>
+<div class="pbar"><i></i></div>
+<ul class="pliste">
+<li><span>A · Zwei große Themen</span><b data-u="uA">0 / 20</b></li>
+<li><span>B · Wichtige Artikel</span><b data-u="uB">0 / 14</b></li>
+<li><span>C · Richtig oder falsch?</span><b data-u="uC">0 / 16</b></li>
+<li><span>D · Genauer verstehen</span><b data-u="uD">0 / 8</b></li>
+</ul>
+<p class="regeln">1. Versuch richtig: 2 Punkte · 2. Versuch: 1 Punkt · danach oder über „Lösung zeigen“: 0 Punkte</p>
+<p class="fertig" hidden>Geschafft! Mach jetzt einen Screenshot dieser Karte und füge ihn in OneNote ein.</p>
+</div>
+
+</aside>
+</div>
+</section>
+
+<!-- 3 · Französisch -->
+<section class="tabpanel" data-panel="2" hidden>
+<div class="haupt">
+<div class="spalte">
+<div class="auftrag">
+<div class="ulabel" style="color:var(--accent)">Aufgabe F · Écrire</div>
+<h2>Écris à ton corres français / à ta corres française</h2>
+<p class="brief">Ton corres veut savoir ce que tu as appris aujourd’hui en cours de politique.</p>
+<p><span class="onenote">OneNote</span>Schreibt eurem französischen Austauschpartner oder eurer Austauschpartnerin eine Nachricht auf Französisch (8 bis 10 Sätze). Erklärt, was ihr heute über das Grundgesetz gelernt habt. Nutzt die Wörter und Satzanfänge unten.</p>
+<ul class="check">
+<li>Begrüßung und Einleitung: Worum ging es heute?</li>
+<li>Die zwei großen Themen des Grundgesetzes</li>
+<li>Artikel 1 und zwei oder drei Grundrechte</li>
+<li>Die vier Säulen aus Artikel 20 (mindestens zwei)</li>
+<li>Die Ewigkeitsgarantie oder die Zweidrittelmehrheit</li>
+<li>Eine Frage an deinen Corres und ein Abschiedsgruß</li>
+</ul>
+</div>
+
+<div class="wgrid">
+<div class="wg"><h3>Noms · Das Grundgesetz</h3><ul>
+<li><span class="f">la Loi fondamentale</span><span class="d">das Grundgesetz</span></li>
+<li><span class="f">la constitution</span><span class="d">die Verfassung</span></li>
+<li><span class="f">un article</span><span class="d">ein Artikel</span></li>
+<li><span class="f">l’État (m.)</span><span class="d">der Staat</span></li>
+<li><span class="f">l’organisation (f.) de l’État</span><span class="d">die Organisation des Staates</span></li>
+<li><span class="f">l’époque (f.) nazie</span><span class="d">die Nazizeit</span></li>
+<li><span class="f">la réunification</span><span class="d">die Wiedervereinigung</span></li>
+<li><span class="f">l’Union (f.) européenne</span><span class="d">die Europäische Union</span></li>
+</ul></div>
+
+<div class="wg"><h3>Noms · Les droits fondamentaux</h3><ul>
+<li><span class="f">les droits (m.) fondamentaux</span><span class="d">die Grundrechte</span></li>
+<li><span class="f">la dignité humaine</span><span class="d">die Menschenwürde</span></li>
+<li><span class="f">la liberté d’expression</span><span class="d">die Meinungsfreiheit</span></li>
+<li><span class="f">la liberté de religion</span><span class="d">die Religionsfreiheit</span></li>
+<li><span class="f">la liberté de réunion</span><span class="d">die Versammlungsfreiheit</span></li>
+<li><span class="f">le droit de propriété</span><span class="d">das Recht auf Eigentum</span></li>
+<li><span class="f">l’égalité (f.) entre les femmes et les hommes</span><span class="d">die Gleichberechtigung</span></li>
+<li><span class="f">la Cour constitutionnelle fédérale</span><span class="d">das Bundesverfassungsgericht</span></li>
+</ul></div>
+
+<div class="wg"><h3>Noms · L’organisation de l’État</h3><ul>
+<li><span class="f">la démocratie</span><span class="d">die Demokratie</span></li>
+<li><span class="f">l’État (m.) de droit</span><span class="d">der Rechtsstaat</span></li>
+<li><span class="f">l’État (m.) fédéral</span><span class="d">der Bundesstaat</span></li>
+<li><span class="f">la séparation des pouvoirs</span><span class="d">die Gewaltenteilung</span></li>
+<li><span class="f">un pilier</span><span class="d">eine Säule</span></li>
+<li><span class="f">la clause d’éternité</span><span class="d">die Ewigkeitsgarantie</span></li>
+<li><span class="f">la majorité des deux tiers</span><span class="d">die Zweidrittelmehrheit</span></li>
+<li><span class="f">le président fédéral / le chancelier</span><span class="d">der Bundespräsident / der Bundeskanzler</span></li>
+</ul></div>
+
+<div class="wg"><h3>Verbes</h3><ul>
+<li><span class="f">protéger</span><span class="d">schützen · <i>La Loi fondamentale protège …</i></span></li>
+<li><span class="f">garantir</span><span class="d">garantieren · <i>Elle garantit …</i></span></li>
+<li><span class="f">respecter</span><span class="d">achten, einhalten · <i>L’État doit respecter …</i></span></li>
+<li><span class="f">changer / modifier</span><span class="d">ändern · <i>On ne peut pas changer …</i></span></li>
+<li><span class="f">avoir le droit de + infinitif</span><span class="d">das Recht haben, etw. zu tun</span></li>
+<li><span class="f">il faut + nom / infinitif</span><span class="d">man braucht / man muss</span></li>
+<li><span class="f">apprendre (j’ai appris que …)</span><span class="d">lernen (ich habe gelernt, dass …)</span></li>
+<li><span class="f">regarder une vidéo</span><span class="d">ein Video ansehen</span></li>
+</ul></div>
+
+<div class="wg"><h3>Adjectifs</h3><ul>
+<li><span class="f">intangible</span><span class="d">unantastbar</span></li>
+<li><span class="f">fondamental, e</span><span class="d">grundlegend</span></li>
+<li><span class="f">important, e</span><span class="d">wichtig</span></li>
+<li><span class="f">libre</span><span class="d">frei</span></li>
+<li><span class="f">égal, e</span><span class="d">gleich</span></li>
+<li><span class="f">provisoire</span><span class="d">vorläufig</span></li>
+<li><span class="f">intéressant, e</span><span class="d">interessant</span></li>
+</ul></div>
+
+<div class="wg struktur"><h3>Pour écrire ton message · Satzanfänge</h3><ul>
+<li><span class="f">Salut … ! Comment ça va ?</span><span class="d">Hallo …! Wie geht’s?</span></li>
+<li><span class="f">Aujourd’hui, en cours de politique, on a parlé de …</span><span class="d">Heute haben wir im Politikunterricht über … gesprochen.</span></li>
+<li><span class="f">On a regardé une vidéo sur …</span><span class="d">Wir haben ein Video über … angesehen.</span></li>
+<li><span class="f">D’abord, … Ensuite, … Enfin, …</span><span class="d">Zuerst … Dann … Zum Schluss …</span></li>
+<li><span class="f">L’article 1 dit : « La dignité de l’être humain est intangible. »</span><span class="d">Artikel 1 sagt: „Die Würde des Menschen ist unantastbar.“</span></li>
+<li><span class="f">J’ai appris que …</span><span class="d">Ich habe gelernt, dass …</span></li>
+<li><span class="f">Je trouve ça important parce que …</span><span class="d">Das finde ich wichtig, weil …</span></li>
+<li><span class="f">Et en France ? Comment s’appelle votre constitution ?</span><span class="d">Und in Frankreich? Wie heißt eure Verfassung?</span></li>
+<li><span class="f">À bientôt ! Bises</span><span class="d">Bis bald! Liebe Grüße</span></li>
+</ul></div>
+</div>
+</div>
+<aside class="seite">
+<div class="karte">
+<h3>Exemple · So kann dein Text beginnen</h3>
+<p style="font-family:var(--serif);font-size:1rem;line-height:1.55"><i>Salut Léa !<br>Comment ça va ? Aujourd’hui, en cours de politique, on a parlé de la Loi fondamentale. C’est la constitution de l’Allemagne. Elle a deux grands thèmes : …</i></p>
+</div>
+<div class="karte">
+<h3>Tipps</h3>
+<p>Schreibt kurze, einfache Sätze. Ihr müsst nicht alles aus dem Video erzählen.</p>
+<p>Wenn euch ein Wort fehlt: Umschreibt es mit den Wörtern aus den Listen.</p>
+</div>
+</aside>
+</div>
+</section>
+
+<footer>
+Video: <a href="https://www.youtube.com/watch?v=f1dpTEv3E1c" target="_blank" rel="noopener">tagesschau #kurzerklärt: Was steht im Grundgesetz? (23.05.2019)</a>
+</footer>
+</div>
+
+<script>
+(function(){
+var tabs=[].slice.call(document.querySelectorAll('nav.steps button'));
+var panels=[].slice.call(document.querySelectorAll('.tabpanel'));
+function zeige(n){
+  tabs.forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.tab===String(n)));});
+  panels.forEach(function(p){p.hidden=p.dataset.panel!==String(n);});
+  try{localStorage.setItem('gg8_tab',String(n));}catch(e){}
+}
+tabs.forEach(function(b){b.addEventListener('click',function(){zeige(b.dataset.tab);window.scrollTo({top:0});});});
+var start='0';try{start=localStorage.getItem('gg8_tab')||'0';}catch(e){}
+zeige(start);
+
+function fuelle(sel,html){[].slice.call(document.querySelectorAll(sel)).forEach(function(s){s.innerHTML=html;});}
+fuelle('#uA select','<option value="">Auswählen …</option><option value="g">Grundrechte</option><option value="s">Organisation des Staates</option>');
+fuelle('#uB select','<option value="">Auswählen …</option>'+
+ '<option value="e">Deutschland darf Befugnisse an die EU übertragen.</option>'+
+ '<option value="b">Hier stehen die Grundrechte.</option>'+
+ '<option value="f">Die Ewigkeitsgarantie: Manche Prinzipien dürfen nie geändert werden.</option>'+
+ '<option value="a">„Die Würde des Menschen ist unantastbar.“</option>'+
+ '<option value="h">Per Volksabstimmung könnte eine neue Verfassung beschlossen werden.</option>'+
+ '<option value="c">Die tragenden Säulen: Demokratie, Rechtsstaat, Bundesstaat, Gewaltenteilung.</option>'+
+ '<option value="d">Staatsziel Umwelt- und Tierschutz.</option>');
+fuelle('#uC select','<option value="">Auswählen …</option><option value="r">richtig</option><option value="f">falsch</option>');
+
+/* Begriffserklärungen direkt im Text */
+[].slice.call(document.querySelectorAll('.begriff')).forEach(function(s){
+  function t(){var g=s.querySelector('.erkl');if(g){g.remove();s.classList.remove('auf');}else{g=document.createElement('span');g.className='erkl';g.textContent=s.dataset.e;s.appendChild(g);s.classList.add('auf');}}
+  s.addEventListener('click',t);
+  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t();}});
+});
+/* Punkte: 2 beim ersten Versuch, 1 beim zweiten, sonst 0. Stand bleibt auf dem Gerät gespeichert. */
+var KEY='gg8_punkte_v1', ST={};
+try{ST=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){ST={};}
+ST.f=ST.f||{}; ST.v=ST.v||{};
+function sichern(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+var UEB=[].slice.call(document.querySelectorAll('.uebung'));
+function punkteVon(uid){
+  var p=0,m=0;
+  [].slice.call(document.querySelectorAll('#'+uid+' select')).forEach(function(s){m+=2;var f=ST.f[s.dataset.k];if(f&&f.done)p+=f.pts;});
+  return [p,m];
+}
+function anzeigen(){
+  var ges=0,max=0,alleFertig=true;
+  UEB.forEach(function(u){
+    var r=punkteVon(u.id); ges+=r[0]; max+=r[1];
+    u.querySelector('.upunkte').textContent='Punkte: '+r[0]+' / '+r[1];
+    [].slice.call(document.querySelectorAll('.pliste b[data-u="'+u.id+'"]')).forEach(function(b){b.textContent=r[0]+' / '+r[1];});
+    [].slice.call(u.querySelectorAll('select')).forEach(function(s){var f=ST.f[s.dataset.k];if(!f||!f.done)alleFertig=false;});
+  });
+  [].slice.call(document.querySelectorAll('.pges')).forEach(function(e){e.textContent=ges;});
+  [].slice.call(document.querySelectorAll('.pmax')).forEach(function(e){e.textContent='/ '+max;});
+  [].slice.call(document.querySelectorAll('.pbar i')).forEach(function(e){e.style.width=(max?ges/max*100:0)+'%';});
+  [].slice.call(document.querySelectorAll('.fertig')).forEach(function(e){e.hidden=!alleFertig;});
+}
+UEB.forEach(function(u){
+  var sel=[].slice.call(u.querySelectorAll('select')),msg=u.querySelector('.msg'),
+      ind=u.querySelector('.indice'),lo=u.querySelector('.loes');
+  sel.forEach(function(s,i){
+    s.dataset.k=u.id+'-'+i;
+    var f=ST.f[s.dataset.k];
+    if(f&&f.done){s.value=s.dataset.a;s.classList.add('ok');s.disabled=true;}
+  });
+  if((ST.v[u.id]||0)>=1)ind.hidden=sel.every(function(s){return s.disabled;});
+  if((ST.v[u.id]||0)>=2&&!sel.every(function(s){return s.disabled;}))lo.hidden=false;
+  u.querySelector('.pruef').addEventListener('click',function(){
+    var offen=sel.filter(function(s){return !s.disabled;});
+    var leer=offen.filter(function(s){return s.value==='';}).length;
+    var fehler=0,neuRichtig=0;
+    offen.forEach(function(s){
+      if(s.value==='')return;
+      var f=ST.f[s.dataset.k]||{err:0};
+      s.classList.remove('ok','ko');
+      if(s.value===s.dataset.a){f.done=true;f.pts=Math.max(0,2-f.err);s.classList.add('ok');s.disabled=true;neuRichtig++;}
+      else{f.err++;s.classList.add('ko');fehler++;}
+      ST.f[s.dataset.k]=f;
+    });
+    if(fehler>0){ST.v[u.id]=(ST.v[u.id]||0)+1;}
+    sichern(); anzeigen();
+    var rest=sel.filter(function(s){return !s.disabled;}).length;
+    if(rest===0){msg.textContent='Alles gelöst!';msg.style.color='var(--ok)';ind.hidden=true;lo.hidden=true;return;}
+    var t=[];
+    if(neuRichtig)t.push(neuRichtig+' richtig');
+    if(fehler)t.push(fehler+' falsch: Überlegt noch einmal (beim nächsten Versuch gibt es höchstens noch 1 Punkt).');
+    if(leer)t.push(leer+' noch nicht beantwortet');
+    msg.textContent=t.join(' · ')||'Wählt zuerst eine Antwort aus.';
+    msg.style.color=fehler?'var(--warn)':'var(--muted)';
+    if(fehler)ind.hidden=false;
+    if((ST.v[u.id]||0)>=2)lo.hidden=false;
+  });
+  lo.addEventListener('click',function(){
+    sel.forEach(function(s){
+      if(s.disabled)return;
+      ST.f[s.dataset.k]={err:(ST.f[s.dataset.k]||{err:0}).err,done:true,pts:0};
+      s.value=s.dataset.a;s.classList.remove('ko');s.classList.add('ok');s.disabled=true;
+    });
+    sichern(); anzeigen();
+    msg.textContent='Hier ist die Lösung. Für diese Felder gibt es keine Punkte.';
+    msg.style.color='var(--ok)';lo.hidden=true;ind.hidden=true;
+  });
+});
+/* Name auf beiden Punktekarten synchron */
+var namen=[].slice.call(document.querySelectorAll('.punktekarte .name'));
+namen.forEach(function(n){
+  n.value=ST.name||'';
+  n.addEventListener('input',function(){ST.name=n.value;namen.forEach(function(m){if(m!==n)m.value=n.value;});sichern();});
+});
+anzeigen();
+})();
+</script>
+</body>
+</html>
