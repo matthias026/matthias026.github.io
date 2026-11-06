@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Klausurtraining Aufgabe 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: wie das Training zu 2b. Effizienz = c1 (grün), Legitimität = c4 (violett). Oben Schrittleiste, darunter Blatt (Aufgabe + M1/M2) links und Arbeitskarte rechts, darunter eine breite Übungskarte und die Formulierungshilfen. */
+:root{
+  --paper:#ecf0ec; --sheet:#ffffff; --ink:#17221c; --muted:#5d6b62; --rule:#d4ddd5; --tint:#f2f6f2;
+  --accent:#1f4e3d; --accent-ink:#ffffff;
+  --c1:#2b7a6b; --c2:#6c7d1c; --c3:#a05e14; --c4:#7a5a8c;
+  --c1-bg:rgba(43,122,107,.17); --c2-bg:rgba(108,125,28,.18); --c3-bg:rgba(160,94,20,.18); --c4-bg:rgba(122,90,140,.15);
+  --warn:#9a3a3a; --ok:#2f7a3a; --mid:#a05e14;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121814; --sheet:#1a221d; --ink:#e2e8e3; --muted:#98a69c; --rule:#2f3b33; --tint:#212a24;
+    --accent:#8fcaa9; --accent-ink:#0f1712;
+    --c1:#7fc8b8; --c2:#bccb6c; --c3:#e0a45c; --c4:#c3a3d6;
+    --c1-bg:rgba(127,200,184,.2); --c2-bg:rgba(188,203,108,.2); --c3-bg:rgba(224,164,92,.22); --c4-bg:rgba(195,163,214,.18);
+    --warn:#e48b80; --ok:#8fcf95; --mid:#e0a45c; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121814; --sheet:#1a221d; --ink:#e2e8e3; --muted:#98a69c; --rule:#2f3b33; --tint:#212a24;
+  --accent:#8fcaa9; --accent-ink:#0f1712;
+  --c1:#7fc8b8; --c2:#bccb6c; --c3:#e0a45c; --c4:#c3a3d6;
+  --c1-bg:rgba(127,200,184,.2); --c2-bg:rgba(188,203,108,.2); --c3-bg:rgba(224,164,92,.22); --c4-bg:rgba(195,163,214,.18);
+  --warn:#e48b80; --ok:#8fcf95; --mid:#e0a45c; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.5}
+.wrap{max-width:76rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--c3);outline-offset:2px}
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin:0 0 .45rem;text-wrap:balance}
+.kopf p{margin:0;color:var(--muted);max-width:54rem}
+.lockstate{display:inline-block;margin-top:.6rem;font-size:.82rem;padding:.15rem .5rem;border:1px solid var(--rule);color:var(--muted)}
+.lockstate.on{border-color:var(--ok);color:var(--ok)}
+
+nav.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 1.3rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.6rem .7rem .65rem;cursor:pointer;color:var(--muted);min-width:0;position:relative}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.84rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.74rem;margin-top:.15rem}
+nav.steps .done{position:absolute;top:.45rem;right:.5rem;font-size:.75rem;color:var(--ok);font-weight:700}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t,nav.steps button[aria-selected="true"] .done{color:var(--accent-ink)}
+@media (max-width:56rem){nav.steps{grid-template-columns:repeat(3,minmax(0,1fr))}nav.steps button:nth-child(3){border-right:0}nav.steps button:nth-child(-n+3){border-bottom:1px solid var(--rule)}}
+@media (max-width:30rem){nav.steps{grid-template-columns:repeat(2,minmax(0,1fr))}nav.steps button{border-bottom:1px solid var(--rule)}nav.steps button:nth-child(2n){border-right:0}}
+
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 23rem;gap:1.4rem;align-items:start}
+@media (max-width:62rem){.haupt{grid-template-columns:1fr}}
+.blatt{background:var(--sheet);padding:1.2rem 1.4rem 1.5rem;box-shadow:0 1px 2px rgba(20,34,26,.05),0 10px 28px rgba(20,34,26,.09);min-width:0}
+.aufgabe{border:1px solid var(--rule);background:var(--tint);padding:.7rem .9rem;margin:0 0 1rem;font-family:var(--serif);font-size:.98rem;line-height:1.5}
+.aufgabe .lbl{display:block;font:700 .66rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.aufgabe .op{font-weight:600}
+.reiter{display:flex;gap:.3rem;border-bottom:1px solid var(--rule);margin-bottom:1rem}
+.reiter button{border:1px solid var(--rule);border-bottom:0;background:var(--tint);padding:.35rem .9rem;cursor:pointer;font-weight:600;font-size:.88rem;color:var(--muted);margin-bottom:-1px}
+.reiter button[aria-selected="true"]{background:var(--sheet);color:var(--ink);border-top:3px solid var(--accent)}
+.werkzeug{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center;padding-bottom:.7rem;margin-bottom:1rem;border-bottom:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+.leg{display:inline-flex;align-items:center;gap:.35rem}
+.leg i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px}
+.leg.c1 i{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.leg.c2 i{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.leg.c3 i{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.leg.c4 i{background:var(--c4-bg);box-shadow:inset 0 -2px var(--c4)}
+.werkzeug .still{font-style:italic}
+.schalter{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;color:var(--ink)}
+.schalter input{accent-color:var(--accent);width:1rem;height:1rem}
+
+.para{margin:0 0 1rem 2.6rem}
+.para .rubrik{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.para h2{font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.2;margin:.2rem 0 .3rem;text-wrap:balance}
+.para .byline{font-size:.9rem;color:var(--muted)}
+.texte{font-family:var(--serif);font-size:1.04rem;line-height:1.78}
+.abs{margin:0 0 .75rem}
+.z{display:block;position:relative;padding-left:2.6rem}
+.z::before{content:attr(data-z);position:absolute;left:0;width:1.7rem;text-align:right;font:600 .66rem/1.9rem var(--sans);color:var(--muted);user-select:none;-webkit-user-select:none}
+.z:not([data-show])::before{color:transparent}
+.zumautor{font-size:.8rem;color:var(--muted);margin:1rem 0 0 2.6rem;padding-top:.6rem;border-top:1px solid var(--rule)}
+.mk{border-radius:2px;padding:.05em 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mk.c1{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.mk.c2{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.mk.c3{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+.mk.c4{background:var(--c4-bg);box-shadow:inset 0 -2px var(--c4);text-decoration:underline dotted var(--c4);text-underline-offset:.25em}
+.ziel{outline:2px dashed var(--c3);outline-offset:3px;border-radius:2px}
+
+/* M2 */
+.m2 h3{font-family:var(--serif);font-weight:600;font-size:1.08rem;line-height:1.3;margin:0 0 .5rem;text-wrap:balance}
+.m2 .block{margin-bottom:1.5rem}
+.tabwrap{overflow-x:auto}
+table.daten{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+table.daten th,table.daten td{border:1px solid var(--rule);padding:.4rem .6rem}
+table.daten th{background:var(--tint);font-weight:600;text-align:center;line-height:1.25}
+table.daten td{text-align:center}
+table.daten td:first-child{text-align:left;font-weight:600}
+.fuss{font-size:.8rem;color:var(--muted);margin:.4rem 0 0}
+.m2k{border-radius:2px;padding:.05em 0}
+.zeigen .m2k[data-k="c1"]{background:var(--c1-bg);box-shadow:inset 0 -2px var(--c1)}
+.zeigen .m2k[data-k="c2"]{background:var(--c2-bg);box-shadow:inset 0 -2px var(--c2)}
+.zeigen .m2k[data-k="c3"]{background:var(--c3-bg);box-shadow:inset 0 -2px var(--c3)}
+
+/* rechts */
+.rand{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.frage{font-family:var(--serif);font-size:1.12rem;line-height:1.35;margin:0 0 .7rem}
+.karte ul{margin:0;padding-left:1.1rem;font-size:.92rem}
+.karte li{margin:.25rem 0}
+.auftrag{border-left:4px solid var(--c3);padding:.4rem 0 .4rem .8rem;margin:.9rem 0 0;font-size:.92rem}
+.auftrag b{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c3);margin-bottom:.15rem}
+.merke{background:var(--tint);border-left:3px solid var(--c2);padding:.6rem .75rem;font-size:.9rem;margin-top:.8rem}
+.merke b{color:var(--c2)}
+
+/* Freischalten */
+.zu{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.9rem;color:var(--muted)}
+.zu input{width:6.5rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;letter-spacing:.2em}
+.msg{font-size:.82rem;color:var(--warn);min-height:1.1em;margin:.3rem 0 0}
+.knopf{border:1px solid var(--accent);background:var(--sheet);color:var(--accent);padding:.4rem .8rem;cursor:pointer;font-weight:500;border-radius:2px}
+.knopf.voll{background:var(--accent);color:var(--accent-ink)}
+.loesung{font-family:var(--serif);font-size:1rem;line-height:1.6;margin-top:.8rem;padding:.8rem 1rem;background:var(--tint);border-left:3px solid var(--ok)}
+.loesung p{margin:0 0 .6rem}.loesung p:last-child{margin:0}
+.loesung h4{font-family:var(--sans);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:.9rem 0 .3rem}
+.loesung h4:first-child{margin-top:0}
+.loesung .r{background:var(--c1-bg);padding:0 .15em;border-radius:2px}
+.loesung table{border-collapse:collapse;font-family:var(--sans);font-size:.88rem;font-variant-numeric:tabular-nums;margin:.3rem 0}
+.loesung td,.loesung th{border:1px solid var(--rule);padding:.2rem .5rem;text-align:center}
+
+/* Übung unten */
+.uebung{margin-top:1.4rem}
+.uebung .karte{border-top-color:var(--c3)}
+.uebung .karte h3{color:var(--c3)}
+.einl{font-size:.94rem;margin:0 0 .8rem;max-width:56rem}
+.items{display:grid;gap:.6rem}
+.item{border:1px solid var(--rule);padding:.65rem .8rem;display:grid;gap:.45rem;background:var(--sheet)}
+.item .aussage{font-family:var(--serif);font-size:1rem;line-height:1.4}
+.wahl{display:flex;flex-wrap:wrap;gap:.35rem}
+.wahl button{border:1px solid var(--rule);background:var(--tint);padding:.3rem .65rem;cursor:pointer;font-size:.88rem;border-radius:2px}
+.wahl button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fb{font-size:.88rem;margin:0}
+.fb.ok{color:var(--ok)}.fb.mid{color:var(--mid)}.fb.no{color:var(--warn)}
+.fb b{font-weight:600}
+.zwei{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:48rem){.zwei{grid-template-columns:1fr}}
+.vergleich{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
+@media (max-width:48rem){.vergleich{grid-template-columns:1fr}}
+.vergleich section{border:1px solid var(--rule);padding:.8rem .9rem;background:var(--sheet);min-width:0}
+.vergleich h4{margin:0 0 .4rem;font-size:.95rem}
+.vergleich ol{margin:0;padding-left:1.2rem;font-size:.9rem}
+.vergleich li{margin:.2rem 0}
+.vergleich section.ziel2b{border-color:var(--c3);border-top:3px solid var(--c3)}
+.raster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:.4rem 0 1rem}
+@media (max-width:40rem){.raster{grid-template-columns:1fr}}
+.raster div{border:1px solid var(--rule);padding:.6rem .7rem;background:var(--tint)}
+.raster b{display:block;font-family:var(--serif);font-size:1.5rem;line-height:1}
+.raster span{font-size:.86rem}
+.operator{font-family:var(--serif);border-left:4px solid var(--accent);padding:.5rem .8rem;margin:0 0 1rem;background:var(--tint)}
+.operator small{display:block;font-family:var(--sans);color:var(--muted);font-size:.78rem;margin-top:.2rem}
+
+/* Rechencheck */
+table.rechnen{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.94rem;width:100%}
+table.rechnen th,table.rechnen td{border:1px solid var(--rule);padding:.35rem .5rem;text-align:center;vertical-align:middle}
+table.rechnen th{background:var(--tint);font-weight:600}
+table.rechnen td:first-child{text-align:left}
+table.rechnen input{width:5.2rem;border:1px solid var(--rule);background:var(--sheet);padding:.25rem .4rem;text-align:right}
+.st{display:inline-block;width:1.2rem;font-weight:700}
+.st.ok{color:var(--ok)}.st.no{color:var(--warn)}
+.hinweisformel{font-size:.86rem;color:var(--muted);margin:.5rem 0 0}
+details.tipp{border:1px solid var(--rule);background:var(--sheet);margin:.4rem 0}
+details.tipp summary{cursor:pointer;padding:.45rem .7rem;font-weight:600;font-size:.9rem}
+details.tipp div{padding:0 .8rem .6rem;font-size:.92rem}
+
+/* Checkliste */
+.check fieldset{border:0;border-top:1px solid var(--rule);margin:0 0 .6rem;padding:.6rem 0 0;min-width:0}
+.check legend{font-weight:600;padding-right:.4rem}
+.check legend small{color:var(--muted);font-weight:400}
+.check label{display:flex;gap:.55rem;align-items:flex-start;margin:.3rem 0;cursor:pointer;font-size:.93rem}
+.check input{margin-top:.25rem;accent-color:var(--accent);width:1.05rem;height:1.05rem;flex:none}
+.check .pt{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.summe{display:flex;justify-content:space-between;align-items:baseline;font-weight:600;border-top:2px solid var(--ink);padding-top:.5rem;margin-top:.3rem}
+.summe span{font-family:var(--serif);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.note{font-size:.82rem;color:var(--muted);margin:.5rem 0 0}
+
+/* Formulierungshilfen */
+.rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:.3rem 1.4rem}
+.rm h4{font-size:.8rem;font-weight:600;margin:.4rem 0 .2rem;color:var(--muted)}
+.rm ul{list-style:none;padding:0;margin:0 0 .4rem;font-family:var(--serif);font-size:.95rem}
+.rm li{padding:.15rem 0;border-bottom:1px dotted var(--rule)}
+details.klapp{margin-top:1.4rem}
+details.klapp>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+details.klapp>summary::-webkit-details-marker{display:none}
+details.klapp>summary h3{border:0;padding:0;margin:0}
+details.klapp>summary span{font-size:.78rem;color:var(--muted)}
+details.klapp[open]>summary{margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+footer{margin-top:2.5rem;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Aufgabe 3: Grafik, Kennzahlen, Kategorien */
+.tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.tag{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule);padding:.05rem .4rem;color:var(--muted)}
+.tag.pro{border-color:var(--ok);color:var(--ok)} .tag.con{border-color:var(--warn);color:var(--warn)}
+.kat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
+@media (max-width:40rem){.kat{grid-template-columns:1fr}}
+.kat section{border:1px solid var(--rule);padding:.7rem .9rem;background:var(--sheet);min-width:0}
+.kat h4{margin:0 0 .3rem;font-family:var(--serif);font-size:1.25rem;font-weight:600}
+.kat .lf{font-family:var(--serif);font-style:italic;margin:0 0 .3rem}
+.kat p{margin:0;font-size:.9rem}
+.kat .kE{border-top:4px solid var(--c1)} .kat .kE h4{color:var(--c1)}
+.kat .kL{border-top:4px solid var(--c4)} .kat .kL h4{color:var(--c4)}
+.tE,.tL{display:inline-block;font:700 .7rem/1.4 var(--sans);padding:0 .3rem;border-radius:2px}
+.tE{background:var(--c1-bg);color:var(--c1)} .tL{background:var(--c4-bg);color:var(--c4)}
+.matrix{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.2rem;font-size:.88rem}
+.matrix div{background:var(--sheet);padding:.45rem .6rem}
+.matrix .mh{background:var(--tint);font-weight:600}
+.loesung table.ewh{width:100%;table-layout:fixed}
+.loesung table.ewh td{text-align:left;vertical-align:top;font-family:var(--serif);font-size:.86rem;line-height:1.4}
+.loesung th small{font-weight:400;color:var(--muted)}
+.loesung td{text-align:left}
+.loesung .klein{font-family:var(--sans);font-size:.8rem;color:var(--muted)}
+.wahl button[aria-pressed="true"]{background:var(--accent)}
+
+.blatt .uh{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c3);margin:1.2rem 0 .6rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.blatt .aufgabe+.uh{margin-top:0}
+.item.farb{border-left:4px solid var(--rule)}
+.item.farb.an.c1{border-left-color:var(--c1)} .item.farb.an.c2{border-left-color:var(--c2)} .item.farb.an.c3{border-left-color:var(--c3)} .item.farb.an.c4{border-left-color:var(--c4)}
+.rand .item .aussage{font-size:.95rem}
+.zr{color:var(--muted);white-space:nowrap}
+.wahlzeile{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center}
+.krit{display:inline-flex;align-items:center;gap:.4rem;font-size:.88rem;color:var(--muted);min-width:0;max-width:100%}
+@media (max-width:40rem){.krit{display:flex;width:100%}.krit select{flex:1;width:100%}}
+.krit select{text-overflow:ellipsis}
+.krit select{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);padding:.3rem .4rem;max-width:100%;min-width:0}
+.lsg{border-top:1px dashed var(--rule);padding-top:.45rem;font-size:.9rem}
+.lsg p{margin:.15rem 0}
+.klein{font-size:.82rem;color:var(--muted)}
+.m1klapp{margin-top:1.2rem}
+.m1klapp>div{padding-top:.6rem}
+.check fieldset:first-of-type{border-top:0;padding-top:0}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="kopf">
+    <p class="eyebrow">Sozialwissenschaften · Q2 · Klausurtraining</p>
+    <h1>Aufgabe 3: Kriterial erörtern und urteilen</h1>
+    <p>Thema: der „China-Schock 2.0“. Ihr lest zuerst einen Informationstext und übt dann, Argumente nach Effizienz und Legitimität zu ordnen und ein gewichtetes Urteil zu schreiben. Geschrieben wird in OneNote.</p>
+    <span class="lockstate" id="lockState">Musterlösungen freigeschaltet: 0 / 2</span>
+  </header>
+
+  <nav class="steps" id="steps" role="tablist" aria-label="Schritte der Aufgabe 3"></nav>
+
+  <div class="haupt">
+    <main class="blatt" id="blatt"></main>
+    <aside class="rand" id="rand"></aside>
+  </div>
+
+  <details class="klapp karte" id="rmKlapp" hidden>
+    <summary><h3>Formulierungshilfen für Aufgabe 3</h3><span>auf- und zuklappen</span></summary>
+    <div class="rm">
+      <div><h4>Perspektive einleiten</h4><ul>
+        <li>Aus ökonomischer Perspektive ist zunächst zu fragen, ob …</li>
+        <li>Betrachtet man die Frage aus politischer Perspektive, …</li>
+        <li>Für eine solche Regel spricht aus ökonomischer Sicht, dass …</li>
+      </ul></div>
+      <div><h4>Kriterium benennen</h4><ul>
+        <li>Unter dem Kriterium der Wirksamkeit lässt sich festhalten, dass …</li>
+        <li>Mit Blick auf die Rechtmäßigkeit ist problematisch, dass …</li>
+        <li>Dieses Argument zielt auf das Kriterium der sozialen Gerechtigkeit: …</li>
+      </ul></div>
+      <div><h4>Gegenargument einbeziehen</h4><ul>
+        <li>Dem lässt sich jedoch entgegenhalten, dass …</li>
+        <li>Dieses Argument verliert an Gewicht, wenn man bedenkt, dass …</li>
+        <li>Zwar …, doch …</li>
+      </ul></div>
+      <div><h4>Gewichten</h4><ul>
+        <li>Schwerer als das Kriterium … wiegt für mich das Kriterium …, weil …</li>
+        <li>Entscheidend ist für mich das Kriterium …, da …</li>
+        <li>Auch wenn die Maßnahme wirksam wäre, ist sie nicht legitim, solange …</li>
+        <li>Unter Effizienzgesichtspunkten …, unter Legitimitätsgesichtspunkten dagegen …</li>
+      </ul></div>
+      <div><h4>Urteil formulieren</h4><ul>
+        <li>Abwägend komme ich zu dem Ergebnis, dass …</li>
+        <li>Die EU sollte daher (nicht) …, weil …</li>
+        <li>Vertretbar wäre eine solche Regel allenfalls dann, wenn …</li>
+      </ul></div>
+    </div>
+  </details>
+
+  <footer>
+    <p>M 1 ist ein Informationstext, der für dieses Training verfasst wurde. Grundlagen: tagesschau.de, „China-Schock 2.0 – wie sich Europa wehren kann“ (21.10.2026), mit Angaben des Kiel Instituts für Weltwirtschaft, der OECD und von Brad Setser; Jürgen Matthes, IW-Kurzbericht 13/2026; Statistisches Bundesamt. Kategorien Effizienz und Legitimität: Kernlehrplan Sozialwissenschaften NRW (UK 6) und Erläuterungen der QUA-LiS NRW. Bewertungsraster wie in der Klausur: erste Perspektive 10 + zweite Perspektive 10 + begründetes Urteil 10 = 30 Punkte (+3 weiteres Kriterium).</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- M 1 ---------- */
+const LINES=["Als China im Dezember 2001 der Welthandelsorganisation (WTO) beitrat,", "öffneten sich die Märkte der Welt für chinesische Waren. In den", "folgenden Jahren füllten günstige Massenprodukte wie Kleidung,", "Spielzeug, Möbel und einfache Elektronik die Regale in Europa und", "Nordamerika. Ökonominnen und Ökonomen sprechen vom ersten", "„China-Schock“: In den USA gingen in vielen Industrieregionen", "Hunderttausende Arbeitsplätze verloren. Deutschland kam vergleichsweise", "glimpflich davon. Zwar litten auch hier Branchen wie die Textil- oder", "Spielzeugindustrie, doch zugleich wurde China zu einem der wichtigsten", "Käufer deutscher Autos, Maschinen und Chemieprodukte. Unter dem Strich", "profitierte die deutsche Industrie.", "Heute ist die Lage eine andere. Beim „China-Schock 2.0“, wie Forschende", "des Kiel Instituts für Weltwirtschaft ihn nennen, liefert China nicht", "mehr vor allem billige Massenware, sondern genau die Produkte, mit denen", "Deutschland bisher sein Geld verdient hat: Autos, Maschinen und Chemie.", "In knapp 40 Prozent der Branchen, in denen Europas Industrie", "traditionell stark ist, macht China ihr inzwischen Konkurrenz; Anfang", "der 2000er-Jahre war es nur ein Viertel. Chinesische Hersteller sind", "dabei oft nicht nur billiger, sondern technisch auf Augenhöhe.", "Dafür gibt es mehrere Gründe. China hat früh in Bildung, Infrastruktur", "und Forschung investiert und viel von westlichen Unternehmen gelernt.", "Zugleich fördert der Staat seine Industrie massiv: Laut einer Studie der", "OECD erhielten große chinesische Industrieunternehmen zwischen 2005 und", "2024 drei- bis achtmal so viel staatliche Unterstützung wie", "vergleichbare Firmen aus OECD-Ländern. Fast 60 Prozent ihrer weltweiten", "Marktanteilsgewinne lassen sich mit diesen Subventionen erklären. So", "sind Fabriken entstanden, die weit mehr produzieren, als in China selbst", "gekauft wird. Diese Überkapazitäten drängen auf den Weltmarkt. Hinzu", "kommt der Wechselkurs: Der US-Ökonom Brad Setser schätzt, dass der Yuan", "um rund 30 Prozent unterbewertet ist. Das macht chinesische Waren im", "Ausland zusätzlich billiger. Und weil die USA hohe Zölle auf chinesische", "Waren erheben, weichen viele Exporteure auf den europäischen Markt aus.", "Für die deutsche Industrie bedeutet das Druck von zwei Seiten. Von 2022", "bis 2025 sanken die deutschen Exporte nach China von 106,8 auf 81,2", "Milliarden Euro, während die Importe aus China zuletzt wieder auf 171,2", "Milliarden Euro stiegen. Das Defizit im Handel mit China erreichte damit", "2025 rund 90 Milliarden Euro, ein Rekord. Auch 2026 setzt sich der Trend", "fort: In den ersten acht Monaten fielen die Exporte um 12,9 Prozent, die", "Importe stiegen um 10,1 Prozent. Unter Deutschlands Exportmärkten ist", "China von Rang zwei (2021) auf Rang neun (erstes Halbjahr 2026)", "abgerutscht. Besonders hart trifft es die Autoindustrie: Ihre Ausfuhren", "nach China brachen 2025 binnen eines Jahres um ein Drittel ein.", "Inzwischen exportiert China selbst mehr als doppelt so viele Fahrzeuge", "wie Deutschland. Und mit seiner Strategie der „dualen Zirkulation“", "verfolgt Peking seit 2020 das Ziel, dass Güter, die heute noch aus", "Deutschland kommen, künftig von chinesischen Firmen hergestellt werden.", "Wie Europa reagieren soll, ist umstritten. Die EU-Kommission will den", "Zugang zum Binnenmarkt bei unfairen Handelspraktiken künftig schneller", "beschränken können. Forschende des Kiel Instituts schlagen vor, den", "Marktzugang bei strategisch wichtigen Produkten an eine Produktion in", "Europa zu knüpfen. Ähnlich wird diskutiert, staatliche Förderung, etwa", "Kaufprämien für E-Autos oder öffentliche Aufträge, nur noch für Produkte", "zu zahlen, die überwiegend in Europa hergestellt wurden („Made in", "Europe“). Kritiker warnen, dass Schutz vor Konkurrenz Unternehmen bequem", "machen kann, und vor Gegenmaßnahmen Chinas, von dem Europa etwa bei", "Seltenen Erden abhängig ist. Manche Ökonomen erwarten allerdings keine", "große Eskalation, weil China bereits in einem Handelskonflikt mit den", "USA steckt. Billige Importe haben schließlich auch Vorteile: Sie", "entlasten Verbraucherinnen und Verbraucher und können den Umstieg auf", "klimafreundliche Technik beschleunigen."];
+const BREAKS=new Set([11, 19, 32, 46]);
+const FULL=LINES.join(' ');
+const STARTS=[];{let o=0;LINES.forEach(l=>{STARTS.push(o);o+=l.length+1;});}
+const lineOf=pos=>{let i=0;while(i+1<STARTS.length&&STARTS[i+1]<=pos)i++;return i+1;};
+function zeilen(ps){const a=FULL.indexOf(ps[0]);const last=ps[ps.length-1];const b=FULL.indexOf(last)+last.length-1;const x=lineOf(a),y=lineOf(b);return 'Z. '+(x===y?x:x+'–'+y);}
+
+const AUFGABE='<span class="op">Erörtern Sie</span> aus einerseits ökonomischer und andererseits politischer Perspektive, ob die EU staatliche Förderung (z. B. Kaufprämien für E-Autos oder öffentliche Aufträge) an eine „Made in Europe“-Regel knüpfen sollte. <span style="white-space:nowrap">(30 Punkte)</span>';
+const CODES={3:'7741',4:'2967'};
+
+/* ---------- Schritt 1: Verständnischeck mit Markierungen ---------- */
+const Q1=[
+ {c:'c1',a:'Deutschland wurde vom ersten China-Schock genauso hart getroffen wie die USA.',ok:0,p:['Deutschland kam vergleichsweise glimpflich davon','Unter dem Strich profitierte die deutsche Industrie.'],
+  f:'Deutschland kam „vergleichsweise glimpflich davon“, weil China deutsche Autos, Maschinen und Chemie kaufte.'},
+ {c:'c2',a:'Beim China-Schock 2.0 konkurriert China mit genau den Produkten, mit denen Deutschland bisher sein Geld verdient hat.',ok:1,p:['genau die Produkte, mit denen Deutschland bisher sein Geld verdient hat: Autos, Maschinen und Chemie.'],
+  f:'Autos, Maschinen und Chemie: die Kernbranchen der deutschen Industrie.'},
+ {c:'c3',a:'In den traditionell starken Branchen Europas macht China heute doppelt so oft Konkurrenz wie Anfang der 2000er-Jahre.',ok:0,p:['In knapp 40 Prozent der Branchen','nur ein Viertel.'],
+  f:'Knapp 40 Prozent statt 25 Prozent: ein deutlicher Anstieg, aber keine Verdopplung (40 ÷ 25 = 1,6).'},
+ {c:'c4',a:'Chinas Erfolg beruht allein auf staatlichen Subventionen.',ok:0,p:['China hat früh in Bildung, Infrastruktur und Forschung investiert','Fast 60 Prozent ihrer weltweiten Marktanteilsgewinne lassen sich mit diesen Subventionen erklären.'],
+  f:'Subventionen erklären einen großen Teil (fast 60 % der Marktanteilsgewinne), aber nicht alles: China hat auch in Bildung, Infrastruktur und Forschung investiert.'},
+ {c:'c1',a:'Ein unterbewerteter Yuan macht chinesische Waren im Ausland billiger.',ok:1,p:['der Yuan um rund 30 Prozent unterbewertet ist. Das macht chinesische Waren im Ausland zusätzlich billiger.'],
+  f:'Nach Setsers Schätzung ist der Yuan um rund 30 % unterbewertet; das verbilligt chinesische Exporte.'},
+ {c:'c2',a:'„Druck von zwei Seiten“ heißt: Deutschland verkauft weniger nach China, und mehr chinesische Waren kommen nach Deutschland.',ok:1,p:['Druck von zwei Seiten','von 106,8 auf 81,2 Milliarden Euro','wieder auf 171,2 Milliarden Euro stiegen.'],
+  f:'Exporte 2022 → 2025: 106,8 → 81,2 Mrd. Euro; Importe zuletzt 171,2 Mrd. Euro.'},
+ {c:'c3',a:'Als Exportmarkt ist China für Deutschland heute wichtiger als 2021.',ok:0,p:['China von Rang zwei (2021) auf Rang neun (erstes Halbjahr 2026)'],
+  f:'China ist von Rang zwei auf Rang neun abgerutscht.'},
+ {c:'c4',a:'Billige Importe aus China haben für Europa ausschließlich Nachteile.',ok:0,p:['Billige Importe haben schließlich auch Vorteile'],
+  f:'Sie entlasten Verbraucherinnen und Verbraucher und können den Umstieg auf klimafreundliche Technik beschleunigen.'}
+];
+
+/* ---------- Schritt 2: Kriterien zuordnen ---------- */
+const EL=['Effizienz','Legitimität'];
+const Q2=[
+ {a:'Wirksamkeit',r:[['ok','Erreicht die Maßnahme ihr Ziel?'],['no','Ob etwas wirkt, ist eine Zweck-Mittel-Frage, also Effizienz.']]},
+ {a:'Rechtmäßigkeit',r:[['no','Ob etwas erlaubt ist, ist eine normative Frage, also Legitimität.'],['ok','Vereinbar mit Recht und Regeln, z. B. WTO-Recht oder Grundgesetz.']]},
+ {a:'Finanzierbarkeit',r:[['ok','Kosten und Mittel: Effizienz.'],['no','Hier geht es um Kosten, also Effizienz.']]},
+ {a:'Chancengerechtigkeit',r:[['no','Gerechtigkeitskriterien gehören zur Legitimität.'],['ok','Gerechtigkeit ist ein Wertmaßstab: Legitimität.']]},
+ {a:'Wettbewerbsfähigkeit',r:[['ok','Ob Unternehmen auf dem Markt bestehen können: Effizienz.'],['no','Gemeint ist der wirtschaftliche Erfolg, also Effizienz. (Wettbewerbs<i>fairness</i> wäre dagegen Legitimität.)']]},
+ {a:'Akzeptanz',r:[['mid','Vertretbar, wenn ihr Akzeptanz als Voraussetzung für die Umsetzung versteht. Meist wird sie aber der Legitimität zugeordnet.'],['ok','Ob die Betroffenen die Maßnahme für richtig halten: Legitimität.']]},
+ {a:'Umsetzbarkeit',r:[['ok','Lässt sich die Maßnahme praktisch durchführen? Effizienz.'],['no','Es geht um die praktische Durchführung, also Effizienz.']]},
+ {a:'Nachhaltigkeit',r:[['mid','Vertretbar, wenn ihr mit dauerhaft tragfähigen Kosten argumentiert. Die QUA-LiS ordnet sie der Legitimität zu.'],['ok','So ordnet es die QUA-LiS zu: Verantwortung für künftige Generationen. Ein Grenzfall, den ihr begründen müsst.']]},
+ {a:'Generationengerechtigkeit',r:[['no','Gerechtigkeit zwischen Jung und Alt ist ein Wertmaßstab: Legitimität.'],['ok','Gerechtigkeitskriterium: Legitimität.']]},
+ {a:'Wachstum',r:[['ok','Wirtschaftliche Leistung: Effizienz.'],['no','Wachstum misst wirtschaftlichen Erfolg, also Effizienz.']]}
+];
+
+/* ---------- Schritt 3: Argumente (Partnerarbeit, Lösung per Code) ---------- */
+const KRIT=['Akzeptanz','Eskalationsrisiko','Finanzierbarkeit','Handlungsfähigkeit/Souveränität','Nachhaltigkeit','Rechtmäßigkeit/Glaubwürdigkeit','soziale Gerechtigkeit','Standort- und Beschäftigungssicherung','Wachstum','Wettbewerbsfairness','Wirksamkeit'];
+const T_OEK='<span class="tag">ökonomisch</span>', T_POL='<span class="tag">politisch</span>', PRO='<span class="tag pro">eher zustimmend</span>', CON='<span class="tag con">eher ablehnend</span>';
+/* kat: 0 = Effizienz, 1 = Legitimität, 2 = beides vertretbar; k: akzeptierte Kriterien (erstes = Musterlösung) */
+const Q3=[
+ {tag:T_OEK+PRO,a:'Wenn Fördergeld nur für europäische Produkte fließt, bleiben Wertschöpfung und Arbeitsplätze in Europa, etwa in der Autoindustrie, deren Ausfuhren nach China 2025 um ein Drittel eingebrochen sind.',kat:0,k:['Standort- und Beschäftigungssicherung','Wachstum'],f:'Es geht um Nutzen und Ertrag der Maßnahme für den Standort.'},
+ {tag:T_OEK+PRO,a:'Chinesische Hersteller sind durch Subventionen und einen unterbewerteten Yuan künstlich billig. Europäische Unternehmen konkurrieren nicht unter gleichen Bedingungen.',kat:1,k:['Wettbewerbsfairness'],f:'Ökonomisches Thema, aber normativer Maßstab: Sind die Wettbewerbsbedingungen gerecht?'},
+ {tag:T_OEK+CON,a:'Fahrzeuge aus europäischer Produktion sind teurer. Mit demselben Fördergeld werden weniger E-Autos gekauft, der Umstieg verlangsamt sich.',kat:0,k:['Wirksamkeit','Finanzierbarkeit'],f:'Es geht um Zielerreichung pro eingesetztem Euro.'},
+ {tag:T_OEK+CON,a:'Haushalte mit geringem Einkommen können sich oft nur günstige Modelle leisten. Sie würden von der Förderung ausgeschlossen.',kat:1,k:['soziale Gerechtigkeit'],f:'Es geht darum, wer benachteiligt wird.'},
+ {tag:T_POL+PRO,a:'Europa verringert seine Abhängigkeit von China in einer Schlüsselindustrie und bleibt im Konfliktfall handlungsfähig.',kat:2,k:['Handlungsfähigkeit/Souveränität'],f:'Grenzfall: Handlungsfähigkeit im Sinne von Krisenfestigkeit ist Effizienz, Souveränität als Selbstbestimmung ist Legitimität. Beides ist mit Begründung vertretbar.'},
+ {tag:T_POL+PRO,a:'Steuergeld, das heimische Arbeitsplätze sichert, findet in der Bevölkerung mehr Zustimmung als Förderung, die chinesischen Herstellern zugutekommt.',kat:1,k:['Akzeptanz'],f:'Es geht um die Zustimmung der Bürgerinnen und Bürger.'},
+ {tag:T_POL+CON,a:'China könnte mit Gegenmaßnahmen antworten, etwa mit Exportbeschränkungen bei Seltenen Erden oder Zöllen auf europäische Waren. Der Handelskonflikt würde eskalieren.',kat:0,k:['Eskalationsrisiko'],f:'Politisches Thema, aber es geht um Folgen und Nebenfolgen der Maßnahme.'},
+ {tag:T_POL+CON,a:'Förderung, die an heimische Produktion gebunden ist, ist nach den Regeln der WTO kaum zulässig. Die EU hat genau das an den USA kritisiert und würde unglaubwürdig.',kat:1,k:['Rechtmäßigkeit/Glaubwürdigkeit'],f:'Es geht um Regeln und Glaubwürdigkeit.'}
+];
+const KATNAME=['Effizienz','Legitimität','Effizienz oder Legitimität'];
+
+/* ---------- Schritt 4: Urteile vergleichen ---------- */
+const Q4=[
+ {a:'„Ich finde, die EU sollte das machen. China verhält sich unfair, und wir müssen unsere Wirtschaft schützen. Außerdem ist es wichtig, dass Europa unabhängig wird. Deshalb bin ich dafür.“',r:[['ok','Genau: Es wird eine Meinung geäußert, aber kein Kriterium ausgewiesen und nichts gewichtet. Gegenargumente fehlen ganz.'],['no','Hier wird kein Kriterium beim Namen genannt; es bleibt bei einer Meinung.'],['no','Es fehlen Kriterien und Gegenargumente. Das ist eine Meinung, kein kriteriales Urteil.']]},
+ {a:'„Für die Regel sprechen die Kriterien Beschäftigungssicherung und Wettbewerbsfairness. Dagegen sprechen Wirksamkeit, Eskalationsrisiko und Rechtmäßigkeit. Da mehr Kriterien dagegen sprechen, sollte die EU die Regel nicht einführen.“',r:[['no','Hier werden durchaus Kriterien genannt; es ist mehr als eine Meinung.'],['ok','Genau: Die Kriterien werden genannt, aber nur gezählt, nicht gewichtet. Warum ein Kriterium schwerer wiegt, bleibt offen.'],['no','Kriterien zählen ist kein Gewichten. Es fehlt die Begründung, warum ein Kriterium wichtiger ist.']]},
+ {a:'„Zwar könnte die Regel unter dem Kriterium der <b>Beschäftigungssicherung</b> Arbeitsplätze in der Autoindustrie erhalten. Schwerer wiegt für mich aber das Kriterium der <b>Rechtmäßigkeit</b>: Förderung, die an heimische Produktion gebunden ist, verstößt gegen WTO-Regeln. Damit verliert die EU zudem an <b>Glaubwürdigkeit</b>, denn wer selbst Regeln bricht, kann sie von China nicht mehr einfordern. Ich lehne eine allgemeine Regel daher ab; vertretbar wäre sie allenfalls in sicherheitsrelevanten Bereichen.“',r:[['no','Hier werden Kriterien ausdrücklich benannt und eines höher gewichtet.'],['no','Die Kriterien werden nicht nur genannt, sondern gewichtet („Schwerer wiegt für mich das Kriterium …“) und begründet.'],['ok','Genau: Kriterien ausdrücklich ausgewiesen, Gegenargument aufgegriffen, Gewichtung begründet, differenziertes Ergebnis.']]}
+];
+
+/* ---------- Musterlösungen ---------- */
+const L3='<h4>Ökonomische Perspektive</h4><table class="ewh"><tr><th>eher zustimmend</th><th>eher ablehnend</th></tr><tr><td>Fördergeld fließt in europäische Produktion und sichert Wertschöpfung und Arbeitsplätze, etwa in der Autoindustrie (Standort- und Beschäftigungssicherung · <span class="tE">E</span>)</td><td>Teurere Fahrzeuge: Jeder Förder-Euro bewirkt weniger, der Umstieg auf E-Autos verlangsamt sich (Wirksamkeit · <span class="tE">E</span>)</td></tr><tr><td>Chinesische Anbieter sind durch Subventionen und einen unterbewerteten Yuan künstlich billig (Wettbewerbsfairness · <span class="tL">L</span>)</td><td>Haushalte mit geringem Einkommen werden benachteiligt (soziale Gerechtigkeit · <span class="tL">L</span>)</td></tr></table><h4>Politische Perspektive</h4><table class="ewh"><tr><th>eher zustimmend</th><th>eher ablehnend</th></tr><tr><td>Geringere Abhängigkeit von China; Europa bleibt im Konfliktfall handlungsfähig (Handlungsfähigkeit/Souveränität · <span class="tE">E</span>/<span class="tL">L</span>)</td><td>Gegenmaßnahmen Chinas, etwa bei Seltenen Erden; Eskalation des Handelskonflikts (Eskalationsrisiko · <span class="tE">E</span>)</td></tr><tr><td>Förderung, die heimische Arbeitsplätze sichert, findet eher Zustimmung (Akzeptanz · <span class="tL">L</span>)</td><td>Nach WTO-Regeln kaum zulässig; die EU hat dies an den USA kritisiert (Rechtmäßigkeit/Glaubwürdigkeit · <span class="tL">L</span>)</td></tr></table><p class="klein"><span class="tE">E</span> Effizienz · <span class="tL">L</span> Legitimität. In der Klausur nennt ihr das Kriterium; die Kategorie hilft beim Gewichten.</p>';
+const L4='<p>Ob die EU staatliche Förderung an eine „Made in Europe“-Regel knüpfen sollte, hängt davon ab, welche Kriterien man in den Vordergrund stellt. Unter dem Kriterium der <span class="r">Standort- und Beschäftigungssicherung</span> spricht zunächst einiges dafür: Fördergeld, das in europäische Produktion fließt, kann Arbeitsplätze in einer Autoindustrie sichern, deren Ausfuhren nach China 2025 um ein Drittel eingebrochen sind. Unter dem Kriterium der <span class="r">Wirksamkeit</span> spricht dagegen, dass die Regel den Umstieg auf E-Autos verteuert, sodass jeder Förder-Euro weniger bewirkt. Hinzu kommt ein <span class="r">Eskalationsrisiko</span>, weil China mit Gegenmaßnahmen antworten könnte.</p><p><span class="r">Schwerer wiegen für mich</span> jedoch die Kriterien der Legitimität. Zwar ist es unter dem Kriterium der <span class="r">Wettbewerbsfairness</span> berechtigt, auf subventionierte Überkapazitäten zu reagieren. Eine pauschale Bevorzugung europäischer Produkte wäre aber unter dem Kriterium der <span class="r">Rechtmäßigkeit</span> kaum mit den WTO-Regeln vereinbar und würde die <span class="r">Glaubwürdigkeit</span> der EU untergraben, die solche Regeln bei den USA selbst kritisiert hat. Unter dem Kriterium der <span class="r">sozialen Gerechtigkeit</span> träfe sie zudem vor allem Haushalte mit geringem Einkommen.</p><p><span class="r">Abwägend komme ich zu dem Ergebnis</span>, dass die EU keine allgemeine „Made in Europe“-Regel einführen sollte. Vertretbar wäre sie allenfalls in sicherheitsrelevanten Bereichen, in denen die Abhängigkeit von China die <span class="r">Handlungsfähigkeit</span> Europas gefährdet. <span class="r">Entscheidend</span> sind für mich also die Rechtmäßigkeit und die Wirksamkeit; die Beschäftigungssicherung halte ich für wichtig, aber mit anderen Mitteln für besser erreichbar.</p><p class="klein">Ein gegenteiliges Urteil ist genauso möglich. Es muss nur die leitenden Kriterien ausdrücklich ausweisen und begründet gewichten.</p>';
+
+const STEPS=[
+ {n:1,t:'China-Schock 2.0 verstehen',p:'Text M 1',
+  frage:'Was ist neu am China-Schock 2.0, und warum trifft er Deutschland härter als der erste?',
+  hinweise:['Lest M 1 einmal vollständig.','Entscheidet dann bei jeder Aussage: trifft zu oder nicht? Nach dem Klick wird die passende Textstelle farbig markiert.'],
+  auftrag:'Fasst in OneNote in vier bis sechs Sätzen zusammen, was mit dem „China-Schock 2.0“ gemeint ist: Unterschied zum ersten Schock, Ursachen, Folgen, Streitfrage.'},
+ {n:2,t:'Effizienz oder Legitimität?',p:'Kategorien',
+  frage:'Nach welchen Maßstäben beurteilt man eine politische Maßnahme?',
+  hinweise:['Die Kategorien stehen im Kernlehrplan: Ihr sollt Strukturen und Prozesse „unter Kriterien der Effizienz und Legitimität“ erörtern.','In der Klausur nennt ihr das <b>konkrete Kriterium</b>, z. B. Wirksamkeit oder Rechtmäßigkeit.','Die Kategorien helfen euch beim Gewichten: „Wirksam, aber nicht legitim“ ist bereits ein Urteil.']},
+ {n:3,t:'Argumente zuordnen',p:'je 10 P.',
+  frage:'Welches Kriterium steckt hinter einem Argument, und zu welcher Kategorie gehört es?',
+  hinweise:['Partnerarbeit: Wählt zu jedem Argument die Kategorie und das Kriterium.','Ihr bekommt hier noch keine Rückmeldung. Die Lösungen besprecht ihr anschließend gemeinsam mit eurer Lehrkraft.','Achtung: Die <b>Perspektive</b> (ökonomisch, politisch) ist nicht dasselbe wie die <b>Kategorie</b> (Effizienz, Legitimität).'],
+  loesung:L3},
+ {n:4,t:'Gewichten und urteilen',p:'10 P.',
+  frage:'Wie wird aus einer Liste von Argumenten ein begründetes Urteil?',
+  hinweise:['Der Erwartungshorizont verlangt ein Urteil „unter explizitem Ausweis und Gewichtung leitender Urteilskriterien“.','Ausweisen heißt: die Kriterien ausdrücklich beim Namen nennen. Gewichten heißt: sagen, welches Kriterium schwerer wiegt und <b>warum</b>.','Das Urteil ist ein Fließtext. Es darf differenziert sein („allenfalls dann, wenn …“), muss aber die Frage beantworten.'],
+  auftrag:'Stuft zuerst die drei Beispielurteile ein. Schreibt dann euer eigenes Urteil in OneNote (acht bis zwölf Sätze). Nutzt die Formulierungshilfen unten. Euer Urteil verwendet ihr in Schritt 5 weiter.',
+  merke:'<b>Gewichten in einem Satz:</b> „Auch wenn die Regel unter dem Kriterium der Beschäftigungssicherung Vorteile hätte, wiegt für mich das Kriterium der Rechtmäßigkeit schwerer, weil …“',
+  loesung:L4},
+ {n:5,t:'Selbstcheck',p:'30 P.',
+  frage:'Aus den Bausteinen wird jetzt eine vollständige Erörterung.',
+  hinweise:['Schreibt zuerst die beiden Perspektiven als Fließtext: die ökonomische und die politische, jeweils mit Argumenten dafür und dagegen und mit Kriterium. Nutzt die Argumente aus Schritt 3 und ergänzt eigene.','Euer Urteil aus Schritt 4 übernehmt ihr dann als Schluss. Passt es an, falls ihr in den Perspektiven neue Argumente ergänzt habt.','Hakt anschließend ab, was eure Erörterung wirklich enthält. Die Teilpunkte sind eine Orientierung, keine amtliche Bewertung.','In der Klausur kommt eventuell hinzu, dass ihr die Position des Autors und eure Ergebnisse aus 2b) einbeziehen sollt. Achtet auf die Aufgabenstellung.'],
+  auftrag:'Schreibt die vollständige Erörterung in OneNote: erste Perspektive, zweite Perspektive, Urteil aus Schritt 4. Überarbeitet sie dann an den Stellen, die ihr nicht abhaken konntet.'}
+];
+const CHECK=[
+ ['Erste Perspektive (ökonomisch)',10,[['o1','Mindestens zwei Argumente „eher zustimmend“, jeweils mit Kriterium',3],['o2','Mindestens zwei Argumente „eher ablehnend“, jeweils mit Kriterium',3],['o3','Argumente mit Material belegt (z. B. Zahlen aus M 1)',2],['o4','Argumente nicht nur genannt, sondern erläutert (Wirkungskette: weil … dadurch …)',2]]],
+ ['Zweite Perspektive (politisch)',10,[['p1','Mindestens zwei Argumente „eher zustimmend“, jeweils mit Kriterium',3],['p2','Mindestens zwei Argumente „eher ablehnend“, jeweils mit Kriterium',3],['p3','Argumente mit Material oder Fachwissen belegt (z. B. WTO, Seltene Erden)',2],['p4','Argumente nicht nur genannt, sondern erläutert',2]]],
+ ['Begründetes Urteil',10,[['u1','Klare Antwort auf die Entscheidungsfrage',2],['u2','Leitende Kriterien ausdrücklich benannt („unter dem Kriterium der …“)',2],['u3','Gewichtung begründet (welches Kriterium schwerer wiegt und warum)',3],['u4','Wichtigstes Gegenargument aufgegriffen und eingeordnet',2],['u5','Als zusammenhängender Fließtext geschrieben',1]]]
+];
+
+/* ---------- Zustand ---------- */
+const S={step:1,unlocked:new Set(),checks:new Set(),wahl:{},sel:{}};
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}};
+load('t3v2-unlocked',[]).forEach(x=>S.unlocked.add(x));
+load('t3v2-checks',[]).forEach(x=>S.checks.add(x));
+S.sel=load('t3v2-sel',{});
+function save(){try{localStorage.setItem('t3v2-unlocked',JSON.stringify([...S.unlocked]));localStorage.setItem('t3v2-checks',JSON.stringify([...S.checks]));localStorage.setItem('t3v2-sel',JSON.stringify(S.sel));}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---------- Schrittleiste ---------- */
+function renderSteps(){
+  $('steps').innerHTML=STEPS.map(s=>'<button role="tab" aria-selected="'+(s.n===S.step)+'" data-s="'+s.n+'"><span class="n">'+s.n+'</span><span class="t">'+s.t+'</span><span class="p">'+s.p+'</span>'+(S.unlocked.has(s.n)?'<span class="done">✓</span>':'')+'</button>').join('');
+  const n=S.unlocked.size; const ls=$('lockState'); ls.textContent='Musterlösungen freigeschaltet: '+n+' / 2'; ls.classList.toggle('on',n>0);
+}
+
+/* ---------- M 1 ---------- */
+function renderM1(marks){
+  const ranges=[];
+  marks.forEach(([c,ph])=>{const a=FULL.indexOf(ph); if(a>=0) ranges.push([a,a+ph.length,c]);});
+  ranges.sort((x,y)=>x[0]-y[0]);
+  let h='<div class="para"><span class="rubrik">M 1 · Informationstext</span><h2>China-Schock 2.0: Wenn die Konkurrenz die Kernindustrie trifft</h2><span class="byline">Für dieses Training verfasst · Grundlagen: tagesschau.de, Kiel Institut für Weltwirtschaft, OECD, IW, Statistisches Bundesamt</span></div><div class="texte"><p class="abs">';
+  LINES.forEach((txt,i)=>{
+    const z=i+1, s0=STARTS[i], s1=s0+txt.length;
+    let line='',pos=0;
+    ranges.forEach(([a,b,c])=>{const x=Math.max(a,s0)-s0, y=Math.min(b,s1)-s0; if(y<=x||x<pos) return; line+=esc(txt.slice(pos,x))+'<span class="mk '+c+'">'+esc(txt.slice(x,y))+'</span>'; pos=y;});
+    line+=esc(txt.slice(pos));
+    h+='<span class="z" data-z="'+z+'"'+(z===1||z%5===0?' data-show':'')+'>'+line+'</span>';
+    if(BREAKS.has(z)) h+='</p><p class="abs">';
+  });
+  return h+'</p></div>';
+}
+
+/* ---------- Bausteine ---------- */
+function wahlItems(key,items,opts){
+  return '<div class="items">'+items.map((it,i)=>{
+    const sel=S.wahl[key+i];
+    let fb='';
+    if(sel!==undefined){ const r=it.r[sel]; fb='<p class="fb '+r[0]+'"><b>'+({ok:'Richtig.',mid:'Vertretbar.',no:'Noch nicht.'})[r[0]]+'</b> '+r[1]+'</p>'; }
+    return '<div class="item"><div class="aussage">'+it.a+'</div><div class="wahl">'+opts.map((o,j)=>'<button type="button" data-w="'+key+i+'" data-v="'+j+'" aria-pressed="'+(sel===j)+'">'+o+'</button>').join('')+'</div>'+fb+'</div>';
+  }).join('')+'</div>';
+}
+const aufgabeBox='<div class="aufgabe"><span class="lbl">Übungsaufgabe im Format von Aufgabe 3</span>'+AUFGABE+'</div>';
+const textKlapp=()=>'<details class="tipp m1klapp"><summary>Text M 1 noch einmal lesen</summary><div>'+renderM1([])+'</div></details>';
+
+/* ---------- Hauptbereich je Schritt ---------- */
+function renderBlatt(){
+  let h=aufgabeBox;
+  if(S.step===1){
+    const marks=[]; Q1.forEach((q,i)=>{ if(S.wahl['q1'+i]!==undefined) q.p.forEach(ph=>marks.push([q.c,ph])); });
+    h+=renderM1(marks);
+  }
+  else if(S.step===2){
+    h+='<div class="kat"><section class="kE"><h4>Effizienz</h4><p class="lf">Erreicht die Maßnahme ihr Ziel, und zu welchen Kosten?</p><p>Zweck-Mittel-Frage: Wirkung, Kosten, Umsetzung, Nebenfolgen.</p></section>'+
+     '<section class="kL"><h4>Legitimität</h4><p class="lf">Ist die Maßnahme gerecht, rechtmäßig und akzeptiert?</p><p>Wertfrage: Gerechtigkeit, Recht, Demokratie, Zustimmung der Betroffenen.</p></section></div>'+
+     '<p class="operator">„erörtern … unter Kriterien der Effizienz und Legitimität“<small>Kernlehrplan Sozialwissenschaften NRW, Urteilskompetenz 6</small></p>'+
+     '<h3 class="uh">Übung · Effizienz oder Legitimität?</h3><p class="einl">Ordnet die Kriterien zu. Alle stammen aus Erwartungshorizonten der Abiturklausuren in NRW.</p>'+wahlItems('q2',Q2,EL);
+  }
+  else if(S.step===3){
+    const open=S.unlocked.has(3);
+    h+='<h3 class="uh">Partnerarbeit · Welches Kriterium steckt dahinter?</h3><p class="einl">Wählt zu jedem Argument die Kategorie und das Kriterium. '+(open?'Die Lösung ist freigeschaltet: Vergleicht mit eurer Auswahl.':'Die Lösung schaltet eure Lehrkraft nach der Besprechung frei.')+'</p><div class="items">'+
+     Q3.map((q,i)=>{const s=S.sel[i]||{};
+       let fb='';
+       if(open){
+         const katOk=s.kat===undefined?null:(q.kat===2||s.kat===q.kat);
+         const kOk=!s.k?null:q.k.includes(s.k);
+         const mk=v=>v===null?'<span class="st">–</span>':'<span class="st '+(v?'ok':'no')+'">'+(v?'✓':'✗')+'</span>';
+         fb='<div class="lsg"><p>'+mk(katOk)+' Kategorie: <b>'+KATNAME[q.kat]+'</b></p><p>'+mk(kOk)+' Kriterium: <b>'+q.k[0]+'</b>'+(q.k.length>1?' (vertretbar auch: '+q.k.slice(1).join(', ')+')':'')+'</p><p class="klein">'+q.f+'</p></div>';
+       }
+       return '<div class="item"><div class="tags">'+q.tag+'</div><div class="aussage">'+q.a+'</div><div class="wahlzeile"><div class="wahl" role="group" aria-label="Kategorie">'+EL.map((o,j)=>'<button type="button" data-k3="'+i+'" data-v="'+j+'" aria-pressed="'+(s.kat===j)+'">'+o+'</button>').join('')+'</div>'+
+         '<label class="krit"><span>Kriterium</span><select id="kr'+i+'" data-kr="'+i+'"><option value="">bitte wählen …</option>'+KRIT.map(k=>'<option'+(s.k===k?' selected':'')+'>'+k+'</option>').join('')+'</select></label></div>'+fb+'</div>';}).join('')+'</div>'+
+     (open?'<div class="matrix"><div></div><div class="mh">Effizienz</div><div class="mh">Legitimität</div><div class="mh">ökonomisch</div><div>Beschäftigungssicherung, Wirksamkeit</div><div>Wettbewerbsfairness, soziale Gerechtigkeit</div><div class="mh">politisch</div><div>Eskalationsrisiko, Handlungsfähigkeit</div><div>Akzeptanz, Rechtmäßigkeit, Souveränität</div></div><p class="note">Jede Perspektive hat Argumente aus beiden Kategorien. Ein ausgewogenes Urteil berücksichtigt beide.</p>':'')+
+     '<p style="margin:1rem 0 0"><button type="button" class="knopf" id="resetSel">Auswahl zurücksetzen</button></p>'+textKlapp();
+  }
+  else if(S.step===4){
+    h+='<h3 class="uh">Übung · Drei Urteile im Vergleich</h3><p class="einl">Wie gut erfüllen diese Urteile die Anforderung „explizite Ausweisung und Gewichtung leitender Urteilskriterien“?</p>'+wahlItems('q4',Q4,['nur Meinung','Kriterien ohne Gewichtung','gewichtetes Urteil'])+textKlapp();
+  }
+  else if(S.step===5){
+    let sum=0; CHECK.forEach(g=>g[2].forEach(c=>{if(S.checks.has(c[0])) sum+=c[2];}));
+    h+='<div class="check"><h3 class="uh">Selbstcheck nach dem Erwartungshorizont</h3>'+
+      CHECK.map(g=>'<fieldset><legend>'+g[0]+' <small>(max. '+g[1]+' P.)</small></legend>'+g[2].map(c=>'<label><input type="checkbox" id="ck'+c[0]+'" data-c="'+c[0]+'"'+(S.checks.has(c[0])?' checked':'')+'> <span>'+c[1]+'</span><span class="pt">'+c[2]+' P.</span></label>').join('')+'</fieldset>').join('')+
+      '<div class="summe">Eure Einschätzung <span id="sumOut">'+sum+' / 30</span></div><p class="note">Dazu können bis zu 3 Punkte für ein weiteres aufgabenbezogenes Kriterium kommen. In der Klausur kommt eventuell hinzu, dass ihr die Position des Autors und eure Ergebnisse aus 2b) einbeziehen sollt. Die Teilpunkte dienen nur der Orientierung.</p>'+
+      '<p style="margin:.8rem 0 0"><button type="button" class="knopf" id="resetCheck">Haken zurücksetzen</button></p></div>';
+  }
+  $('blatt').innerHTML=h;
+  bindBlatt();
+}
+function bindBlatt(){
+  const B=$('blatt');
+  B.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{S.wahl[b.dataset.w]=+b.dataset.v;renderBlatt();if(S.step===1)renderRand();}));
+  B.querySelectorAll('[data-k3]').forEach(b=>b.addEventListener('click',()=>{const i=b.dataset.k3;S.sel[i]=Object.assign({},S.sel[i],{kat:+b.dataset.v});save();renderBlatt();}));
+  B.querySelectorAll('[data-kr]').forEach(s=>s.addEventListener('change',()=>{const i=s.dataset.kr;S.sel[i]=Object.assign({},S.sel[i],{k:s.value||undefined});save();if(S.unlocked.has(3))renderBlatt();}));
+  B.querySelectorAll('[data-c]').forEach(b=>b.addEventListener('change',()=>{b.checked?S.checks.add(b.dataset.c):S.checks.delete(b.dataset.c);save();
+    let s=0; CHECK.forEach(g=>g[2].forEach(c=>{if(S.checks.has(c[0])) s+=c[2];})); $('sumOut').textContent=s+' / 30';}));
+  const rc=$('resetCheck'); if(rc) rc.addEventListener('click',()=>{S.checks.clear();save();renderBlatt();});
+  const rs=$('resetSel'); if(rs) rs.addEventListener('click',()=>{S.sel={};save();renderBlatt();});
+}
+
+/* ---------- Rand ---------- */
+function renderRand(){
+  const st=STEPS[S.step-1];
+  let h='<div class="karte"><h3>Schritt '+st.n+' · '+st.t+'</h3><p class="frage">'+st.frage+'</p><ul>'+st.hinweise.map(x=>'<li>'+x+'</li>').join('')+'</ul>'+(st.auftrag?'<p class="auftrag"><b>Auftrag</b>'+st.auftrag+'</p>':'')+(st.merke?'<div class="merke">'+st.merke+'</div>':'')+'</div>';
+  if(S.step===1){
+    h+='<div class="karte"><h3>Verständnischeck</h3><div class="items">'+Q1.map((q,i)=>{const sel=S.wahl['q1'+i];
+      let fb=''; if(sel!==undefined){const r=sel===q.ok; fb='<p class="fb '+(r?'ok':'no')+'"><b>'+(r?'Richtig.':'Noch nicht.')+'</b> '+q.f+' <span class="zr">('+zeilen(q.p)+')</span></p>';}
+      return '<div class="item farb '+q.c+(sel!==undefined?' an':'')+'"><div class="aussage">'+q.a+'</div><div class="wahl">'+['trifft zu','trifft nicht zu'].map((o,j)=>'<button type="button" data-q1="'+i+'" data-v="'+(j===0?1:0)+'" aria-pressed="'+(sel===(j===0?1:0))+'">'+o+'</button>').join('')+'</div>'+fb+'</div>';}).join('')+'</div></div>';
+  }
+  if(st.loesung){
+    h+='<div class="karte"><h3>Musterlösung</h3>';
+    if(S.unlocked.has(S.step)) h+='<div class="loesung">'+st.loesung+'</div>';
+    else h+='<p style="margin:0 0 .5rem;font-size:.9rem">'+(S.step===3?'Erst nach der gemeinsamen Besprechung. Den Code nennt eure Lehrkraft.':'Erst selbst schreiben. Den Code nennt eure Lehrkraft.')+'</p><form class="zu" id="codeForm"><label for="codeIn">Code</label><input id="codeIn" inputmode="numeric" autocomplete="off" maxlength="4"><button class="knopf voll" type="submit">Freischalten</button></form><p class="msg" id="codeMsg"></p>';
+    h+='</div>';
+  }
+  $('rand').innerHTML=h;
+  $('rand').querySelectorAll('[data-q1]').forEach(b=>b.addEventListener('click',()=>{S.wahl['q1'+b.dataset.q1]=+b.dataset.v;renderBlatt();renderRand();}));
+  const f=$('codeForm');
+  if(f) f.addEventListener('submit',e=>{e.preventDefault(); const v=$('codeIn').value.trim();
+    if(v===CODES[S.step]){S.unlocked.add(S.step);save();renderAll();}
+    else $('codeMsg').textContent='Dieser Code passt nicht zu Schritt '+S.step+'.';});
+}
+
+function renderAll(){renderSteps();renderBlatt();renderRand();$('rmKlapp').hidden=!(S.step===4||S.step===5);}
+
+$('steps').addEventListener('click',e=>{const b=e.target.closest('button[data-s]'); if(!b) return; S.step=+b.dataset.s; renderAll(); try{location.hash='schritt-'+S.step;}catch(err){}});
+const m=(location.hash||'').match(/^#schritt-([1-5])$/); if(m){S.step=+m[1];}
+renderAll();
+})();
+</script>
+
+</body>
+</html>
