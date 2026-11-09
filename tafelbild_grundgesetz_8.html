@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tafelbild Grundgesetz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --board:#24382f; --board2:#1e3028; --chalk:#eef1e7; --dim:#b9c4b6;
+  --y:#f1d375; --b:#a6cdea; --r:#f2aaa0; --g:#b7e0b0; --line:rgba(238,241,231,.35);
+  --hand:"Kalam","Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+  --sans:"Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:#5b3f27;color:var(--chalk);font-family:var(--hand);
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.tafel{max-width:1500px;margin:0 auto;background:radial-gradient(ellipse at 30% 20%,#2b4337 0%,var(--board) 55%,var(--board2) 100%);
+  border-radius:6px;box-shadow:inset 0 0 40px rgba(0,0,0,.45),0 6px 20px rgba(0,0,0,.4);padding:clamp(14px,2.2vw,30px) clamp(14px,2.6vw,38px) clamp(18px,2.4vw,32px);
+  font-size:clamp(15px,1.35vw,21px);line-height:1.35}
+h1{margin:0;text-align:center;font-weight:700;font-size:clamp(26px,3.1vw,48px);line-height:1.1;color:var(--y)}
+h1 .fr{color:var(--b);font-weight:400}
+.datum{text-align:center;color:var(--dim);margin:.15em 0 .6em}
+.fr{color:var(--b);font-style:italic}
+.unter{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+
+.block{position:relative;border:2px solid var(--line);border-radius:10px;padding:.55em .9em .65em;min-width:0}
+.block h2{margin:0 0 .25em;font-size:1.3em;line-height:1.15;font-weight:700}
+.block ul{margin:0;padding-left:1.1em}
+.block li{margin:.12em 0}
+.block li::marker{color:var(--dim)}
+.pfeil{color:var(--y)}
+
+.art1{text-align:center;border-color:var(--y);margin:0 auto .9em;max-width:62em}
+.art1 .zitat{font-size:1.45em;font-weight:700;color:var(--y);line-height:1.2}
+.art1 .zitat-fr{font-size:1.05em}
+.art1 p{margin:.2em 0}
+
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin-bottom:1em}
+.gr h2{color:var(--g)} .gr{border-color:rgba(183,224,176,.55)}
+.st h2{color:var(--b)} .st{border-color:rgba(166,205,234,.55)}
+.saeulen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4em;margin:.3em 0 .35em;text-align:center}
+.saeulen div{border:2px solid var(--line);border-top:5px solid var(--b);border-radius:4px 4px 0 0;padding:.25em .2em;line-height:1.15}
+.saeulen .fr{display:block;font-size:.8em}
+
+.drei{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1em}
+.ew{border-color:rgba(242,170,160,.6)} .ew h2{color:var(--r)}
+.ae h2{color:var(--y)}
+.ge h2{color:var(--chalk)}
+
+/* Verdecken / Aufdecken */
+.block .deckel{position:absolute;inset:0;border-radius:8px;background:var(--board2);display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:.6em 1em;cursor:pointer;font-size:1.15em;color:var(--dim);border:2px dashed var(--line);transition:opacity .35s}
+.block .deckel b{display:block;color:var(--chalk);font-size:.8em;font-family:var(--sans);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3em;opacity:.7}
+.block.offen .deckel{opacity:0;pointer-events:none}
+.block .deckel:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+
+.leiste{max-width:1500px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;font-family:var(--sans);font-size:14px}
+.leiste button{background:rgba(0,0,0,.35);color:#f3eadf;border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:6px 12px;cursor:pointer;font:inherit}
+.leiste span{color:#e8d9c6;align-self:center;margin-right:auto}
+
+@media (max-width:900px){.zwei,.drei{grid-template-columns:1fr}.saeulen{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{body{background:#fff}.leiste{display:none}.tafel{box-shadow:none}.block .deckel{display:none}}
+</style>
+</head>
+<body>
+<main class="tafel" aria-label="Tafelbild">
+<h1>Das Grundgesetz <span class="fr">· la Loi fondamentale</span></h1>
+<p class="datum">in Kraft seit dem 23. Mai 1949</p>
+
+<section class="block art1" data-q="Welcher Satz steht ganz am Anfang des Grundgesetzes – und warum?">
+<p class="zitat">Art. 1: „Die Würde des Menschen ist unantastbar.“</p>
+<p class="zitat-fr fr">« La dignité de l’être humain est intangible. »</p>
+<p><span class="pfeil">→</span> Leitgedanke · Reaktion auf die Nazizeit <span class="fr">(l’époque nazie)</span> · Neubeginn nach dem Krieg</p>
+</section>
+
+<div class="zwei">
+<section class="block gr" data-q="Thema 1: Welche Rechte gibt das Grundgesetz jedem einzelnen Menschen?">
+<h2>① Grundrechte <span class="fr">· les droits fondamentaux</span><br><small>Art. 1 – 19</small></h2>
+<ul>
+<li>z. B. Meinungsfreiheit <span class="fr">(la liberté d’expression)</span>, Religionsfreiheit, Versammlungsfreiheit, Gleichberechtigung, Recht auf Eigentum</li>
+<li>binden den Staat direkt <span class="pfeil">→</span> „unmittelbar geltendes Recht“ (Art. 1 Abs. 3)</li>
+<li>einklagbar: <span class="unter">Verfassungsbeschwerde</span> <span class="pfeil">→</span> Bundesverfassungsgericht <span class="fr">(la Cour constitutionnelle fédérale)</span></li>
+<li>„Schranken“: Der Staat darf nur unter bestimmten Bedingungen eingreifen.</li>
+</ul>
+</section>
+
+<section class="block st" data-q="Thema 2: Wie ist der Staat aufgebaut?">
+<h2>② Organisation des Staates <span class="fr">· l’organisation de l’État</span></h2>
+<div>Art. 20: die 4 tragenden Säulen <span class="fr">(les piliers)</span></div>
+<div class="saeulen">
+<div>Demokratie<span class="fr">la démocratie</span></div>
+<div>Rechtsstaat<span class="fr">l’État de droit</span></div>
+<div>Bundesstaat<span class="fr">l’État fédéral</span></div>
+<div>Gewaltenteilung<span class="fr">la séparation des pouvoirs</span></div>
+</div>
+<ul>
+<li>Staatsziele: Sozialstaat, Umwelt- und Tierschutz (Art. 20a), Gleichberechtigung</li>
+<li>Staatsorgane: Bundestag, Bundesrat, Bundespräsident, Bundeskanzler, Bundesverfassungsgericht</li>
+</ul>
+</section>
+</div>
+
+<div class="drei">
+<section class="block ew" data-q="Was darf man niemals ändern?">
+<h2>🔒 Ewigkeitsgarantie</h2>
+<div class="fr">la clause d’éternité · Art. 79 Abs. 3</div>
+<ul>
+<li>nie änderbar: Art. 1 (Menschenwürde) und Art. 20 (die 4 Säulen)</li>
+<li>Gliederung in Länder und ihre Mitwirkung an Gesetzen</li>
+</ul>
+</section>
+
+<section class="block ae" data-q="Wie kann man das Grundgesetz ändern?">
+<h2>✎ Änderungen</h2>
+<div class="fr">la majorité des deux tiers</div>
+<ul>
+<li>nur mit <span class="unter">Zweidrittelmehrheit</span> in Bundestag <b>und</b> Bundesrat</li>
+<li>z. B. Asylrecht 1993, Digitalpakt für Schulen 2019</li>
+</ul>
+</section>
+
+<section class="block ge" data-q="Warum heißt es „Grundgesetz“? Und was hat es mit Europa zu tun?">
+<h2>⏳ Provisorium und Europa</h2>
+<ul>
+<li>1949: „Grundgesetz“ = nur vorläufig <span class="fr">(provisoire)</span>, solange Deutschland geteilt war</li>
+<li>seit 1990 <span class="fr">(la réunification)</span>: Verfassung für ganz Deutschland</li>
+<li>Art. 23: offen für Europa <span class="pfeil">→</span> Befugnisse an die EU</li>
+</ul>
+</section>
+</div>
+</main>
+
+<div class="leiste">
+<span>Klick auf ein Feld deckt es auf · Leertaste: nächstes Feld</span>
+<button type="button" id="naechstes">Nächstes aufdecken</button>
+<button type="button" id="alleauf">Alles aufdecken</button>
+<button type="button" id="allezu">Alles verdecken</button>
+</div>
+
+<script>
+(function(){
+  var bl=[].slice.call(document.querySelectorAll('.block'));
+  bl.forEach(function(b,i){
+    var d=document.createElement('div');
+    d.className='deckel'; d.setAttribute('role','button'); d.setAttribute('tabindex','0');
+    d.innerHTML='<div><b>Wiederholung '+(i+1)+'</b></div>';
+    var q=document.createElement('div'); q.textContent=b.dataset.q; d.firstChild.appendChild(q);
+    function auf(){b.classList.add('offen');}
+    d.addEventListener('click',auf);
+    d.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();auf();}});
+    b.appendChild(d);
+  });
+  function naechstes(){var z=bl.filter(function(b){return !b.classList.contains('offen');})[0];if(z)z.classList.add('offen');}
+  document.getElementById('naechstes').addEventListener('click',naechstes);
+  document.getElementById('alleauf').addEventListener('click',function(){bl.forEach(function(b){b.classList.add('offen');});});
+  document.getElementById('allezu').addEventListener('click',function(){bl.forEach(function(b){b.classList.remove('offen');});});
+  document.addEventListener('keydown',function(e){if(e.key===' '&&e.target===document.body){e.preventDefault();naechstes();}});
+})();
+</script>
+</body>
+</html>
