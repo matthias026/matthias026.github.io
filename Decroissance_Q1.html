@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Décroître ?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: Kalenderband als Leitmotiv (Jahr im Budget / „à crédit“); Schrittleiste mit Zeitangaben; Arbeitsfläche + Randspalte für Consigne und Hinweise. */
+:root{
+  --bg:#eef1ec; --surface:#ffffff; --ink:#18231e; --muted:#55625b; --rule:#d2d9d2; --tint:#f5f7f3;
+  --green:#2e6a4f; --green-soft:#dce9e1; --red:#b4441f; --red-soft:#f4ded4; --amber:#946510; --amber-soft:#f3e7cc;
+  --on-accent:#ffffff;
+  --display:"Bricolage Grotesque","Arial Narrow",Arial,sans-serif;
+  --body:"Atkinson Hyperlegible","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111714; --surface:#19211d; --ink:#e3eae5; --muted:#9aa89f; --rule:#2d3933; --tint:#1f2924;
+    --green:#7cc39e; --green-soft:#1e3529; --red:#ee8b66; --red-soft:#3b2219; --amber:#dcb05a; --amber-soft:#3a2f17;
+    --on-accent:#111714; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111714; --surface:#19211d; --ink:#e3eae5; --muted:#9aa89f; --rule:#2d3933; --tint:#1f2924;
+  --green:#7cc39e; --green-soft:#1e3529; --red:#ee8b66; --red-soft:#3b2219; --amber:#dcb05a; --amber-soft:#3a2f17;
+  --on-accent:#111714; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.02rem;line-height:1.55}
+.wrap{max-width:74rem;margin:0 auto;padding-block:1.2rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Kopf mit Kalenderband */
+header.kopf{padding:.4rem 0 1.2rem}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:800;letter-spacing:-.02em}
+h1 span{color:var(--red)}
+.kopf p.lead{max-width:44rem;color:var(--muted);margin:.6rem 0 0}
+.band{margin-top:1.1rem}
+.band .track{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2px;height:1.9rem}
+.band .m{position:relative;background:var(--green);border-radius:2px;overflow:hidden}
+.band .m.debt{background:repeating-linear-gradient(135deg,var(--red-soft) 0 5px,var(--surface) 5px 9px);box-shadow:inset 0 0 0 1px var(--red)}
+.band .m.split{background:linear-gradient(90deg,var(--green) 0 var(--p),transparent var(--p))}
+.band .m.split::after{content:"";position:absolute;inset:0;left:var(--p);background:repeating-linear-gradient(135deg,var(--red-soft) 0 5px,var(--surface) 5px 9px);box-shadow:inset 0 0 0 1px var(--red)}
+.band .labels{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2px;font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-top:.25rem}
+.band .cap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.3rem 1rem;font-size:.86rem;margin-top:.45rem}
+.band .cap b{color:var(--red)}
+
+/* Schrittleiste */
+nav.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin:1.3rem 0 1.4rem}
+nav.steps button{border:1px solid var(--rule);background:var(--surface);text-align:left;padding:.6rem .7rem .65rem;cursor:pointer;border-radius:3px;min-width:0}
+nav.steps .n{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+nav.steps .t{display:block;font-family:var(--display);font-weight:700;font-size:1.02rem;line-height:1.15;margin-top:.2rem}
+nav.steps button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+nav.steps button[aria-selected="true"] .n{color:var(--bg);opacity:.75}
+nav.steps .ok{color:var(--green);font-weight:700}
+nav.steps button[aria-selected="true"] .ok{color:var(--bg)}
+@media (max-width:56rem){nav.steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Raster */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:1.3rem;align-items:start}
+@media (max-width:60rem){.grid{grid-template-columns:1fr}}
+.main{display:flex;flex-direction:column;gap:1.2rem;min-width:0}
+.side{display:flex;flex-direction:column;gap:1rem;min-width:0;position:sticky;top:1rem}
+@media (max-width:60rem){.side{position:static;order:-1}}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:1.1rem 1.2rem}
+.card h2{font-size:1.45rem;font-weight:700;margin-bottom:.35rem}
+.card h3{font-size:1.08rem;font-weight:700;margin:0 0 .5rem}
+.card p{margin:.3rem 0 .6rem}
+.kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:0 0 .25rem}
+.consigne{border-left:4px solid var(--amber);background:var(--amber-soft);padding:.7rem .85rem;border-radius:0 3px 3px 0}
+.consigne b.lab{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:.15rem}
+.hinweis{font-size:.9rem;color:var(--muted)}
+.hinweis .de{font-family:var(--mono);font-size:.66rem;border:1px solid var(--rule);padding:0 .25rem;margin-right:.3rem;color:var(--muted)}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--bg);padding:.45rem .9rem;border-radius:3px;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.note{font-size:.84rem;color:var(--muted)}
+.src{font-size:.78rem;color:var(--muted);margin-top:.6rem}
+.src a{color:inherit}
+.fb{font-size:.92rem;margin:.5rem 0 0}
+.fb.ok{color:var(--green)} .fb.no{color:var(--red)}
+
+/* Schritt 1: Schätzung */
+.guess{display:grid;gap:.9rem}
+.guess label{display:flex;justify-content:space-between;gap:1rem;font-weight:700}
+.guess label output{font-family:var(--mono);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--green);height:1.6rem}
+.reveal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin-top:.8rem}
+.reveal div{background:var(--tint);border-radius:3px;padding:.6rem .7rem}
+.reveal .big{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.1}
+.reveal .diff{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+@media (max-width:30rem){.reveal{grid-template-columns:1fr}}
+/* Zeitreihe */
+.leg{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.82rem;color:var(--muted);margin:.2rem 0 .6rem}
+.leg i{display:inline-block;width:.9rem;height:.6rem;margin-right:.35rem;vertical-align:middle;border-radius:1px}
+.leg .g{background:var(--green)} .leg .r{background:repeating-linear-gradient(135deg,var(--red-soft) 0 3px,var(--surface) 3px 5px);box-shadow:inset 0 0 0 1px var(--red)}
+.ts{display:grid;gap:3px}
+.tr{display:grid;grid-template-columns:3rem minmax(0,1fr) 6.2rem;gap:.6rem;align-items:center;font-size:.84rem}
+.tr .y{font-family:var(--mono);color:var(--muted)}
+.tr .bar{position:relative;height:.95rem;background:repeating-linear-gradient(135deg,var(--red-soft) 0 3px,transparent 3px 5px);border-radius:2px}
+.tr .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--green);border-radius:2px 4px 4px 2px}
+.tr .d{font-family:var(--mono);font-size:.78rem}
+.tr.hl .y,.tr.hl .d{color:var(--ink);font-weight:500}
+.tr .tag{font-family:var(--body);font-size:.7rem;color:var(--amber);margin-left:.3rem}
+.axis{display:grid;grid-template-columns:3rem minmax(0,1fr) 6.2rem;gap:.6rem;font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-top:.2rem}
+.axis .ticks{position:relative;height:1rem}
+.axis .ticks span{position:absolute;transform:translateX(-50%)}
+.axis .ticks span:first-child{transform:none}
+/* Planeten */
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chips button{border:1px solid var(--rule);background:var(--surface);padding:.3rem .65rem;border-radius:99px;cursor:pointer;font-size:.9rem}
+.chips button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--on-accent)}
+.planets{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0 .4rem;min-height:2.6rem;align-items:center}
+.pl{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--green-soft);position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px var(--green)}
+.pl i{position:absolute;left:0;top:0;bottom:0;background:var(--green)}
+.pnum{font-family:var(--display);font-weight:800;font-size:2rem;line-height:1}
+.vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;font-size:.9rem;margin-top:.6rem}
+.vs div{border:1px solid var(--rule);border-radius:3px;padding:.5rem .65rem}
+.vs b{display:block;font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+@media (max-width:30rem){.vs{grid-template-columns:1fr}}
+
+/* Glossar */
+.search{width:100%;border:1px solid var(--rule);background:var(--surface);padding:.5rem .7rem;border-radius:3px}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:.5rem;margin-top:.8rem}
+.gl div{background:var(--tint);border-radius:3px;padding:.55rem .7rem}
+.gl b{display:block}
+.gl span{font-size:.9rem;color:var(--muted)}
+.gl em{display:block;font-size:.84rem;font-style:italic;margin-top:.15rem}
+.gtabs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+
+/* Kette */
+.pool,.chain{display:grid;gap:.4rem}
+.card .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:44rem){.card .cols{grid-template-columns:1fr}}
+.kc{display:block;width:100%;text-align:left;border:1px solid var(--rule);background:var(--surface);padding:.5rem .65rem;border-radius:3px;cursor:pointer;font-size:.93rem}
+.chain .kc{background:var(--green-soft);border-color:var(--green)}
+.chain .kc .no{font-family:var(--mono);font-size:.75rem;color:var(--green);margin-right:.4rem}
+.chain .kc.right{box-shadow:inset 4px 0 var(--green)}
+.chain .kc.wrong{box-shadow:inset 4px 0 var(--red);background:var(--red-soft);border-color:var(--red)}
+.slot{border:1px dashed var(--rule);border-radius:3px;padding:.5rem .65rem;font-size:.85rem;color:var(--muted)}
+.arrow{text-align:center;color:var(--green);font-size:.8rem;line-height:.6}
+/* Zuordnung */
+.match{display:grid;gap:.5rem}
+.match .mr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:.6rem;align-items:center;padding:.45rem 0;border-top:1px solid var(--rule)}
+.match .mr b{font-size:.95rem}
+.match select{width:100%;border:1px solid var(--rule);background:var(--surface);padding:.4rem .5rem;border-radius:3px;font-size:.9rem}
+.match .mr.right select{border-color:var(--green);box-shadow:inset 4px 0 var(--green)}
+.match .mr.wrong select{border-color:var(--red);box-shadow:inset 4px 0 var(--red)}
+@media (max-width:40rem){.match .mr{grid-template-columns:1fr}}
+
+/* OneNote + Vokabeln */
+.onenote{margin-top:1rem;background:var(--tint);border-left:4px solid var(--green);border-radius:0 3px 3px 0;padding:.7rem .85rem}
+.onenote b.lab{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.2rem}
+.onenote ol{margin:.2rem 0 .6rem;padding-left:1.2rem;font-size:.95rem}
+.onenote .note{flex:1 1 12rem}
+.btn:disabled{opacity:.45;cursor:default}
+.vg h3{margin:1rem 0 .2rem;font-size:1rem}
+.vg:first-child h3{margin-top:0}
+.sol{display:block;font-size:.85rem;color:var(--muted);margin-top:.2rem}
+.mr.wrong .sol{color:var(--red)}
+/* Schritt 4 */
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+@media (max-width:44rem){.three{grid-template-columns:1fr}}
+.concept{border-radius:3px;padding:.7rem .8rem;border-top:4px solid}
+.concept.dd{border-color:var(--green);background:var(--green-soft)}
+.concept.de{border-color:var(--amber);background:var(--amber-soft)}
+.concept.re{border-color:var(--red);background:var(--red-soft)}
+.concept h3{font-size:1rem;margin:0 0 .3rem}
+.concept p{font-size:.88rem;margin:0}
+.sort{display:grid;gap:.45rem;margin-top:.6rem}
+.sr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--rule)}
+.sr .q{font-size:.95rem}
+.seg{display:flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.seg button{border:0;border-right:1px solid var(--rule);background:var(--surface);padding:.3rem .55rem;font-size:.8rem;cursor:pointer;font-family:var(--mono)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.sr.right .seg{box-shadow:0 0 0 2px var(--green)}
+.sr.wrong .seg{box-shadow:0 0 0 2px var(--red)}
+@media (max-width:36rem){.sr{grid-template-columns:1fr}}
+table.cmp{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.5rem}
+table.cmp th,table.cmp td{border-top:1px solid var(--rule);padding:.45rem .5rem;text-align:left;vertical-align:top}
+table.cmp thead th{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-top:0}
+.tbl{overflow-x:auto}
+.stat{display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.stat .pnum{color:var(--green)}
+
+/* Waage */
+.wgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.2rem}
+@media (max-width:50rem){.wgrid{grid-template-columns:1fr}}
+.sl{margin:0 0 .8rem}
+.sl label{display:flex;justify-content:space-between;gap:.6rem;font-weight:700;font-size:.93rem}
+.sl label small{font-weight:400;color:var(--muted)}
+.sl .dir{font-family:var(--mono);font-size:.68rem;padding:0 .3rem;border-radius:2px;margin-left:.3rem;vertical-align:.1em}
+.dir.p{background:var(--green-soft);color:var(--green)} .dir.c{background:var(--red-soft);color:var(--red)} .dir.a{background:var(--amber-soft);color:var(--amber)}
+.gauge{margin:.2rem 0 1rem}
+.gauge .g-track{position:relative;height:.6rem;border-radius:99px;background:linear-gradient(90deg,var(--red) 0%,var(--rule) 50%,var(--green) 100%)}
+.gauge .g-mark{position:absolute;top:50%;width:1.2rem;height:1.2rem;border-radius:50%;background:var(--surface);border:3px solid var(--ink);transform:translate(-50%,-50%);transition:left .25s}
+.gauge .g-lab{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:.4rem}
+.texte{font-family:var(--body);font-size:1.02rem;line-height:1.65;background:var(--tint);border-left:4px solid var(--green);padding:.8rem 1rem;border-radius:0 3px 3px 0}
+.texte p{margin:0 0 .5rem}.texte p:last-child{margin:0}
+.texte .krit{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.quotes{display:grid;gap:.5rem}
+.qu{border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+.qu button{display:block;width:100%;text-align:left;border:0;background:none;padding:.6rem .75rem;cursor:pointer;font-style:italic}
+.qu .ans{padding:0 .75rem .65rem;font-size:.9rem}
+.qu .ans b{color:var(--green)}
+ul.miss{margin:.4rem 0 0;padding-left:1.1rem}
+
+/* Synthese */
+.lock{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.lock input{width:7rem;border:1px solid var(--rule);background:var(--surface);padding:.4rem .6rem;border-radius:3px;letter-spacing:.2em;font-family:var(--mono)}
+.tafel{background:var(--green);color:var(--on-accent);border-radius:4px;padding:1.2rem 1.3rem}
+.tafel h2{font-size:1.5rem;margin-bottom:.8rem}
+.tafel .tg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+@media (max-width:44rem){.tafel .tg{grid-template-columns:1fr}}
+.tafel .tb{border:1px solid currentColor;border-radius:3px;padding:.65rem .8rem}
+.tafel .tb h3{font-size:1rem;margin-bottom:.3rem}
+.tafel ul{margin:0;padding-left:1.05rem;font-size:.93rem}
+.tafel .full{grid-column:1/-1}
+.wf{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.25rem 1.2rem;font-size:.92rem}
+.wf div{border-bottom:1px dotted var(--rule);padding:.2rem 0}
+.wf span{color:var(--muted)}
+footer{margin-top:2.4rem;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+footer a{color:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="kopf">
+  <p class="eyebrow">Sciences sociales bilingues · Q1 · Croissance et limites</p>
+  <h1>Décroître<span> ?</span></h1>
+  <p class="lead">Une vidéo québécoise défend une idée radicale : produire et consommer moins. Vous allez comprendre sa logique, la distinguer d'autres concepts – et la juger.</p>
+  <div class="band" aria-label="L'année 2026 : jusqu'au 30 juillet dans les limites de la planète, ensuite à crédit">
+    <div class="track" id="band"></div>
+    <div class="labels" id="bandLab"></div>
+    <div class="cap"><span>2026 : l'humanité a utilisé toutes les ressources renouvelables de l'année le <b>30 juillet</b>.</span><span class="mono">154 jours à crédit</span></div>
+  </div>
+</header>
+
+<nav class="steps" id="steps" role="tablist" aria-label="Étapes de la séance"></nav>
+<div id="view"></div>
+
+<footer>
+  <p>Vidéo : reportage québécois sur la décroissance (vers 2018), utilisé dans Edpuzzle. Chiffres actualisés : Global Footprint Network (<a href="https://overshoot.footprintnetwork.org/newsroom/past-earth-overshoot-days/" target="_blank" rel="noopener">jours du dépassement</a>, <a href="https://overshoot.footprintnetwork.org/newsroom/country-overshoot-days/" target="_blank" rel="noopener">jours par pays 2026</a>), <a href="https://www.umweltbundesamt.de/presse/pressemitteilungen/treibhausgasdaten-zeigen-klimaschutz-braucht-neuen" target="_blank" rel="noopener">Umweltbundesamt</a> (émissions 2025), Oxfam, rapport « Résister au règne des plus riches » (janvier 2026).</p>
+</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+const CODE='6172';
+const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const MCOURT=['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
+const ML=[31,28,31,30,31,30,31,31,30,31,30,31];
+const doy=(m,d)=>ML.slice(0,m-1).reduce((a,b)=>a+b,0)+d;
+const fromDoy=n=>{let m=0;while(n>ML[m]){n-=ML[m];m++;}return n+(n===1?'er':'')+' '+MOIS[m];};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---------- Daten ---------- */
+const EOD=[[1972,12,31],[1975,12,12],[1980,11,29],[1990,10,23],[2000,9,23],[2008,8,21],[2010,8,15],[2018,8,4],[2020,8,18],[2024,8,1],[2025,8,1],[2026,7,30]];
+const PAYS=[['Humanité',1.7],['Qatar',10],['Canada',5.5],['États-Unis',5.1],['Belgique',3.6],['France',3.2],['Allemagne',2.8],['Suisse',2.8],['Chine',2.5],['Inde',0.75]];
+const HUMAN=+(365/doy(7,30)).toFixed(1);
+const fmt=x=>String(+(+x).toFixed(2)).replace('.',',');
+const CHEZ={'Humanité':'','Qatar':'au Qatar','Canada':'au Canada','États-Unis':'aux États-Unis','Belgique':'en Belgique','France':'en France','Allemagne':'en Allemagne','Suisse':'en Suisse','Chine':'en Chine','Inde':'en Inde'};
+
+const GLOSS=[
+ ['qc','Ça va correct ?','Ça va bien ? (québécois, familier)'],
+ ['qc','de ce temps-ci','ces temps-ci, en ce moment'],
+ ['qc','c\'est foutu','c\'est perdu, il n\'y a plus rien à faire (familier)'],
+ ['qc','pas pire','pas mal, plutôt bien (québécois)'],
+ ['qc','la gagne','la bande, le groupe d\'amis (québécois)'],
+ ['qc','le stationnement','le parking'],
+ ['qc','une calèche','eine Pferdekutsche'],
+ ['qc','On s\'entend','soyons honnêtes, évidemment'],
+ ['qc','foirer','échouer, rater (familier) – schiefgehen'],
+ ['qc','peser sur (un bouton)','appuyer sur'],
+ ['qc','hésite pas à …','n\'hésite pas à … (la négation « ne » tombe à l\'oral)'],
+ ['qc','la garde-robe','ici : le placard, l\'armoire à vêtements'],
+ ['eco','la relance économique','die Ankurbelung der Wirtschaft'],
+ ['eco','un trimestre','ein Quartal','« Deux trimestres négatifs de suite » = définition d\'une récession'],
+ ['eco','creuser les inégalités','die Ungleichheit vergrößern'],
+ ['eco','épuiser des ressources','Ressourcen erschöpfen, aufbrauchen'],
+ ['eco','régénérer','erneuern, nachwachsen lassen'],
+ ['eco','emmagasiner','speichern, ansammeln'],
+ ['eco','perpétuel, -le','ständig, dauernd'],
+ ['eco','la contrainte à croître','der Wachstumszwang'],
+ ['eco','le dérèglement climatique','die Klimastörung, der Klimawandel'],
+ ['eco','un réfugié climatique','ein Klimaflüchtling'],
+ ['eco','la 6e extinction de masse','das sechste Massenaussterben'],
+ ['eco','le développement durable','die nachhaltige Entwicklung'],
+ ['eco','le découplage','die Entkopplung (Wachstum ↔ Umweltverbrauch)'],
+ ['eco','plafonner','deckeln, eine Obergrenze setzen'],
+ ['eco','décroître / la décroissance','schrumpfen / die Postwachstums- bzw. Schrumpfungsbewegung'],
+ ['eco','la durée de vie','die Lebensdauer'],
+ ['eco','réparable','reparierbar'],
+ ['eco','le travail rémunéré','die bezahlte Arbeit'],
+ ['eco','l\'autosuffisance','die Selbstversorgung'],
+ ['eco','les circuits courts','regionale Lieferketten, Direktvermarktung'],
+ ['eco','relocaliser','(Produktion) zurückverlagern'],
+ ['eco','l\'accumulation du capital','die Kapitalakkumulation'],
+ ['eco','utopiste','utopisch; ein Utopist'],
+ ['ref','le rapport Meadows (1972)','« Halte à la croissance ? » (The Limits to Growth) : étude de chercheurs du MIT pour le Club de Rome.'],
+ ['ref','Éric Pineault','sociologue et économiste à l\'UQAM (Université du Québec à Montréal), partisan de la décroissance.'],
+ ['ref','« a-croissance »','idée du penseur français Serge Latouche : rejeter la croissance comme on rejette une croyance (« a-théisme »).'],
+ ['ref','Rencontres sur la décroissance','1re conférence internationale à Paris en 2008 ; en 2018 : Malmö, Bruxelles et Mexico.'],
+];
+const CHAIN=[
+ "L'économie capitaliste repose sur une croissance perpétuelle.",
+ "Pour générer de la croissance, il faut consommer toujours plus.",
+ "Pour consommer plus, il faut produire plus.",
+ "Plus on produit, plus on pollue et plus on épuise les ressources naturelles.",
+ "L'humanité utilise plus de ressources que la Terre ne peut en régénérer.",
+ "Conséquences : dérèglement climatique, réfugiés climatiques, disparition des espèces.",
+ "Conclusion des décroissants : il faut produire et consommer moins."
+];
+const MATCH=[
+ ['Produire des objets durables et réparables',"Un seul réfrigérateur pour toute la vie au lieu de six."],
+ ['Travailler moins',"Réduire le temps consacré au travail rémunéré."],
+ ['Renforcer la vie en communauté',"Créer des liens entre les familles du quartier."],
+ ["Sortir de l'impératif de productivité","Les humains ne sont pas là pour faire rouler la machine économique."],
+ ['Partager équitablement les richesses',"Remettre en question la notion de propriété privée."],
+ ['Acheter local, circuits courts',"Les produits agricoles vendus directement par les producteurs de la région."],
+ ['Relocaliser la production',"Le jean fabriqué au Bangladesh qui parcourt 12 000 km."],
+ ['Ralentir',"Revoir notre rapport au transport, à la distance et à la vitesse."]
+];
+const SORT=[
+ ["L'économie peut continuer à croître tout en polluant moins.",'DD'],
+ ["Il faut miser sur l'efficacité énergétique et les technologies vertes.",'DD'],
+ ["Le découplage entre le PIB et la pollution est possible.",'DD'],
+ ["On choisit collectivement de produire et de consommer moins.",'DE'],
+ ["On travaille moins pour gagner du temps libre.",'DE'],
+ ["Une croissance infinie dans un monde fini est impossible.",'DE'],
+ ["Le PIB baisse pendant deux trimestres de suite.",'RE'],
+ ["Les entreprises licencient, le chômage augmente.",'RE'],
+ ["La baisse de la production est subie, pas choisie.",'RE']
+];
+const SLAB={DD:'Croiss. verte',DE:'Décroissance',RE:'Récession'};
+const CRIT=[
+ {id:'eco',n:'Écologie',s:'climat, ressources',v:1,
+  pro:"Sur le plan écologique, la décroissance s'attaque à la racine du problème : produire moins, c'est polluer moins et épuiser moins de ressources."},
+ {id:'vie',n:'Qualité de vie',s:'temps libre, liens sociaux',v:.6,
+  pro:"Travailler moins et vivre plus localement pourrait améliorer la qualité de vie : plus de temps pour la famille, le quartier et les loisirs."},
+ {id:'ine',n:'Inégalités',s:'partage des richesses',v:0,
+  pro:"La décroissance pose la question du partage : si l'on ne fait plus grossir le gâteau, il faut le partager plus équitablement.",
+  con:"Sans redistribution, ce seraient les ménages modestes qui paieraient le prix d'une économie qui se contracte."},
+ {id:'emp',n:'Emploi et revenus',s:'chômage, pouvoir d\'achat',v:-.8,
+  con:"Une économie qui produit moins risque de détruire des emplois et de faire baisser les revenus, comme pendant une récession."},
+ {id:'eta',n:'État social',s:'retraites, santé, école',v:-.7,
+  con:"Les retraites, la santé et l'école sont financées par des recettes qui dépendent de la croissance ; sans elle, l'État social serait sous pression."},
+ {id:'sud',n:'Pays du Sud',s:'droit au développement',v:-.4,
+  con:"Les pays pauvres ont encore besoin de croissance pour sortir de la pauvreté ; une décroissance mondiale serait injuste pour eux."},
+ {id:'fai',n:'Faisabilité',s:'majorités démocratiques',v:-.6,
+  con:"Il paraît aujourd'hui difficile de trouver une majorité démocratique prête à accepter de produire et de consommer moins."}
+];
+const QUOTES=[
+ ["« Bref, tout va bien. »","<b>Ironie.</b> Après la liste des catastrophes, la formule souligne l'urgence et se moque de ceux qui minimisent le problème."],
+ ["« La croissance est une véritable croyance […] et donne lieu à un véritable culte. »","<b>Comparaison avec la religion.</b> La croissance apparaît comme une foi irrationnelle, et ses défenseurs comme des croyants."],
+ ["« La décroissance n'est pas une option, c'est une nécessité. »","<b>Affirmation catégorique.</b> Aucune alternative n'est envisagée, aucun contre-argument n'est discuté ; le spectateur doit accepter la conclusion."],
+ ["« Plus on produit, plus on pollue, plus on épuise des ressources naturelles. »","<b>Parallélisme / enchaînement.</b> La chaîne paraît automatique ; le progrès technique (découplage) n'y a pas de place."]
+];
+
+/* ---------- Schritte ---------- */
+const STEPS=[
+ {t:'Le jour du dépassement',min:10},
+ {t:'Glossaire de la vidéo',min:20},
+ {t:'La logique de la décroissance',min:20},
+ {t:'Distinguer les concepts',min:15},
+ {t:'La balance',min:15},
+ {t:'Synthèse',min:10}
+];
+const S={step:0,g1:182,g2:182,checked1:false,pays:'Humanité',pe:{},pc:{},voc:{},vocChk:false,gtab:'qc',q:'',chain:[],chainChk:false,match:{},matchChk:false,sort:{},sortChk:false,w:{eco:5,vie:5,ine:5,emp:5,eta:5,sud:5,fai:5},open:{},unlocked:false,done:new Set()};
+try{ const s=localStorage.getItem('dec-step'); if(s!==null) S.step=Math.min(5,Math.max(0,+s)); }catch(e){}
+const shuffle=(a,seed)=>{const r=a.map((x,i)=>[x,Math.sin(i*9301+seed*49297)%1]);return r.sort((x,y)=>x[1]-y[1]).map(x=>x[0]);};
+const POOL=shuffle(CHAIN.map((t,i)=>i),7);
+const MOPTS=shuffle(MATCH.map((m,i)=>i),3);
+
+/* ---------- Kalenderband ---------- */
+(function band(){
+  const end=doy(7,30); let h='',l=''; let acc=0;
+  for(let m=0;m<12;m++){ const s=acc, e=acc+ML[m]; acc=e;
+    if(e<=end) h+='<div class="m"></div>'; else if(s>=end) h+='<div class="m debt"></div>';
+    else h+='<div class="m split" style="--p:'+((end-s)/ML[m]*100).toFixed(1)+'%"></div>';
+    l+='<span>'+MCOURT[m]+'</span>'; }
+  document.getElementById('band').innerHTML=h; document.getElementById('bandLab').innerHTML=l;
+})();
+
+/* ---------- Bausteine ---------- */
+function side(consigne,hints,extra){
+  return '<aside class="side"><div class="card"><div class="consigne"><b class="lab">Consigne</b>'+consigne+'</div>'+
+   (hints?'<div style="margin-top:.7rem">'+hints.map(h=>'<p class="hinweis"><span class="de">DE</span>'+h+'</p>').join('')+'</div>':'')+'</div>'+(extra||'')+'</aside>';
+}
+function v1(){
+  const a=doy(12,31), b=doy(7,30);
+  let rev='';
+  if(S.checked1){
+    const d1=S.g1-a, d2=S.g2-b, f=d=>d===0?'pile juste !':(Math.abs(d)+' jours '+(d<0?'trop tôt':'trop tard'));
+    rev='<div class="reveal"><div><span class="note">1972</span><div class="big">31 décembre</div><div class="diff">Votre estimation : '+fromDoy(S.g1)+' · '+f(d1)+'</div></div>'+
+        '<div><span class="note">2026</span><div class="big">30 juillet</div><div class="diff">Votre estimation : '+fromDoy(S.g2)+' · '+f(d2)+'</div></div></div>';
+  }
+  const ts=EOD.map(([y,m,d])=>{ const n=doy(m,d); const hl=(y===1972||y===2018||y===2026);
+    return '<div class="tr'+(hl?' hl':'')+'" title="'+y+' : '+fromDoy(n)+'"><span class="y">'+y+'</span><span class="bar"><i style="width:'+(n/365*100).toFixed(1)+'%"></i></span><span class="d">'+fromDoy(n).replace('janvier','jan.').replace('septembre','sept.').replace('novembre','nov.').replace('décembre','déc.').replace('octobre','oct.')+(y===2020?'<span class="tag">Covid</span>':'')+(y===2018?'<span class="tag">vidéo</span>':'')+'</span></div>'; }).join('');
+  const p=PAYS.find(x=>x[0]===S.pays); const n=p[1]; const est=S.pe[S.pays]!==undefined?S.pe[S.pays]:3; const pchk=!!S.pc[S.pays]; let pl='';
+  const qui=S.pays==='Humanité'?'pour l\'humanité':'si tout le monde vivait comme '+CHEZ[S.pays];
+  const ecart=Math.abs(est-n), fbP=ecart<0.25?'Excellente estimation !':'Votre estimation : '+fmt(est)+' · écart : '+fmt(ecart)+' planète'+(ecart>=2?'s':'');
+  const anyP=Object.keys(S.pc).length>0;
+  for(let i=0;i<Math.ceil(n);i++){ const f=Math.min(1,n-i); pl+='<span class="pl" aria-hidden="true"><i style="width:'+(f*100)+'%"></i></span>'; }
+  const main='<div class="main">'+
+   '<section class="card"><p class="kicker">Échauffement · 10 min</p><h2>Le jour du dépassement</h2>'+
+   '<p>C\'est le jour où l\'humanité a consommé toutes les ressources naturelles que la Terre peut régénérer en une année. Après cette date, nous vivons « à crédit ».</p>'+
+   '<div class="guess"><div><label for="g1">Votre estimation pour 1972 <output>'+fromDoy(S.g1)+'</output></label><input type="range" id="g1" min="1" max="365" value="'+S.g1+'"></div>'+
+   '<div><label for="g2">Votre estimation pour 2026 <output>'+fromDoy(S.g2)+'</output></label><input type="range" id="g2" min="1" max="365" value="'+S.g2+'"></div>'+
+   '<div class="row"><button class="btn" data-act="check1" type="button">Vérifier</button></div></div>'+rev+'</section>'+
+   (S.checked1?'<section class="card"><h3>Le jour du dépassement depuis 1972</h3><div class="leg"><span><i class="g"></i>Dans les limites de la planète</span><span><i class="r"></i>À crédit</span></div><div class="ts">'+ts+'</div><div class="axis"><span></span><span class="ticks"><span style="left:0">1 jan</span><span style="left:24.7%">1 avr</span><span style="left:49.6%">1 juil</span><span style="left:74.8%">1 oct</span><span style="left:91.5%">1 déc</span></span><span></span></div>'+
+   '<p class="src">Source : Global Footprint Network, édition 2026. Les dates des années passées sont recalculées avec les données actuelles ; elles peuvent différer des chiffres cités à l\'époque (la vidéo indique par ex. le 1<sup>er</sup> août pour 2018).</p></section>':'')+
+   '<section class="card"><h3>Combien de planètes faudrait-il ?</h3><p>Commencez par l\'humanité, puis choisissez quelques pays. Estimez à chaque fois, puis vérifiez.</p><div class="chips">'+PAYS.map(([k])=>'<button type="button" data-pays="'+k+'" aria-pressed="'+(S.pays===k)+'">'+k+(S.pc[k]?' ✓':'')+'</button>').join('')+'</div>'+
+   '<div class="guess" style="margin-top:.9rem"><div><label for="pe">Votre estimation '+qui+' <output>'+fmt(est)+'</output></label><input type="range" id="pe" min="0.5" max="10" step="0.1" value="'+est+'"></div><div class="row"><button class="btn" type="button" data-act="checkP">Vérifier</button></div></div>'+
+   (pchk?'<div class="planets">'+pl+'</div><div class="stat"><span class="pnum mono">'+fmt(n)+'</span><span>'+(S.pays==='Humanité'?'Terres : c\'est ce que l\'humanité consomme aujourd\'hui.':n<1?'Terre : l\'Inde consomme moins que ce que la planète peut régénérer.':'Terres si tout le monde vivait comme '+CHEZ[S.pays]+'.')+'</span></div><p class="fb ok">'+fbP+'</p>':'')+
+   (anyP?'<div class="vs"><div><b>Dans la vidéo (vers 2018)</b>Humanité : 1,7 planète<br>Si tout le monde vivait comme au Canada : 5 planètes</div><div><b>Aujourd\'hui (2026)</b>Humanité : environ '+fmt(HUMAN)+' planète<br>Canada : 5,5 planètes · Allemagne : 2,8</div></div>'+
+   '<p class="src">Source : Global Footprint Network, jours du dépassement par pays 2026. Valeur mondiale calculée : 365 jours ÷ 211 jours (30 juillet) ≈ 1,7.</p>':'')+'</section>'+
+   '<section class="card"><h3>Et les inégalités ?</h3><div class="vs" style="margin-top:0"><div><b>Dans la vidéo (vers 2018)</b>82 % des nouvelles richesses créées en une année sont allées au 1 % le plus riche.</div><div><b>Oxfam, janvier 2026</b>La fortune des milliardaires a augmenté de 16 % en 2025, pour atteindre 18 300 milliards de dollars.</div></div><p class="note" style="margin-top:.6rem">Attention : certains économistes contestent la méthode d\'Oxfam (patrimoine net, pas de correction selon le pouvoir d\'achat).</p><p class="src">Source : Oxfam, « Résister au règne des plus riches », janvier 2026 (cité par La finance pour tous, 27/01/2026).</p></section></div>';
+  return '<div class="grid">'+main+side("Estimez d'abord les deux dates, puis le nombre de planètes, et vérifiez à chaque fois. Comparez ensuite les chiffres de la vidéo avec ceux de 2026 : qu'est-ce qui a changé, qu'est-ce qui est resté ?",
+   ["Das Datum hängt von der Berechnungsmethode ab und wird jedes Jahr rückwirkend neu berechnet. Achte deshalb auf die Quelle.","Warum lag der Tag 2020 später als 2018?"])+'</div>';
+}
+const VG=[['Économie et croissance',['la relance économique','un trimestre','creuser les inégalités','perpétuel, -le','la contrainte à croître',"l'accumulation du capital"]],
+ ['Écologie',['épuiser des ressources','régénérer','emmagasiner','le dérèglement climatique','un réfugié climatique','la 6e extinction de masse']],
+ ['Les réponses à la crise',['le développement durable','le découplage','plafonner','décroître / la décroissance','utopiste',"l'autosuffisance"]],
+ ["Décroître, c'est …",['la durée de vie','réparable','le travail rémunéré','les circuits courts','relocaliser']]];
+const GE=Object.fromEntries(GLOSS.filter(g=>g[0]==='eco').map(g=>[g[1],g]));
+const VOPT=VG.map((g,k)=>shuffle(g[1].slice(),k+11));
+function vocHTML(){
+  let tot=0,ok=0;
+  const groups=VG.map(([title,terms],k)=>'<div class="vg"><h3>'+title+'</h3>'+terms.map(term=>{ tot++; const v=S.voc[term]; const right=v===term; if(right) ok++;
+     const st=S.vocChk&&v?(right?' right':' wrong'):'';
+     return '<div class="mr'+st+'"><b>'+term+'</b><div><select data-voc="'+esc(term)+'" aria-label="Übersetzung für '+esc(term)+'"><option value="">— Übersetzung wählen —</option>'+VOPT[k].map(o=>'<option value="'+esc(o)+'"'+(v===o?' selected':'')+'>'+GE[o][2]+'</option>').join('')+'</select>'+
+       (S.vocChk&&v&&!right?'<span class="sol">→ '+GE[term][2]+'</span>':'')+(S.vocChk&&right&&GE[term][3]?'<span class="sol">'+GE[term][3]+'</span>':'')+'</div></div>'; }).join('')+'</div>').join('');
+  return '<p>Associez chaque expression à sa traduction allemande, puis vérifiez.</p><div class="match">'+groups+'</div>'+
+   '<div class="row" style="margin-top:.8rem"><button class="btn" type="button" data-act="vocChk">Vérifier</button><button class="btn ghost" type="button" data-act="vocReset">Recommencer</button></div>'+
+   (S.vocChk?'<p class="fb '+(ok===tot?'ok">Tout est juste : '+ok+' / '+tot+'.':'no">'+ok+' / '+tot+' bonnes réponses. Les corrections sont indiquées sous les réponses fausses.')+'</p>':'');
+}
+function glInner(){
+  const q=S.q.trim().toLowerCase();
+  const list=GLOSS.filter(g=>(g[0]===S.gtab)&&(!q||(g[1]+' '+g[2]+' '+(g[3]||'')).toLowerCase().includes(q)));
+  return list.length?list.map(g=>'<div><b>'+g[1]+'</b><span>'+g[2]+'</span>'+(g[3]?'<em>'+g[3]+'</em>':'')+'</div>').join(''):'<p class="note">Aucun mot trouvé.</p>';
+}
+function v2(){
+  const q=S.q.trim().toLowerCase();
+  const list=GLOSS.filter(g=>(S.gtab==='all'||g[0]===S.gtab)&&(!q||(g[1]+' '+g[2]+' '+(g[3]||'')).toLowerCase().includes(q)));
+  const tabs=[['qc','Québécois & familier'],['eco','Vocabulaire (exercice)'],['ref','Noms & références']];
+  const main='<div class="main"><section class="card"><p class="kicker">Pendant la vidéo · 20 min</p><h2>Glossaire de la vidéo</h2><p>La vidéo vient du Québec : on y entend des expressions québécoises et un français oral très familier. Cherchez ici les mots que vous ne comprenez pas.</p>'+
+   '<div class="gtabs chips" style="margin-bottom:.8rem">'+tabs.map(([k,t])=>'<button type="button" data-gtab="'+k+'" aria-pressed="'+(S.gtab===k)+'">'+t+'</button>').join('')+'</div>'+
+   (S.gtab==='eco'?vocHTML():'<input class="search" id="gq" type="search" placeholder="Chercher un mot … (ex. : foirer, Meadows)" value="'+esc(S.q)+'" aria-label="Chercher dans le glossaire"><div class="gl" id="gl">'+glInner()+'</div>')+'</section></div>';
+  return '<div class="grid">'+main+side("Regardez la vidéo dans Edpuzzle et répondez aux questions. Gardez cette page ouverte à côté pour comprendre les expressions québécoises. Après la vidéo, faites l'exercice de vocabulaire.",
+   ["Vocabulaire: Ordne zuerst selbst zu und prüfe erst dann. Übertrage die Wörter, die du nicht kanntest, in deinen Wortschatz-Bereich in OneNote.","Die automatische Untertitelung macht Fehler. Richtig heißt es: <i>rapport Meadows</i>, <i>Éric Pineault (UQAM)</i>, <i>a-croissance</i>.","Québec-Französisch lässt im Mündlichen oft das „ne“ weg: <i>hésite pas</i> = <i>n'hésite pas</i>."])+'</div>';
+}
+function v3(){
+  const placed=S.chain; const pool=POOL.filter(i=>!placed.includes(i));
+  let ch=''; placed.forEach((i,k)=>{ const st=S.chainChk?(i===k?' right':' wrong'):''; ch+=(k?'<div class="arrow">▼</div>':'')+'<button type="button" class="kc'+st+'" data-unplace="'+k+'"><span class="no">'+(k+1)+'</span>'+CHAIN[i]+'</button>'; });
+  for(let k=placed.length;k<CHAIN.length;k++) ch+=(k?'<div class="arrow">▼</div>':'')+'<div class="slot">Étape '+(k+1)+'</div>';
+  const nOK=placed.filter((i,k)=>i===k).length;
+  const chFb=S.chainChk?'<p class="fb '+(nOK===CHAIN.length?'ok">Bravo, la chaîne est complète et correcte.':'no">'+nOK+' / '+CHAIN.length+' étapes à la bonne place. Touchez une carte rouge pour la retirer.')+'</p>':'';
+  const mRows=MATCH.map(([p],i)=>{ const v=S.match[i]; const st=S.matchChk&&v!==undefined?(+v===i?' right':' wrong'):'';
+    return '<div class="mr'+st+'"><b>'+p+'</b><select data-match="'+i+'" aria-label="Exemple pour : '+p+'"><option value="">— choisir un exemple —</option>'+MOPTS.map(j=>'<option value="'+j+'"'+(+v===j&&v!==undefined&&v!==''?' selected':'')+'>'+MATCH[j][1]+'</option>').join('')+'</select></div>'; }).join('');
+  const mOK=MATCH.filter((m,i)=>+S.match[i]===i&&S.match[i]!==''&&S.match[i]!==undefined).length;
+  const main='<div class="main"><section class="card"><p class="kicker">Après la vidéo · 10 min</p><h2>La chaîne d\'arguments</h2><p>Reconstituez le raisonnement des partisans de la décroissance : touchez les cartes dans le bon ordre.</p>'+
+   '<div class="cols"><div><h3>Cartes</h3><div class="pool">'+(pool.length?pool.map(i=>'<button type="button" class="kc" data-place="'+i+'">'+CHAIN[i]+'</button>').join(''):'<p class="note">Toutes les cartes sont placées.</p>')+'</div></div>'+
+   '<div><h3>Votre chaîne</h3><div class="chain">'+ch+'</div></div></div>'+
+   '<div class="row" style="margin-top:.8rem"><button class="btn" type="button" data-act="chainChk"'+(placed.length<CHAIN.length?' disabled':'')+'>Vérifier</button><button class="btn ghost" type="button" data-act="chainReset">Recommencer</button></div>'+chFb+
+   '<div class="onenote"><b class="lab">Dans le bloc-notes OneNote du cours</b><ol><li>Faites une capture d\'écran de votre chaîne correcte ou copiez-la avec le bouton, puis collez-la dans la section « La décroissance ».</li><li>Rédigez un paragraphe de 5 à 6 phrases qui explique le raisonnement des décroissants. Utilisez au moins quatre expressions de la chaîne et des mots charnières : <i>d\'abord, ensuite, c\'est pourquoi, par conséquent, enfin</i>.</li></ol><div class="row"><button class="btn ghost" type="button" data-act="copyChain"'+(nOK===CHAIN.length&&S.chainChk?'':' disabled')+'>Copier la chaîne</button><span class="note" id="cpChain">'+(nOK===CHAIN.length&&S.chainChk?'':'Le bouton fonctionne quand la chaîne est correcte.')+'</span></div></div></section>'+
+   '<section class="card"><p class="kicker">10 min</p><h2>Décroître, c\'est …</h2><p>Associez chaque principe à l\'exemple de la vidéo.</p><div class="match">'+mRows+'</div>'+
+   '<div class="row" style="margin-top:.8rem"><button class="btn" type="button" data-act="matchChk">Vérifier</button></div>'+(S.matchChk?'<p class="fb '+(mOK===MATCH.length?'ok">Tout est juste.':'no">'+mOK+' / '+MATCH.length+' bonnes réponses.')+'</p>':'')+
+   '<div class="onenote"><b class="lab">Dans le bloc-notes OneNote du cours</b><ol><li>Copiez les huit paires principe – exemple (capture d\'écran ou bouton) dans la section « La décroissance ».</li><li>Choisissez trois principes et expliquez avec vos propres mots ce qu\'ils changeraient dans votre vie quotidienne (deux phrases par principe).</li></ol><div class="row"><button class="btn ghost" type="button" data-act="copyMatch"'+(S.matchChk&&mOK===MATCH.length?'':' disabled')+'>Copier les paires</button><span class="note" id="cpMatch">'+(S.matchChk&&mOK===MATCH.length?'':'Le bouton fonctionne quand tout est juste.')+'</span></div></div></section></div>';
+  return '<div class="grid">'+main+side("Reconstituez la chaîne, puis expliquez à votre voisin·e le lien entre l'étape 2 et l'étape 4 : pourquoi parle-t-on d'une « contrainte à croître » ? Notez ensuite vos résultats dans OneNote.",
+   ["Die Kette ist die Argumentation des Videos, nicht unbedingt die Wirklichkeit. Welches Glied würden Kritiker angreifen?","Tipp: Schritt 4 setzt voraus, dass mehr Produktion immer mehr Umweltverbrauch bedeutet."])+'</div>';
+}
+function v4(){
+  const rows=SORT.map(([q,k],i)=>{ const v=S.sort[i]; const st=S.sortChk&&v?(v===k?' right':' wrong'):'';
+    return '<div class="sr'+st+'"><span class="q">'+q+'</span><span class="seg" role="group" aria-label="Classer">'+['DD','DE','RE'].map(c=>'<button type="button" data-sort="'+i+'" data-v="'+c+'" aria-pressed="'+(v===c)+'">'+SLAB[c]+'</button>').join('')+'</span></div>'; }).join('');
+  const ok=SORT.filter(([q,k],i)=>S.sort[i]===k).length;
+  const main='<div class="main"><section class="card"><p class="kicker">15 min</p><h2>Trois réponses à la crise écologique ?</h2>'+
+   '<div class="three"><div class="concept dd"><h3>Croissance verte / développement durable</h3><p>On continue à croître, mais on pollue moins grâce au <i>découplage</i> : la croissance se détache de la consommation de ressources.</p></div>'+
+   '<div class="concept de"><h3>Décroissance</h3><p>On décide de produire et de consommer moins, et autrement. C\'est un projet de société choisi et planifié.</p></div>'+
+   '<div class="concept re"><h3>Récession</h3><p>Une phase du cycle conjoncturel : le PIB recule pendant au moins deux trimestres. Elle est subie, pas choisie.</p></div></div></section>'+
+   '<section class="card"><h3>Classez les affirmations</h3><div class="sort">'+rows+'</div><div class="row" style="margin-top:.8rem"><button class="btn" type="button" data-act="sortChk">Vérifier</button></div>'+
+   (S.sortChk?'<p class="fb '+(ok===SORT.length?'ok">Tout est juste.':'no">'+ok+' / '+SORT.length+' bonnes réponses.')+'</p>':'')+
+   (S.sortChk&&ok===SORT.length?'<div class="tbl"><table class="cmp"><thead><tr><th></th><th>Décroissance</th><th>Récession</th></tr></thead><tbody><tr><th>Origine</th><td>choix politique</td><td>crise subie (phase du cycle conjoncturel)</td></tr><tr><th>Emploi</th><td>temps de travail partagé et réduit</td><td>licenciements, chômage</td></tr><tr><th>Répartition</th><td>partage des richesses visé</td><td>les plus fragiles touchés en premier</td></tr><tr><th>Objectif</th><td>bien-être dans les limites de la planète</td><td>aucun : on attend la reprise</td></tr></tbody></table></div>':'')+'</section>'+
+   '<section class="card"><h3>Le découplage a-t-il « foiré » ?</h3><p>La vidéo affirme que le découplage ne marche pas. L\'exemple allemand nuance cette affirmation :</p>'+
+   '<div class="stat"><span class="pnum mono">−48 %</span><span>d\'émissions de gaz à effet de serre en Allemagne entre 1990 et 2025, alors que le PIB a nettement augmenté.</span></div>'+
+   '<p>Mais les critiques font remarquer : les émissions liées aux produits importés ne sont pas comptées, la consommation de matières reste élevée, et la baisse est beaucoup trop lente pour respecter les objectifs climatiques.</p>'+
+   '<p class="src">Source : Umweltbundesamt, estimation des émissions 2025 (mars 2026).</p></section></div>';
+  return '<div class="grid">'+main+side("Classez les neuf affirmations. Puis répondez dans OneNote : la décroissance est-elle simplement une récession volontaire ? Justifiez en deux ou trois phrases.",
+   ["Knüpft an euren Konjunkturzyklus an: Eine Rezession ist eine Phase des Zyklus, die Décroissance ein politisches Programm.","Relative Entkopplung: Emissionen wachsen langsamer als das BIP. Absolute Entkopplung: Emissionen sinken, während das BIP wächst."])+'</div>';
+}
+function balInner(){
+  let sw=0,s=0; CRIT.forEach(c=>{ const w=S.w[c.id]; sw+=w; s+=w*c.v; }); const sc=sw?s/sw:0;
+  const pos=((sc+1)/2*100).toFixed(1);
+  const op= sc>0.4?"Je considère la décroissance comme une réponse nécessaire à la crise écologique."
+          : sc>0.12?"La décroissance me paraît convaincante sur le fond, même si elle soulève de vrais problèmes."
+          : sc>-0.12?"La décroissance me paraît ambivalente : elle pose les bonnes questions, mais ses réponses restent discutables."
+          : sc>-0.4?"Je reste sceptique : la décroissance identifie un vrai problème, mais ses coûts me semblent trop élevés."
+          :"Je rejette la décroissance : à mes yeux, la croissance verte est une voie plus réaliste.";
+  const sorted=CRIT.slice().sort((a,b)=>S.w[b.id]-S.w[a.id]);
+  const sideOf=c=>c.v>0?'pro':c.v<0?'con':(sc>=0?'pro':'con');
+  const main1=sorted.find(c=>S.w[c.id]>0 && (sc>=0?c.v>=0:c.v<=0));
+  const conc=sorted.find(c=>S.w[c.id]>0 && c!==main1 && (sc>=0?c.v<0:c.v>0));
+  let txt='<p>'+op+'</p>';
+  if(sw===0) txt='<p>Tous les critères sont à zéro. Donnez du poids à au moins un critère.</p>';
+  else{
+    if(main1) txt+='<p>Mon argument principal : '+main1[sideOf(main1)].charAt(0).toLowerCase()+main1[sideOf(main1)].slice(1)+' <span class="krit">('+main1.n+')</span></p>';
+    if(conc) txt+='<p>Certes, '+conc[sideOf(conc)].charAt(0).toLowerCase()+conc[sideOf(conc)].slice(1)+' <span class="krit">('+conc.n+')</span></p>';
+    txt+='<p>'+(sc>0.12?"C'est pourquoi je pense que les pays riches devraient au moins plafonner leur production.":sc>-0.12?"C'est pourquoi il faudrait tester des éléments de la décroissance, comme la réduction du temps de travail, sans renoncer à toute croissance.":"C'est pourquoi je mise plutôt sur l'innovation et le découplage que sur la décroissance.")+'</p>';
+  }
+  return '<div class="gauge"><div class="g-track"><span class="g-mark" style="left:'+pos+'%"></span></div><div class="g-lab"><span>croissance verte</span><span>ambivalent</span><span>décroissance</span></div></div><div class="texte">'+txt+'</div>';
+}
+function v5(){
+  const dirLab=c=>c.v>0?'<span class="dir p">pour</span>':c.v<0?'<span class="dir c">contre</span>':'<span class="dir a">ambivalent</span>';
+  const main='<div class="main"><section class="card"><p class="kicker">10 min</p><h2>La balance : pour ou contre la décroissance ?</h2><p>Donnez un poids à chaque critère (0 = sans importance, 10 = décisif). Le texte de la balance se transforme selon votre pondération.</p>'+
+   '<div class="wgrid"><div>'+CRIT.map(c=>'<div class="sl"><label for="w-'+c.id+'"><span>'+c.n+dirLab(c)+'<br><small>'+c.s+'</small></span><output class="mono">'+S.w[c.id]+'</output></label><input type="range" id="w-'+c.id+'" data-w="'+c.id+'" min="0" max="10" value="'+S.w[c.id]+'"></div>').join('')+'</div>'+
+   '<div id="bal" aria-live="polite">'+balInner()+'</div></div></section>'+
+   '<section class="card"><p class="kicker">5 min</p><h2>Comment la vidéo nous convainc</h2><p>La vidéo défend clairement la décroissance. Touchez une citation pour voir le moyen utilisé.</p><div class="quotes">'+
+   QUOTES.map(([q,a],i)=>'<div class="qu"><button type="button" data-q="'+i+'" aria-expanded="'+!!S.open[i]+'">'+q+'</button>'+(S.open[i]?'<div class="ans">'+a+'</div>':'')+'</div>').join('')+'</div>'+
+   '<h3 style="margin-top:1rem">Ce que la vidéo ne dit pas</h3><ul class="miss"><li>les conséquences pour l\'emploi et les revenus ;</li><li>le financement des retraites, de la santé et de l\'école ;</li><li>la situation des pays du Sud ;</li><li>la question des majorités démocratiques ;</li><li>les progrès du découplage (voir étape 4).</li></ul></section></div>';
+  return '<div class="grid">'+main+side("Réglez la balance selon votre propre avis. Lisez le texte produit, puis rédigez votre jugement dans OneNote (5 à 6 phrases) en nommant au moins deux critères.",
+   ["Die Kriterien in Klammern sind Urteilskriterien wie in der Erörterung im Abitur.","Der Text ist nur ein Gerüst. Dein eigenes Urteil braucht Begründungen und ein Zugeständnis an die Gegenseite."])+'</div>';
+}
+function v6(){
+  const tafel='<div class="tafel"><h2>La décroissance – une alternative à la croissance ?</h2><div class="tg">'+
+   '<div class="tb"><h3>1. Le constat</h3><ul><li>une croissance perpétuelle dans un monde aux ressources finies</li><li>jour du dépassement 2026 : 30 juillet → env. 1,7 planète</li><li>conséquences : climat, réfugiés climatiques, extinction des espèces</li></ul></div>'+
+   '<div class="tb"><h3>2. La critique de la croissance</h3><ul><li>contrainte à croître : consommer et produire toujours plus</li><li>la croissance creuse les inégalités</li><li>le développement durable et le découplage ne suffisent pas</li><li>la croissance comme « croyance » (Latouche)</li></ul></div>'+
+   '<div class="tb"><h3>3. Décroître, c\'est …</h3><ul><li>produire et consommer moins, mais mieux (objets durables, réparables)</li><li>travailler moins, vivre plus en communauté</li><li>relocaliser, circuits courts, ralentir</li><li>partager les richesses</li></ul></div>'+
+   '<div class="tb"><h3>4. À distinguer</h3><ul><li>récession : baisse du PIB subie (cycle conjoncturel)</li><li>décroissance : réduction choisie et planifiée</li><li>croissance verte : croître en polluant moins (découplage)</li></ul></div>'+
+   '<div class="tb full"><h3>5. Le débat</h3><ul><li><b>pour :</b> écologie, qualité de vie, partage des richesses</li><li><b>contre :</b> emploi et revenus, financement de l\'État social, droit au développement des pays du Sud, faisabilité démocratique</li></ul></div></div></div>';
+  const lock=S.unlocked?tafel:'<div class="lock"><span>Le tableau de synthèse est verrouillé. Code :</span><form data-unlock class="row"><input type="password" inputmode="numeric" autocomplete="off" id="code" aria-label="Code" maxlength="8"><button class="btn" type="submit">Débloquer</button><span class="fb no" id="msg"></span></form></div>';
+  const WF=[['la décroissance','Postwachstum, Schrumpfung'],['la croissance verte','grünes Wachstum'],['le découplage (relatif / absolu)','(relative / absolute) Entkopplung'],['la contrainte à croître','Wachstumszwang'],['plafonner la production','die Produktion deckeln'],['la sobriété','Genügsamkeit, Suffizienz'],['les limites planétaires','planetare Grenzen'],['le jour du dépassement','Erdüberlastungstag'],['l\'empreinte écologique','ökologischer Fußabdruck'],['la biocapacité','Biokapazität'],['réduire le temps de travail','die Arbeitszeit verkürzen'],['relocaliser','zurückverlagern'],['la récession','Rezession'],['le pouvoir d\'achat','Kaufkraft'],['le bien-être','Wohlergehen'],['le niveau de vie','Lebensstandard']];
+  const main='<div class="main"><section class="card"><p class="kicker">Synthèse · 10 min</p><h2>Tableau de synthèse</h2>'+lock+'</section>'+
+   '<section class="card"><h3>Le champ lexical de la décroissance</h3><p>Apprenez ces mots pour le prochain contrôle écrit : ils vous aideront à comprendre et à analyser le commentaire.</p><div class="wf">'+WF.map(([f,d])=>'<div><b>'+f+'</b> <span>– '+d+'</span></div>').join('')+'</div></section></div>';
+  return '<div class="grid">'+main+side("Comparez le tableau avec vos notes et complétez-les dans OneNote.",["Lerne diese Begriffe für die Klausur (contrôle écrit). Mit ihnen erschließt du den Kommentar schneller."])+'</div>';
+}
+const VIEWS=[v1,v2,v3,v4,v5,v6];
+
+function copyText(txt,id){
+  const out=document.getElementById(id);
+  const fallback=()=>{ out.innerHTML='<textarea readonly rows="6" style="width:100%;margin-top:.4rem">'+esc(txt)+'</textarea>'; const ta=out.querySelector('textarea'); ta.focus(); ta.select(); };
+  try{ navigator.clipboard.writeText(txt).then(()=>{ out.textContent='Copié ! Collez le texte dans OneNote.'; },fallback); }catch(e){ fallback(); }
+}
+/* ---------- Rendern ---------- */
+function done(i){ return i===0?S.checked1:i===2?(S.chainChk&&S.chain.every((x,k)=>x===k)&&S.chain.length===7):i===3?S.sortChk:i===4?Object.keys(S.open).length>0:i===5?S.unlocked:false; }
+function render(){
+  document.getElementById('steps').innerHTML=STEPS.map((s,i)=>'<button type="button" role="tab" aria-selected="'+(S.step===i)+'" data-step="'+i+'"><span class="n"><span>'+(i+1)+' · '+s.min+' min</span>'+(done(i)?'<span class="ok">✓</span>':'')+'</span><span class="t">'+s.t+'</span></button>').join('');
+  document.getElementById('view').innerHTML=VIEWS[S.step]();
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.step!==undefined){ S.step=+t.dataset.step; try{localStorage.setItem('dec-step',S.step);}catch(x){} render(); window.scrollTo({top:document.getElementById('steps').offsetTop-8}); return; }
+  if(t.dataset.pays){ S.pays=t.dataset.pays; render(); return; }
+  if(t.dataset.gtab){ S.gtab=t.dataset.gtab; render(); return; }
+  if(t.dataset.place!==undefined){ S.chain.push(+t.dataset.place); S.chainChk=false; render(); return; }
+  if(t.dataset.unplace!==undefined){ S.chain.splice(+t.dataset.unplace,1); S.chainChk=false; render(); return; }
+  if(t.dataset.sort!==undefined){ S.sort[+t.dataset.sort]=t.dataset.v; S.sortChk=false; render(); return; }
+  if(t.dataset.q!==undefined){ S.open[+t.dataset.q]=!S.open[+t.dataset.q]; render(); return; }
+  const a=t.dataset.act;
+  if(a==='check1'){ S.checked1=true; render(); }
+  if(a==='checkP'){ if(S.pe[S.pays]===undefined) S.pe[S.pays]=3; S.pc[S.pays]=true; render(); }
+  if(a==='vocChk'){ S.vocChk=true; render(); }
+  if(a==='vocReset'){ S.voc={}; S.vocChk=false; render(); }
+  if(a==='copyChain') copyText(CHAIN.map((c,i)=>(i+1)+'. '+c).join('\n'),'cpChain');
+  if(a==='copyMatch') copyText(MATCH.map(([p,e])=>p+' : '+e).join('\n'),'cpMatch');
+  if(a==='chainChk'){ S.chainChk=true; render(); }
+  if(a==='chainReset'){ S.chain=[]; S.chainChk=false; render(); }
+  if(a==='matchChk'){ S.matchChk=true; render(); }
+  if(a==='sortChk'){ S.sortChk=true; render(); }
+});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='pe'){ S.pe[S.pays]=+t.value; t.previousElementSibling.querySelector('output').textContent=fmt(+t.value); return; }
+  if(t.id==='g1'||t.id==='g2'){ S[t.id]=+t.value; t.previousElementSibling.querySelector('output').textContent=fromDoy(+t.value); return; }
+  if(t.dataset.w){ S.w[t.dataset.w]=+t.value; t.previousElementSibling.querySelector('output').textContent=t.value; document.getElementById('bal').innerHTML=balInner(); return; }
+  if(t.id==='gq'){ S.q=t.value; document.getElementById('gl').innerHTML=glInner(); }
+});
+document.addEventListener('change',e=>{ const t=e.target; if(t.dataset.voc!==undefined){ S.voc[t.dataset.voc]=t.value; S.vocChk=false; const y=window.scrollY; render(); window.scrollTo(0,y); return; } if(t.dataset.match!==undefined){ S.match[+t.dataset.match]=t.value; S.matchChk=false; render(); } });
+document.addEventListener('submit',e=>{ const f=e.target.closest('[data-unlock]'); if(!f) return; e.preventDefault();
+  const i=f.querySelector('input'); if(i.value.trim()===CODE){ S.unlocked=true; render(); } else { document.getElementById('msg').textContent='Code incorrect.'; i.value=''; } });
+render();
+})();
+</script>
+
+</body>
+</html>
