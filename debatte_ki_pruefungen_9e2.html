@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Debatte 9e2 · Prüfen im KI-Zeitalter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eceef1; --sheet:#ffffff; --ink:#1a2029; --muted:#5d6672; --rule:#d7dbe1; --tint:#f3f4f7;
+  --accent:#2f5d62; --accent-ink:#ffffff;
+  --pro:#2e7a55; --pro-bg:rgba(46,122,85,.10);
+  --contra:#a8432f; --contra-bg:rgba(168,67,47,.10);
+  --gold:#8a6a12; --blue:#1f4e8c; --blue-bg:rgba(31,78,140,.10); --warn:#a8432f;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+    --accent:#8fd0c8; --accent-ink:#0f1a1a; --pro:#7fcca3; --pro-bg:rgba(127,204,163,.12);
+    --contra:#ee9a8b; --contra-bg:rgba(238,154,139,.12); --gold:#e2c063; --blue:#8fb4ea; --blue-bg:rgba(143,180,234,.12); --warn:#ee9a8b; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181d; --sheet:#1d2128; --ink:#e4e7eb; --muted:#9ba3ad; --rule:#343a44; --tint:#252a32;
+  --accent:#8fd0c8; --accent-ink:#0f1a1a; --pro:#7fcca3; --pro-bg:rgba(127,204,163,.12);
+  --contra:#ee9a8b; --contra-bg:rgba(238,154,139,.12); --gold:#e2c063; --blue:#8fb4ea; --blue-bg:rgba(143,180,234,.12); --warn:#ee9a8b; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1.02rem;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:74rem;margin:0 auto;padding-block:1.4rem 3.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+.kopf{border-bottom:2px solid var(--ink);padding-bottom:1rem}
+.eyebrow{font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .35rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.65rem,4vw,2.4rem);line-height:1.15;margin:0 0 .5rem}
+.kopf p{margin:0;color:var(--muted);max-width:54rem}
+nav.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--accent);background:var(--sheet);margin:1.25rem 0 1.4rem}
+nav.steps button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.65rem .8rem .7rem;cursor:pointer;color:var(--muted);min-width:0}
+nav.steps button:last-child{border-right:0}
+nav.steps .n{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--ink);margin-bottom:.2rem}
+nav.steps .t{display:block;font-weight:600;font-size:.92rem;line-height:1.2;color:var(--ink)}
+nav.steps .p{display:block;font-size:.76rem;margin-top:.15rem}
+nav.steps button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.steps button[aria-selected="true"] .n,nav.steps button[aria-selected="true"] .t{color:var(--accent-ink)}
+@media (max-width:44rem){nav.steps{grid-template-columns:repeat(2,minmax(0,1fr))}nav.steps button:nth-child(2){border-right:0}nav.steps button:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+.haupt{display:grid;grid-template-columns:minmax(0,1fr) 20rem;gap:1.4rem;align-items:start}
+@media (max-width:58rem){.haupt{grid-template-columns:1fr}.seite.vorn{order:-1}}
+.blatt{background:var(--sheet);padding:1.3rem 1.4rem 1.5rem;box-shadow:0 1px 2px rgba(20,24,30,.05),0 10px 28px rgba(20,24,30,.09);min-width:0}
+.seite{display:grid;gap:1.2rem}
+.rubrik{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h2{font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.25;margin:.2rem 0 .5rem}
+h3{font-size:1.02rem;margin:1.1rem 0 .4rem}
+.hinweis{font-size:.9rem;color:var(--muted);margin:0 0 1rem}
+.fall{font-family:var(--serif);font-size:1.1rem;line-height:1.7;max-width:62ch}
+.blasen{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.8rem;margin:1rem 0}
+.blase{background:var(--tint);border-radius:14px 14px 14px 2px;padding:.7rem .9rem;font-family:var(--serif);font-style:italic}
+.blase small{display:block;font-style:normal;font-family:var(--sans);color:var(--muted);margin-top:.3rem;font-size:.8rem}
+.karte{background:var(--sheet);border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem 1.1rem}
+.karte h3{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.karte .frage,.frage{font-family:var(--serif);font-size:1.25rem;line-height:1.35;font-weight:600;margin:0}
+.karte p{margin:0 0 .6rem;font-size:.92rem}.karte p:last-child{margin-bottom:0}
+.linie{display:flex;justify-content:space-between;font-weight:600;font-size:.85rem;border-top:3px solid var(--ink);padding-top:.4rem;margin-top:.6rem}
+.linie span:first-child{color:var(--pro)}.linie span:last-child{color:var(--contra)}
+.phase{border-left:4px solid var(--accent);padding:.2rem 0 .2rem 1rem;margin:0 0 1.4rem}
+.phase h3{margin:0 0 .3rem;display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.zeit{font-weight:500;font-size:.85rem;color:var(--muted)}
+.phase ol,.phase ul{margin:.3rem 0 0;padding-left:1.2rem}
+.phase li{margin:.4rem 0}
+.regel{background:var(--tint);border:1px solid var(--rule);padding:.8rem 1rem;margin:.8rem 0}
+.regel b.kl{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
+.summe{font-size:.86rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:.6rem;margin-top:.4rem}
+.rollen{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:52rem){.rollen{grid-template-columns:1fr}}
+.rolle{background:var(--sheet);border:1px solid var(--rule);border-top:4px solid var(--rc);padding:1rem 1.15rem 1.15rem;min-width:0}
+.rolle.pro{--rc:var(--pro);--rb:var(--pro-bg)}
+.rolle.contra{--rc:var(--contra);--rb:var(--contra-bg)}
+.rolle .tag{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.rolle h3{font-family:var(--serif);font-size:1.25rem;margin:.15rem 0 .5rem}
+.rolle p{margin:0 0 .6rem}
+.rolle .lf{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:.8rem 0 .2rem}
+.rolle ol{margin:0;padding-left:1.2rem}
+.rolle ol li{margin:.3rem 0}
+.code{margin-top:1rem;padding-top:.8rem;border-top:1px dashed var(--rule)}
+.code .zu{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.88rem;color:var(--muted)}
+.code input{width:6.5rem;border:1px solid var(--rule);background:var(--sheet);padding:.35rem .5rem;letter-spacing:.25em;text-align:center}
+.code button{border:0;background:var(--rc);color:#fff;padding:.4rem .9rem;cursor:pointer;font-weight:600}
+.code .msg{font-size:.84rem;color:var(--warn);min-height:1.2em;margin:.35rem 0 0}
+.muster{background:var(--rb);border-left:3px solid var(--rc);padding:.7rem .9rem;margin-top:.6rem}
+.muster h4{margin:0 0 .4rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.muster ul{margin:0;padding-left:1.1rem}.muster li{margin:.45rem 0}
+.formules{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem}
+.fg{background:var(--sheet);border:1px solid var(--rule);padding:.9rem 1rem}
+.fg h3{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.fg ul{list-style:none;margin:0;padding:0}
+.fg li{padding:.32rem 0;border-bottom:1px dotted var(--rule);font-family:var(--serif)}
+.fg li:last-child{border-bottom:0}
+.onenote{display:inline-block;background:var(--blue-bg);color:var(--blue);font-weight:600;font-size:.78rem;padding:.1rem .5rem;border-radius:2px;margin-right:.3rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="kopf">
+<p class="eyebrow">Klasse 9e2 · Politik · Debatte</p>
+<h1>Prüfen im KI-Zeitalter: mündlich statt schriftlich?</h1>
+<p>Eishockey-Debatte mit vier Rollen. Arbeitet die Reiter der Reihe nach durch.</p>
+</header>
+
+<nav class="steps" role="tablist" aria-label="Seiten">
+<button role="tab" data-tab="0" aria-selected="true"><span class="n">1</span><span class="t">Der Fall</span><span class="p">Worum geht es?</span></button>
+<button role="tab" data-tab="1" aria-selected="false"><span class="n">2</span><span class="t">Aufgabenstellung</span><span class="p">Ablauf und Regeln</span></button>
+<button role="tab" data-tab="2" aria-selected="false"><span class="n">3</span><span class="t">Die Rollen</span><span class="p">Vier Rollenkarten</span></button>
+<button role="tab" data-tab="3" aria-selected="false"><span class="n">4</span><span class="t">Formulierungshilfen</span><span class="p">Für die Debatte</span></button>
+</nav>
+
+<section class="tabpanel" data-panel="0">
+<div class="haupt">
+<article class="blatt">
+<div class="rubrik">Der Fall</div>
+<h2>Ein Vorschlag der Fachschaft Mathematik</h2>
+<p class="fall">An unserer Schule müssen vor jeder Klassenarbeit alle Handys auf das Pult gelegt werden. Trotzdem sind in den letzten Wochen in mehreren Mathearbeiten Lösungen aufgefallen, die ganz offensichtlich mit einer KI entstanden sind. Vermutlich wurden Smartwatches, ein zweites Handy oder der Gang zur Toilette genutzt.</p>
+<p class="fall">Die Fachschaft Mathematik schlägt deshalb vor: Ab dem nächsten Schuljahr soll in jeder Klasse <b>die Hälfte der Mathearbeiten durch eine mündliche Prüfung oder eine Präsentation ersetzt werden</b>. In den Fremdsprachen gibt es so etwas an unserer Schule schon seit Jahren: Dort ersetzt eine mündliche Prüfung eine Klassenarbeit. Bevor die Schulkonferenz entscheidet, soll es eine öffentliche Debatte geben.</p>
+<h3>Erste Reaktionen auf dem Schulhof</h3>
+<div class="blasen">
+<div class="blase">„Endlich haben die Schummler keinen Vorteil mehr!“<small>Lea, 9. Klasse</small></div>
+<div class="blase">„Ich kann Mathe, aber wenn ich vorne stehen muss, bekomme ich kein Wort raus.“<small>Ben, 8. Klasse</small></div>
+<div class="blase">„Warum werden wir alle bestraft, nur weil ein paar schummeln?“<small>Aylin, 10. Klasse</small></div>
+<div class="blase">„Wenn jemand seinen Rechenweg erklären kann, weiß ich, dass er ihn verstanden hat.“<small>ein Mathelehrer</small></div>
+</div>
+<h3>Eure erste Meinung</h3>
+<p>Stellt euch auf der Meinungslinie im Raum auf: Wie steht ihr <b>jetzt</b> zu dem Vorschlag? Zwei oder drei von euch begründen kurz ihren Platz. Merkt euch, wo ihr steht. Nach der Debatte stellt ihr euch noch einmal auf.</p>
+<div class="linie"><span>Ja, unbedingt</span><span>teils, teils</span><span>Nein, auf keinen Fall</span></div>
+</article>
+<aside class="seite vorn">
+<div class="karte"><h3>Die Debattenfrage</h3><p class="frage">Soll an unserer Schule die Hälfte der Klassenarbeiten in Mathematik durch mündliche Prüfungen oder Präsentationen ersetzt werden?</p></div>
+<div class="karte"><h3>Wichtig</h3><p>Es geht nicht darum, ob Schummeln mit KI in Ordnung ist. Es geht darum, wie die Schule mit dem Problem umgehen soll.</p></div>
+</aside>
+</div>
+</section>
+
+<section class="tabpanel" data-panel="1" hidden>
+<div class="haupt">
+<article class="blatt">
+<div class="rubrik">Aufgabenstellung · 45 Minuten</div>
+<h2>Die Eishockey-Debatte</h2>
+<p class="hinweis">Die Klasse wird in vier Gruppen eingeteilt: Zwei Gruppen sind für den Vorschlag (pro), zwei dagegen (contra).</p>
+<div class="phase"><h3>Phase 1 · Einstieg <span class="zeit">7 Min.</span></h3><p>Lest den Fall im Reiter 1 und stellt euch auf der Meinungslinie auf.</p></div>
+<div class="phase"><h3>Phase 2 · Gruppen bilden <span class="zeit">3 Min.</span></h3><p>Findet euch in euren vier Gruppen zusammen.</p>
+<div class="regel"><b class="kl">Wichtig</b>In der Debatte muss <b>jede und jeder</b> mindestens einmal aufs Eis. Bereitet euch deshalb alle so vor, dass ihr eure Position selbst vertreten könnt.</div></div>
+<div class="phase"><h3>Phase 3 · Argumente erarbeiten <span class="zeit">12 Min.</span></h3>
+<ol>
+<li><b>Aufgabe 1:</b> Erstellt einen Screenshot eurer Rollenkarte (Reiter 3) und fügt ihn in OneNote ein. Neben oder unter dem Screenshot macht ihr eure Notizen.</li>
+<li><b>Aufgabe 2:</b> Beantwortet die Leitfragen eurer Rolle und notiert mindestens drei Argumente. Findet zu jedem Argument ein Beispiel aus dem Schulalltag.</li>
+<li><b>Aufgabe 3:</b> Überlegt, was die Gegenseite sagen wird, und notiert eine Antwort darauf.</li>
+<li><b>Aufgabe 4:</b> Erst jetzt: Gebt den Code ein, den ihr von der Lehrkraft erhaltet, und vergleicht eure Argumente mit den Beispielen. Ergänzt, was euch fehlt.</li>
+<li><b>Aufgabe 5:</b> Bestimmt, wer zu Beginn der Debatte für eure Gruppe auf dem Eis sitzt.</li>
+</ol></div>
+<div class="phase"><h3>Phase 4 · Eishockey-Debatte <span class="zeit">15 Min.</span></h3>
+<ul>
+<li><b>Aufstellung:</b> In der Mitte stehen vier Stühle, das ist das Eis. Auf jedem sitzt eine Person aus einer der vier Gruppen. Die übrigen Gruppenmitglieder sitzen auf der Bank, direkt hinter ihrem Spieler oder ihrer Spielerin.</li>
+<li><b>Fliegender Wechsel:</b> Wie im Eishockey kann jederzeit gewechselt werden, und das ist ausdrücklich erwünscht. Wer aufs Eis möchte, tippt der eigenen Person auf dem Stuhl leise auf die Schulter. Diese steht sofort auf, und ihr übernehmt den Platz. Der Wechsel geschieht leise, ohne Kommentar und ohne die Debatte zu unterbrechen. Gewechselt wird nur innerhalb der eigenen Gruppe.</li>
+<li><b>Alle aufs Eis:</b> Jede und jeder muss mindestens einmal aufs Eis und dort mindestens eine Wortmeldung machen. Ein zweites Mal darf jemand erst aufs Eis, wenn alle aus der eigenen Gruppe schon einmal dran waren.</li>
+</ul>
+<div class="regel"><b class="kl">Fairplay-Regel</b>Wer spricht, geht auf das Gesagte der Person davor ein (zustimmen, widersprechen oder nachfragen). Hilfen findet ihr im Reiter 4.</div></div>
+<div class="phase"><h3>Phase 5 · Auswertung <span class="zeit">8 Min.</span></h3>
+<ol>
+<li>Stellt euch noch einmal auf der Meinungslinie auf. Hat sich euer Platz verändert? Warum?</li>
+<li>Welches Argument hat euch am meisten überzeugt?</li>
+<li>Gibt es einen Kompromiss, dem alle vier Gruppen zustimmen könnten?</li>
+</ol></div>
+<p class="summe">Zeitplan: 7 Min. Einstieg · 3 Min. Gruppen · 12 Min. Erarbeitung · 15 Min. Debatte · 8 Min. Auswertung = 45 Min.</p>
+</article>
+<aside class="seite">
+<div class="karte"><h3>Die Debattenfrage</h3><p class="frage">Soll an unserer Schule die Hälfte der Klassenarbeiten in Mathematik durch mündliche Prüfungen oder Präsentationen ersetzt werden?</p></div>
+<div class="karte"><h3>Die Gruppen</h3>
+<p><b style="color:var(--pro)">Pro A</b> · Fachschaft Mathematik</p>
+<p><b style="color:var(--pro)">Pro B</b> · KI-Expertin</p>
+<p><b style="color:var(--contra)">Contra C</b> · Schülervertretung (SV)</p>
+<p><b style="color:var(--contra)">Contra D</b> · Elternvertretung</p></div>
+</aside>
+</div>
+</section>
+
+<section class="tabpanel" data-panel="2" hidden>
+<p class="hinweis">Jede Gruppe bearbeitet nur ihre eigene Karte. Erstellt zuerst einen Screenshot eurer Karte und fügt ihn in OneNote ein. Die Beispielargumente erscheinen erst nach Eingabe des Codes eurer Gruppe.</p>
+<div class="rollen"><article class="rolle pro">
+<div class="tag">Pro · Gruppe A</div>
+<h3>Die Fachschaft Mathematik</h3>
+<p>Ihr seid die Mathematiklehrkräfte der Schule und habt den Vorschlag gemacht. In euren Klassenarbeiten sind in letzter Zeit mehrere Lösungen aufgefallen, die offensichtlich mit KI entstanden sind.</p>
+<p class="lf">Leitfragen</p>
+<ol><li>Woran merkt ihr, ob jemand eine Aufgabe wirklich verstanden hat?</li><li>Was habt ihr bisher gegen KI in Klassenarbeiten unternommen, und warum reicht das nicht?</li><li>Was können die Fremdsprachen-Lehrkräfte von ihren mündlichen Prüfungen berichten?</li></ol>
+<div class="code" data-role="A"><div class="zu"><label for="cA">Code der Gruppe A</label><input id="cA" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div><p class="msg" aria-live="polite"></p><div class="muster" hidden></div></div>
+</article><article class="rolle pro">
+<div class="tag">Pro · Gruppe B</div>
+<h3>Eine KI-Expertin</h3>
+<p>Ihr beschäftigt euch beruflich mit künstlicher Intelligenz und berätet Schulen. Ihr meint: Schulen müssen ihre Prüfungen an eine Welt anpassen, in der KI überall verfügbar ist.</p>
+<p class="lf">Leitfragen</p>
+<ol><li>Wie werden sich KI-Geräte in den nächsten Jahren verändern?</li><li>Welche Fähigkeiten brauchen junge Menschen, wenn KI in Ausbildung und Beruf selbstverständlich ist?</li><li>Warum sind mündliche Formate schwerer mit KI zu umgehen?</li></ol>
+<div class="code" data-role="B"><div class="zu"><label for="cB">Code der Gruppe B</label><input id="cB" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div><p class="msg" aria-live="polite"></p><div class="muster" hidden></div></div>
+</article><article class="rolle contra">
+<div class="tag">Contra · Gruppe C</div>
+<h3>Die Schülervertretung (SV)</h3>
+<p>Ihr vertretet die Schülerinnen und Schüler. Ihr wollt auch nicht, dass Mitschüler mit KI schummeln. Aber ihr haltet es für falsch, deshalb die Hälfte der Mathearbeiten mündlich zu machen.</p>
+<p class="lf">Leitfragen</p>
+<ol><li>Wie geht es Schülerinnen und Schülern, die vor anderen nicht gerne sprechen?</li><li>Warum sollen alle unter dem Fehlverhalten einiger leiden?</li><li>Welche anderen Lösungen schlagt ihr gegen das Schummeln vor?</li></ol>
+<div class="code" data-role="C"><div class="zu"><label for="cC">Code der Gruppe C</label><input id="cC" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div><p class="msg" aria-live="polite"></p><div class="muster" hidden></div></div>
+</article><article class="rolle contra">
+<div class="tag">Contra · Gruppe D</div>
+<h3>Die Elternvertretung</h3>
+<p>Ihr vertretet die Eltern in der Schulpflegschaft. Euch ist wichtig, dass Noten gerecht und nachvollziehbar sind, besonders in einem Hauptfach wie Mathematik.</p>
+<p class="lf">Leitfragen</p>
+<ol><li>Wie kann man eine mündliche Prüfung im Nachhinein überprüfen?</li><li>Passt eine mündliche Prüfung zu Mathematik genauso gut wie zu einer Fremdsprache?</li><li>Welche einfacheren Maßnahmen gegen KI in Klassenarbeiten gäbe es?</li></ol>
+<div class="code" data-role="D"><div class="zu"><label for="cD">Code der Gruppe D</label><input id="cD" inputmode="numeric" maxlength="4" autocomplete="off"><button type="button">Freischalten</button></div><p class="msg" aria-live="polite"></p><div class="muster" hidden></div></div>
+</article></div>
+</section>
+
+<section class="tabpanel" data-panel="3" hidden>
+<p class="hinweis">Nutzt diese Satzanfänge, um in der Debatte auf andere einzugehen.</p>
+<div class="formules">
+<div class="fg"><h3>Meinung sagen</h3><ul><li>Ich bin der Meinung, dass …</li><li>Aus unserer Sicht …</li><li>Für uns ist besonders wichtig, dass …</li></ul></div>
+<div class="fg"><h3>Zustimmen</h3><ul><li>Da hast du recht, …</li><li>Ich stimme dir zu, weil …</li><li>Das sehen wir genauso.</li></ul></div>
+<div class="fg"><h3>Widersprechen</h3><ul><li>Das sehe ich anders, denn …</li><li>Da muss ich widersprechen: …</li><li>Das stimmt so nicht, weil …</li></ul></div>
+<div class="fg"><h3>Nachfragen</h3><ul><li>Wie meinst du das genau?</li><li>Kannst du ein Beispiel nennen?</li><li>Was passiert dann, wenn …?</li></ul></div>
+<div class="fg"><h3>Begründen</h3><ul><li>Das zeigt sich zum Beispiel daran, dass …</li><li>Ein wichtiger Grund ist …</li><li>Außerdem …</li></ul></div>
+<div class="fg"><h3>Kompromiss suchen</h3><ul><li>Einerseits …, andererseits …</li><li>Wie wäre es, wenn …?</li><li>Darauf könnten wir uns einigen: …</li></ul></div>
+</div>
+</section>
+</div>
+
+<script>
+(function(){
+var tabs=[].slice.call(document.querySelectorAll('nav.steps button')),panels=[].slice.call(document.querySelectorAll('.tabpanel'));
+function zeige(n){tabs.forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.tab===String(n)));});panels.forEach(function(p){p.hidden=p.dataset.panel!==String(n);});try{localStorage.setItem('ki9e2_tab',String(n));}catch(e){}}
+tabs.forEach(function(b){b.addEventListener('click',function(){zeige(b.dataset.tab);window.scrollTo({top:0});});});
+var st='0';try{st=localStorage.getItem('ki9e2_tab')||'0';}catch(e){}zeige(st);
+var DATA={A:"enRDcDlvZSoIHgT04Pb/wdfI2tGkpb+94ciPwMc/dnwrI3NFDwdZdgCU6woNHxrj7a/k/c/Fi9Xcqee6sICLhNWSlngxUFIIXlRfMSQ+NgwLVVNT47Wr2vjOh9HQraai9bIcUJ+fl2Fuf3JKCWNBg/kpOjIGSwQcGPWnxOtgB8PQ0cutpbK0hs2cNLJnfXZOBVhGTmElKjs1ARUVHubtqrV9HzLm2sm9oPe/hZqH02RwL2t9UgtYVx0gIiY8AAseEAtAbhEHu//IxZegrL3zrCZZnIlvbHhveEAHWkwxYzE3ODofEhMJ4ej18sqJ29K06e+kvY+Fy5ycdCd6cEBLRBVaTSc9mP8aCBlZuKb/+p6Zw8aC/an1jriVlICca2Z+NWxrTUVPGwk4JCABBxca5+nq/fLExZGEkqX59JCNw72Ui5dpfHpvQUYXUCEhJ3MFFk8LHfP+5rS9ws7a3K3jgrC8t4mfjJ5vLW1iBF9WQTMxKic5D0VLPQ/s61c90cbelcXapbav+4yMhNdyYHZ/AEdKXE8kOWs5MRRHERDto+L8/PfY2Nzeu+2SpYOMkZ1pdi9uaUcLT11QZxc1KQoGAltDUOD4pafExImLpveUppSAz6qOZ2pjamhJQFFXYyo+dTs6AlE9Ce3g8+TU29LQqKCh9eDOidXYtGknUXdET1lGXFdgcR0pCQMNtDL6+uDDzYOP77GqpbGuhI/UjG1nMFxrfkBYXlUhPjQ/RAwBAOXx9fu8xMLF3Z2qBGi3h4+ZlpeaLEFp2JRLQlkjaSAwCAoBTw/k4v+418bPxtyt47W8sbrMupeae35yeUVbUVYpMWFvGAAYSx4I6ezg8MzN2dDNy+DxrrWMzZOeYSlAcEjmk0NZMyIlNjgJRwEX56PD9vdcEN3eyeiltrWBh9OAaWZnL3hAWUpWHSAiI5rVCx4BUUOj/fKllMHeifir7ZiPi5udk21nbnY9RktYXCotcCc6Ng8ZHhWo4/70zN2Jj++n8e+LiJnLkz6xaXp8TQNeXFxXOHExPgwIVyTp6OHn18TbzNThvqW8/Y2CkJxwI0pienZYWVpVLDR3MQ0HFxbuq6/c6MDf35jUqqqxq8OQhIeakWt0aTtSWBdcKycnIQ8JAwYZ8+7ltL1kA9rdprG+9ai2ntGXkm1vcmUETVpWYBU9jOAHHgUfDuHo5vSNn5/Z1oHw/q631g==",B:"fHA4eydjXiEOGg8P7ur0+tHMwdraqaS258yE28nDfWctJ0hOEQsifQ86OX8gCgq4J//xt+jCwtfereymurKNmdOQaGJmeUVREQ8TXXlvED4WHxFXDO7+97vG34//3qavqqjEkoGTIFBmcm5rUE5MWCsuJ3t/BREfH6P65vLzxM7a2Kyz75WSioefmZEnYHx+UQt/WE8hOJDtEQkdVxLh/7PQ7YmP8qmtrvOvvI+dkZ13Z310d0IQckkhKSYjfwSo1wj386/kycDDk93Koe+cupaOhteUZmV+O01DTF8fAwJ+KA0EBxLyo+by//fCwZaH7Ke96eOLmc3HYTJfZdyUTUZVIyIhdw2g1wAPGumv4u7Ri+7C1LK+ta/DnI6EjG1lKScLRREXCS1rEiksBQYUH/bl87fqydST+aa+urH/n4KBnyRMRjdTRkdRT0sxKiooF6jQGRvr+fDzg9/K3tHm64Syh4+bnmcjYmBoP0NOVlVvazs1fwoRHVvG/ujy/cbCwMih57mykpCflpSaaSM4a1HoiFFaKXAmNQdMCgUU5Eg36cHJj9yhraX9/JiCgZmOI291ZD9dVVpcJiJvOpzUBRcX7eTn8oDlxMHR3rOq9ufMh53Jw2t5LSdBEn9F/Ow4NjUQDgoF5e2r+u/rh8rR1abro768j4SanGYsSdS7QEJUUCEuO21cTAlNXCji/bj+ysXRl/MEZqCujYvPgZB6K3J1QEJdUi5jLiE3M6TLCh7tq//28cmck3h/rrv3upyckogoJ2t2UwNCXRxZJjwsewkOEBISp9L26dbKj9DaqrmyroePm9d3anl3MiMIQ1EFfyc9aWMFTjYT8eDm9PfDztrP5LCmpYTDnJqZm2J9OHlGR1tfUTNqb3QBUk8+EqjG/PbByduXqKKptrL/g4adkWZlfXB6SRBWUi0pIXcJBxkHHu3ro7fEys6T1NquorSygIPUvLYnfmZvWUlBGR8KLjp7CaTTGeTv4vD0+smP6MkAd7KisYCVndt5z6t/c1wLRFIhIyolTEMcEg9f7er1+s3PlMTaq7Kgr8OHjpmRJjc8d00ZExg1L3U=",C:"dnw8dT1nYicUBgvx5O74/NvAxdSgrbiw3fCAxcPHcWEnK0xACw9eewE9m90LHhoa+ub+/tbXlonu3fbxi7KBgZyZIG/Wt3BJRQ9dMm04NzUeAgJVpfXj54H6wd/YyeSBvL+SgoeSmnExYHxEXwtQWDtnGzUEEB8QoQX9se7r1sja36Wn+/OPjJTPk8K7ZXp4Rwd9WDErKXlBPQ0aEhbp6Pe3wcvQwZysv++9iIOOht1kxKx3QU9FVilaJnENKafRHwLu7rXg/83dytupua6muMmpn41gbSA1VnpBXR1ILSh5OQUbA7DK9rH88c/JhYiSpa7u5YmK0sljwUx4eDthRUtbKSo9NjJFBgoK5ejltPDA09Lctre+tIer0s3SmTotV2JSCVBaUiw2KngSDgMBEOTi/PeFzsXB4fSB//2fgZ6RlmxrNX5pVkIPViguIyB9DQ4VWeLi4u/Ev/vS1c6oqPmziYzVuz+hfWlsRA1CXE8sNXASCQIfBuQR6eP//s3Z3NngCnG9uICDgdYhT25nbkxVChkWICQgDDINHRMf4a3y+M7a0MLJoL+7+ISfnJ2Oam91dwVWQlFhXS0iKSkFCxwZrrW6//WbjcPR//Gp6oqMiZmeYHEsQE9rTUNPUiclLSQaDBwHRrm+7aaB+s7a0+mttb2Aw7yQc4xnfz1ySg1cXi4sJ3MXCRAcC+St5v3piZWImZagpBZds42Dk9thZHdtRUVbE1GG7SE8DQQIHF3u4uDrZh/KweHIoaO598SKnJ9lZzVldUBdShgUIz8xLxsOExHx8P/h1PHM1NObsqiru4+bkJ3SOT5jcR8RR10DdSVuDwoRDhDzGuHl6PXDjdjCpumxurnFvo2dc35/YXtMHQwWJ31sHA9/DBQPW8vv/OXT3cDV2eWkobzBhIbUvGtuZGxXA19WKU0tOD8vRAAYGaDg+7PRxMXH3aysv722yaycmHBweWdEcQYReVo3bTQiExpVHh3rsfn308XOxp0Ke7K8i8OHNreRZnRzNRgCVV5+dXomMFs=",D:"fnU9dyVuYyUMHwrz7Pf5/tPJxNbYpLmy5cmBx8s+cGMvIk1CEwZfeQ4zKwYGGgEaocD+7/jEl4uWpPfzkIuLitGNYmN/c3tTRV9aKyByFC0DCxgPXeHs+feGxNLb4qKqv7+Uy4Obnm9lc2pGSxJAUSVuJz4vDQESEOXh9vuMhe3U1+GupLS4lcmbOr9rdnl2QkZUVR0aP5TlABwdEqLtTDXwxt+N3tSi6Zi2l4DShovCqmNweFgNQVYraRY8DAEdBB3qq/j0+Yff2dfjoben/7WPlp6ObGJldAZIURt+aiM4YF0HBERB5bfY9tfA3JXSAnKiqLiEzZmYZWFlek5JVVhbKSksKH0UDB8Xubm996GB+dTV0+q6vqvGjJqbZyVBfmpEC0NTXi89di8GFwEBGunr/7e9wW4B16isvfWVjJ3Ri294LX90SUwWSiAtIDw5FQIYGBXvrdbrxMzaweKkoaK7iY6D1N1FbH85RkxcUE1hI5LnMw4BHhru7P218tdsDdi0par6uo6LgtlmdjJ7alMOVFJTah0lNhIGGBru6aGtsc3Ck4bRrvfqu92ok4GXZC54aGkKRlJQKCxzExAAAhUN8fns+fXCk4qWofvynLHBipSV3Ux/cnRCWkNHIyYnNDBBDAgSCafs5bnWyMGV7LG8tLi1j4PZ2UJsYH1DSU0RTiA4Pi59AwYEDaPg+/v6gcNyB9Ouob66jozTpXDGs3drT0wDGnQpaRs4Fw0XGB715/q7+s/Fw5mjuvOgj5bPo5tiY2N/cwsJQ1cnZTY0LEEUFBIa/q36+MiJwNaqt6a3qo2CjpLTOyZ6cB0ZXlwBfSxvHi5KCh4b8qny+8bA3dSejQh7qaiJjpOXOTk9dyEBaVRJ/u45MnkQBgFV5uD9sd/TycjTyeesv7eQhJ+Ymm1gPTtJS15UUSMncyMNFwEUXu3q/un4yYWW6q6koKGogJqSk5h5LXZ7QUxRUCx/bxU/Eksaudn17Lb8ysvU1Nypq6P3/YuBhNliYHY1auaLXVg1Lm0+OBVJPRXi9uHw8cDc097Uvqi5+ZOEiYBxcWp9ckRFAwYSKyBoZUwQHks="};
+function dec(b64,code){try{var bin=atob(b64),k=new TextEncoder().encode(code),o=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)o[i]=bin.charCodeAt(i)^((k[i%k.length]+i*7)&255);var s=new TextDecoder('utf-8').decode(o);return s.indexOf('OK|')===0?s.slice(3):null;}catch(e){return null;}}
+[].slice.call(document.querySelectorAll('.code')).forEach(function(box){
+  var r=box.dataset.role,inp=box.querySelector('input'),msg=box.querySelector('.msg'),mu=box.querySelector('.muster');
+  function los(){var c=(inp.value||'').trim(),h=c.length===4?dec(DATA[r],c):null;
+    if(h){mu.innerHTML=h;mu.hidden=false;msg.textContent='';box.querySelector('.zu').hidden=true;}else msg.textContent='Dieser Code passt nicht zu eurer Gruppe.';}
+  box.querySelector('button').addEventListener('click',los);inp.addEventListener('keydown',function(e){if(e.key==='Enter')los();});
+});
+})();
+</script>
+</body>
+</html>
