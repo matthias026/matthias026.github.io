@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Migrationsbrillen 9f</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: Arbeitsheft in sieben Etappen; die zugeteilte "Brille" färbt alle Schritte ein; Französisch steht als zweite Spur in der Linsenfarbe daneben */
+:root{
+  --paper:#eef2f1; --sheet:#ffffff; --ink:#15233a; --muted:#56667a; --line:#cfd8dc; --soft:#e2e9ea;
+  --route:#0f6f6c; --route-soft:#d5ecea;
+  --lens-a:#c4561d; --lens-b:#2f5fb3; --lens-c:#7b4bb0; --lens-d:#1f8a4c;
+  --ok:#1d7a45; --ok-soft:#dcf0e3; --bad:#b3261e; --bad-soft:#f8dedb;
+  --lens:var(--route); --lens-soft:var(--route-soft);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1720; --sheet:#17222e; --ink:#e7eef2; --muted:#9fb0bf; --line:#2c3b49; --soft:#1f2c39;
+  --route:#5cc2bb; --route-soft:#183634;
+  --lens-a:#f08a52; --lens-b:#7da4ec; --lens-c:#b994e6; --lens-d:#5fcf8c;
+  --ok:#6fd49a; --ok-soft:#173a27; --bad:#f2958c; --bad-soft:#43201d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1720; --sheet:#17222e; --ink:#e7eef2; --muted:#9fb0bf; --line:#2c3b49; --soft:#1f2c39;
+  --route:#5cc2bb; --route-soft:#183634;
+  --lens-a:#f08a52; --lens-b:#7da4ec; --lens-c:#b994e6; --lens-d:#5fcf8c;
+  --ok:#6fd49a; --ok-soft:#173a27; --bad:#f2958c; --bad-soft:#43201d; color-scheme:dark}
+body[data-lens="A"]{--lens:var(--lens-a)} body[data-lens="B"]{--lens:var(--lens-b)}
+body[data-lens="C"]{--lens:var(--lens-c)} body[data-lens="D"]{--lens:var(--lens-d)}
+body[data-lens]{--lens-soft:color-mix(in srgb,var(--lens) 14%,var(--sheet))}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.reveal{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--sheet);border:2px dashed var(--lens);border-radius:12px;padding:12px 14px}
+.reveal p{flex:1 1 260px}
+.lens:not([aria-pressed="true"]) p, .lens:not([aria-pressed="true"]) ul, .lens:not([aria-pressed="true"]) .terms{display:none}
+body:not(.rev0) .lens[aria-pressed="true"] p, body:not(.rev0) .lens[aria-pressed="true"] ul, body:not(.rev0) .lens[aria-pressed="true"] .terms{display:none}
+.lens:not([aria-pressed="true"])::after{content:"Zusammenfassung nur für die Gruppen mit diesem Ansatz";font-size:13.5px;color:var(--muted);font-style:italic}
+body:not(.rev0) .lens[aria-pressed="true"]::after{content:"Zusammenfassung noch verdeckt";font-size:13.5px;color:var(--muted);font-style:italic}
+/* Wortbank */
+.bankgrp{display:grid;gap:8px}
+.wchip{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 11px;cursor:pointer;display:grid;text-align:left;line-height:1.3}
+.wchip small{font-size:12.5px;color:var(--muted)}
+.wchip[aria-pressed="true"]{background:var(--lens);border-color:var(--lens);color:var(--sheet)}
+.wchip[aria-pressed="true"] small{color:var(--sheet)}
+.counter{position:sticky;bottom:env(safe-area-inset-bottom,0px);z-index:4;background:var(--ink);color:var(--paper);border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.counter b{font-family:var(--display);font-size:22px}
+.counter .st{font-size:14px}
+body:not(.rev1) #cases1 .facts{display:none}
+body:not(.rev1) #cases1 .who::after{content:"Kurzinfo noch verdeckt";font-size:13.5px;color:var(--muted);font-style:italic}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:22px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,44px);font-weight:800;font-stretch:112%}
+h2{font-size:24px;font-weight:750;font-stretch:105%}
+h3{font-size:19px;font-weight:700}
+p{margin:0}
+.fr{font-style:italic;color:var(--lens)}
+.fr-sub{font-size:19px;font-style:italic;color:var(--route)}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:8px}
+header .q{font-size:19px;max-width:62ch;color:var(--muted)}
+.heads-up{display:grid;gap:4px;background:var(--sheet);border:2px solid var(--ink);border-radius:12px;padding:12px 16px;max-width:75ch}
+.heads-up b{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+.route{height:10px;background:radial-gradient(circle,var(--route) 2px,transparent 2.5px) 0 50%/14px 10px repeat-x;opacity:.7}
+
+.group{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;grid-template-columns:1fr 2fr}
+@media (max-width:640px){.group{grid-template-columns:1fr}}
+label.f{display:grid;gap:4px;font-weight:700;font-size:14px;color:var(--muted)}
+input[type=text],textarea{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--lens);outline-offset:2px}
+
+nav.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:8px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+nav.steps button{font:inherit;font-size:13.5px;font-weight:700;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:10px;padding:8px 6px;cursor:pointer;display:grid;gap:1px;text-align:left;min-width:0;line-height:1.25}
+nav.steps button small{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:500}
+nav.steps button[aria-current="step"]{background:var(--lens);border-color:var(--lens);color:var(--sheet)}
+nav.steps button[aria-current="step"] small{color:var(--sheet);opacity:.85}
+@media (max-width:760px){nav.steps button span{display:none}}
+
+section.step{display:grid;gap:16px}
+.task{background:var(--lens-soft);border-radius:12px;padding:14px 16px;display:grid;gap:4px}
+.task b{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lens)}
+
+.lenses{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:700px){.lenses{grid-template-columns:1fr}}
+.lens{--c:var(--lens-a);font:inherit;color:var(--ink);text-align:left;background:var(--sheet);border:2px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;display:grid;gap:8px;align-content:start}
+.lens[data-l="B"]{--c:var(--lens-b)} .lens[data-l="C"]{--c:var(--lens-c)} .lens[data-l="D"]{--c:var(--lens-d)}
+.lens .top{display:flex;gap:12px;align-items:center}
+.lens .lfr{font-style:italic;color:var(--c);font-size:15.5px}
+.glass{width:46px;height:26px;flex:none;position:relative}
+.glass::before,.glass::after{content:"";position:absolute;top:2px;width:18px;height:18px;border:3px solid var(--c);border-radius:50%}
+.glass::before{left:0}.glass::after{right:0}
+.glass i{position:absolute;left:19px;top:9px;width:8px;border-top:3px solid var(--c)}
+.lens .letter{font-family:var(--mono);color:var(--c)}
+.lens ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px}
+.terms{display:grid;gap:3px;border-top:1px dashed var(--line);padding-top:8px;font-size:14.5px}
+.terms b{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.terms span i{color:var(--c)}
+.lens[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--sheet))}
+.lens[aria-pressed="true"] .pick{display:inline-block}
+.pick{display:none;font-family:var(--mono);font-size:12px;background:var(--c);color:var(--sheet);border-radius:99px;padding:2px 10px;justify-self:start}
+
+.cases{display:grid;gap:16px}
+.case{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.case .who{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.num{font-family:var(--mono);font-size:13px;background:var(--ink);color:var(--sheet);border-radius:6px;padding:1px 8px}
+.case .facts{color:var(--muted);font-size:15.5px;max-width:70ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 13px;cursor:pointer;display:grid;text-align:left;line-height:1.3}
+.chip small{font-style:italic;font-size:13px;color:var(--lens)}
+.chip[aria-pressed="true"]{background:var(--lens);border-color:var(--lens);color:var(--sheet)}
+.chip[aria-pressed="true"] small{color:var(--sheet)}
+.scale{display:grid;gap:6px}
+.scale .ends{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--muted)}
+.scale .ends span:last-child{text-align:right}
+input[type=range]{width:100%;accent-color:var(--lens)}
+.sub{font-weight:700;font-size:14px;color:var(--muted)}
+details.gloss{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+details.gloss summary{cursor:pointer;font-weight:700}
+details.gloss dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:10px 0 0;font-size:15.5px}
+@media (max-width:560px){details.gloss dl{grid-template-columns:1fr}}
+details.gloss dt{font-weight:700}
+details.gloss dt i{display:block;font-weight:400;color:var(--lens)}
+details.gloss dd{margin:0;color:var(--muted)}
+.frhelp{font-size:14.5px;background:var(--lens-soft);border-radius:8px;padding:6px 10px}
+.frhelp b{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--lens);margin-right:6px}
+
+.dots{display:flex;gap:8px;flex-wrap:wrap}
+.dot{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:7px 11px;cursor:pointer}
+.dot[aria-pressed="true"]{background:var(--lens);border-color:var(--lens);color:var(--sheet)}
+.questions{margin:0;padding-left:20px;display:grid;gap:4px}
+
+.pool{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.poolhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{font:inherit;font-size:13.5px;font-weight:700;border:0;background:var(--paper);color:var(--ink);padding:6px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--lens);color:var(--sheet)}
+.fchip{font:inherit;font-size:14.5px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;display:inline-flex;gap:6px;align-items:baseline;text-align:left;flex-wrap:wrap}
+.fchip em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.fchip small{font-size:12.5px;color:var(--muted)}
+.fchip[aria-pressed="true"]{outline:3px solid var(--lens);outline-offset:1px;background:var(--lens-soft)}
+.fchip.placed{opacity:.35}
+.tray{position:sticky;bottom:env(safe-area-inset-bottom,0px);background:var(--ink);color:var(--paper);border-radius:12px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;z-index:4}
+.tray .word{flex:1 1 100%;font-size:16px}
+.tray .word i{font-weight:700}
+.tray button{font:inherit;font-size:14px;font-weight:700;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;background:var(--paper);color:var(--ink);text-align:left}
+.tray button small{display:block;font-weight:400;font-style:italic;font-size:12px}
+.tray button.no{background:transparent;color:var(--paper);border:1px solid var(--paper)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.bin{background:var(--sheet);border:1px solid var(--line);border-top:5px solid var(--lens);border-radius:12px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
+.bin.out{border-top-color:var(--muted)}
+.bin .hint{font-size:13.5px;color:var(--muted)}
+.bin .in{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.bin .in .fchip{background:var(--lens-soft)}
+.bin.out .in .fchip{background:var(--soft)}
+.bin textarea{min-height:64px;font-size:15px}
+.empty{font-size:13.5px;color:var(--muted);font-style:italic}
+
+/* Lexique */
+.lex{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px}
+.lexrow{display:grid;grid-template-columns:28px 1fr 1fr;gap:8px;align-items:center}
+.lexrow > span{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:right}
+.lexhead{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:560px){.lexrow{grid-template-columns:22px 1fr}.lexrow input:last-child{grid-column:2}.lexhead{display:none}}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+.sugg button{font:inherit;font-size:14px;border:1px dashed var(--lens);background:transparent;color:var(--ink);border-radius:8px;padding:5px 9px;cursor:pointer}
+.sugg button.used{opacity:.35;cursor:default}
+
+/* Quiz */
+.quiz{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:14px}
+.qword{font-family:var(--display);font-size:clamp(24px,4vw,32px);font-weight:750;font-style:italic;color:var(--lens)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{font:inherit;font-size:16px;text-align:left;border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.qbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.progress{display:flex;gap:4px}
+.progress i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.progress i.ok{background:var(--ok)} .progress i.bad{background:var(--bad)} .progress i.now{background:var(--lens)}
+.fb{font-weight:700}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+.score{font-family:var(--display);font-size:40px;font-weight:800;color:var(--lens)}
+
+.poster{background:var(--sheet);border:2px solid var(--lens);border-radius:18px;padding:20px;display:grid;gap:16px}
+.poster .head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:end}
+.stamp{font-family:var(--display);font-weight:800;font-stretch:120%;color:var(--lens);border:3px solid var(--lens);border-radius:10px;padding:4px 12px;transform:rotate(-2deg);font-size:18px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.vol{position:relative;height:8px;background:linear-gradient(90deg,var(--route-soft),var(--soft));border-radius:99px;width:110px;margin-top:6px}
+.vol i{position:absolute;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--lens);margin-left:-8px}
+.fit{font-family:var(--mono);letter-spacing:2px;color:var(--lens)}
+.pbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.pbins div{background:var(--lens-soft);border-radius:10px;padding:10px;font-size:14.5px;min-width:0}
+.pbins div.out{background:var(--soft)}
+.pbins b{display:block;font-size:13px}
+.pbins b i{font-weight:400;color:var(--lens)}
+.plex{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:4px 18px;font-size:15px}
+.plex div{border-bottom:1px dotted var(--line);padding-block:3px}
+.plex i{color:var(--lens);font-weight:700}
+.fazit{border-left:4px solid var(--lens);padding-left:12px;font-size:16px}
+
+.bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--sheet)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.note{font-size:14px;color:var(--muted)}
+.warn{background:var(--soft);border-radius:10px;padding:12px 14px}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media (prefers-reduced-motion:no-preference){.lens,.chip,.fchip,.dot,.opt{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Politik bilingual · Klasse 9f · Menschen in Bewegung</div>
+    <h1>Durch welche Brille schauen wir auf Migration?</h1>
+    <p class="fr-sub">Quelles lunettes pour regarder la migration ?</p>
+    <p class="q">Warum verlassen Menschen ihr Heimatland? Freiwillig und gezielt oder unfreiwillig und zufällig? Ihr untersucht drei Lebensgeschichten mit einem Erklärungsansatz der Migrationsforschung. Ihr arbeitet auf Deutsch und lernt nebenbei die wichtigsten französischen Wörter zum Thema. Die Materialien findet ihr in eurem Politikbuch oder auf OneNote.</p>
+    <div class="route" aria-hidden="true"></div>
+    <div class="heads-up"><b>Wichtig für eure Arbeit</b><p>Alles, was ihr in den Schritten 1a bis 1c und im Lexique eintippt und auswählt, erscheint am Ende <strong>automatisch</strong> auf eurem <strong>Ergebnisblatt</strong>. Mit diesem Ergebnisblatt stellt jeweils eine Gruppe ihren Ansatz <strong>vor der ganzen Klasse</strong> vor: auf Deutsch, und zu jedem Fachbegriff nennt ihr auch den französischen Begriff. Arbeitet deshalb sorgfältig und tippt sauber: vollständige Sätze, richtige Rechtschreibung, keine Abkürzungen, im Französischen mit Artikel und Akzenten.</p></div>
+  </header>
+
+  <div class="group">
+    <label class="f">Gruppenname<input type="text" id="g-name" data-k="group" placeholder="z. B. Gruppe 3"></label>
+    <label class="f">Gruppenmitglieder<input type="text" id="g-members" data-k="members" placeholder="Vornamen, durch Komma getrennt"></label>
+  </div>
+
+  <nav class="steps" aria-label="Arbeitsschritte">
+    <button data-go="0"><small>Start</small><span>Gruppe & Ansatz</span></button>
+    <button data-go="1"><small>1 a</small><span>Fälle & Definitionen</span></button>
+    <button data-go="2"><small>1 b</small><span>Fälle erklären</span></button>
+    <button data-go="3"><small>1 c</small><span>Faktoren einordnen</span></button>
+    <button data-go="4"><small>Lexique</small><span>Unsere Wörter</span></button>
+    <button data-go="5"><small>Quiz</small><span>Vokabel-Check</span></button>
+    <button data-go="6"><small>Ergebnis</small><span>Präsentieren</span></button>
+  </nav>
+
+  <!-- STEP 0 -->
+  <section class="step" data-step="0">
+    <div class="task"><b>Auftrag</b>
+      <ol class="questions">
+        <li>Setzt euch in eurer Vierergruppe zusammen.</li>
+        <li>Eure Lehrkraft teilt euch <strong>einen</strong> Ansatz (A–D) zu. Tippt diesen Ansatz unten an. Er ist eure „Brille“: Durch sie schaut ihr in den nächsten Schritten auf die Fälle.</li>
+        <li>Lest gemeinsam <strong>M2</strong> zu eurem Ansatz. Die anderen Ansätze müsst ihr nicht lesen. Ihr findet M2 in eurem Politikbuch auf <strong>S. 252</strong> oder auf OneNote.</li>
+        <li>Formuliert danach in der Gruppe <strong>mündlich</strong> die drei wichtigsten Ideen eures Ansatzes.</li>
+        <li>Erst dann deckt ihr die Zusammenfassung eures Ansatzes unten auf und vergleicht sie mit euren Ideen. Lest auch die <strong>Mots-clés</strong>: Diese französischen Wörter braucht ihr später.</li>
+      </ol>
+    </div>
+    <div id="rev0"></div>
+    <div class="lenses" id="lenses"></div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" data-step="1" hidden>
+    <div class="task"><b>Aufgabe 1 a</b>
+      <ol class="questions">
+        <li>Lest <strong>M1</strong> in eurem Politikbuch auf <strong>S. 251</strong> oder auf OneNote.</li>
+        <li>Teilt euch in eurer Gruppe untereinander die drei Personen auf. Stellt euch dann reihum gegenseitig diese drei Personen <strong>mündlich</strong> vor: Wer ist sie, woher kommt sie, und warum hat sie ihr Land verlassen?</li>
+        <li>Erst dann deckt ihr die Kurzinfos zu den Personen unten auf.</li>
+        <li>Bearbeitet anschließend gemeinsam die Aufgabe: Ordnet jedem Fall passende Definitionen von Migration zu (Mehrfachauswahl möglich) und begründet kurz. Schätzt außerdem anhand des Schiebereglers ein, wie freiwillig die Entscheidung war.</li>
+      </ol>
+      <p class="note">Ihr arbeitet zusammen als Gruppe. Jede und jeder notiert die gemeinsamen Ergebnisse auf dem eigenen iPad. Unter jeder Definition steht der französische Begriff.</p>
+    </div>
+    <div id="rev1"></div>
+    <details class="gloss"><summary>Definitionen aus M2 nachschlagen · les définitions</summary>
+      <dl id="glossList"></dl>
+    </details>
+    <div class="cases" id="cases1"></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" data-step="2" hidden>
+    <div class="task"><b>Aufgabe 1 b</b><p>Beantwortet für jede Person die Frage eures Ansatzes in ein bis zwei Sätzen. Entscheidet dann gemeinsam: Wie gut erklärt euer Ansatz diesen Fall?</p>
+      <p class="note">Ihr schreibt auf Deutsch. Wer mag, kann es zusätzlich auf Französisch versuchen: Unter jedem Feld steht ein Satzanfang.</p></div>
+    <div id="lensQ"></div>
+    <div class="cases" id="cases2"></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" data-step="3" hidden>
+    <h2>Welche Faktoren beeinflussen Migrationsentscheidungen?</h2>
+    <p class="fr-sub">Quels facteurs influencent la décision de migrer ?</p>
+    <div class="task"><b>Aufgabe 1 c</b>
+      <ol class="questions">
+        <li>Unten seht ihr die Faktoren in französischer Sprache. Tippt einen Faktor an: Daneben erscheint die deutsche Bedeutung.</li>
+        <li>Besprecht in eurer Gruppe gemeinsam die einzelnen Faktoren und ordnet sie einem Feld eures Ansatzes zu. Faktoren, die sich nicht einordnen lassen, kommen in „Passt nicht in unseren Ansatz“.</li>
+        <li>Begründet eure Wahl in jedem Feld. Schreibt vor jede Begründung die Nummer des Faktors, zum Beispiel: <em>„4: Krieg zwingt Menschen, ihr Land zu verlassen.“</em> Wer mag, schreibt auf Französisch: <em>« 4 : La guerre pousse les gens à quitter leur pays. »</em></li>
+      </ol>
+    </div>
+    <div id="lensNeed"></div>
+    <div class="pool">
+      <div class="poolhead"><div class="sub">Facteurs · Faktoren <span class="note">(blasse Faktoren sind schon eingeordnet)</span></div>
+        <div class="seg" role="group" aria-label="Sprache der Faktoren">
+          <button data-lang="fr">Français</button><button data-lang="both">FR + DE</button><button data-lang="de">Deutsch</button>
+        </div></div>
+      <div class="chips" id="pool"></div>
+      <label class="f">Nr. 36 – euer eigener Faktor (gern auf Französisch)<input type="text" id="f-custom" data-k="custom" placeholder="Welcher Faktor fehlt in der Liste?"></label>
+    </div>
+    <div class="tray" id="tray" hidden></div>
+    <div class="bins" id="bins"></div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" data-step="4" hidden>
+    <h2>Notre lexique</h2>
+    <div class="task"><b>Auftrag</b>
+      <ol class="questions">
+        <li>Unten seht ihr französische Wörter zum Thema Migration. Lest sie euch in der Gruppe durch.</li>
+        <li>Wählt gemeinsam <strong>8 bis 10 Wörter</strong> aus, die für euren Ansatz zentral sind. Tippt ein Wort an, um es auszuwählen; ein zweiter Tipp nimmt es wieder heraus.</li>
+        <li>Eure Wörter erscheinen mit deutscher Übersetzung auf dem Ergebnisblatt. Bei der Präsentation lasst ihr die Klasse die deutschen Bedeutungen <strong>raten</strong>: Übermalt dafür auf eurem Screenshot in OneNote die deutschen Wörter mit einem farbigen Stift („Zaubertinte“) und deckt sie dann gemeinsam mit der Klasse nach und nach auf.</li>
+      </ol>
+    </div>
+    <div id="bank"></div>
+    <div class="counter" id="counter"></div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" data-step="5" hidden>
+    <h2>Vokabel-Check</h2>
+    <div class="task"><b>Zum Üben</b><p>Hier bekommt ihr sofort eine Rückmeldung. Welche deutsche Bedeutung passt zum französischen Wort? Jede Runde hat 8 Wörter. Das Ergebnis erscheint <strong>nicht</strong> auf dem Ergebnisblatt.</p></div>
+    <div class="qbar">
+      <div class="seg" role="group" aria-label="Wörter für das Quiz">
+        <button data-qpool="all">Alle Wörter</button><button data-qpool="ours">Nur unsere Wörter</button>
+      </div>
+      <button class="btn ghost" data-qnew>Neue Runde</button>
+    </div>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" data-step="6" hidden>
+    <div class="task"><b>Für die Präsentation</b>
+      <ol class="questions">
+        <li>Formuliert euer Fazit. Es erscheint automatisch im Ergebnisblatt unten auf dieser Seite, zusammen mit allen Ergebnissen aus 1a bis 1c und eurem Lexique.</li>
+        <li>Prüft das Ergebnisblatt noch einmal auf Tippfehler, auch im Französischen: Mit diesem Blatt stellt ihr euren Ansatz vor der Klasse vor.</li>
+        <li>Macht einen Screenshot von diesem Ergebnisblatt und ladet ihn in OneNote hoch. Übermalt dort im Abschnitt „Notre lexique“ die deutschen Wörter mit einem farbigen Stift („Zaubertinte“).</li>
+        <li>Bei der Präsentation sprecht ihr Deutsch. Nennt aber <strong>immer auch den französischen Begriff</strong>, wenn ihr einen deutschen Fachbegriff benutzt. Die französischen Begriffe stehen auf eurem Ergebnisblatt. Zum Beispiel: <em>„Wir stellen euch jetzt die Ergebnisse zu unserem Ansatz vor, dem Push-Pull-Modell, also <span lang="fr">le modèle push-pull</span> …“</em></li>
+        <li>Am Ende lasst ihr die Klasse die deutschen Bedeutungen eurer Lexique-Wörter raten und deckt sie nach und nach auf.</li>
+      </ol>
+    </div>
+    <label class="f">Unser Fazit: Was erklärt unser Ansatz gut, und wo stößt er an Grenzen?<textarea id="fazit" data-k="fazit"></textarea></label>
+    <div class="poster" id="poster"></div>
+    <div class="bar">
+      <p class="note">Eure Eingaben bleiben auf diesem iPad gespeichert, auch wenn ihr die Seite schließt.</p>
+      <div class="confirm" id="resetBox"><button class="btn ghost" id="reset">Alles löschen</button></div>
+    </div>
+  </section>
+
+  <div class="bar">
+    <button class="btn ghost" id="prev">Zurück</button>
+    <button class="btn" id="next">Weiter</button>
+  </div>
+</div>
+
+<script>
+const LAST=6;
+const LENSES={
+  A:{name:"Push-Pull-Modell",fr:"le modèle push-pull",short:"Was drückt Menschen weg, was zieht sie an, was hält sie ab?",
+     points:["Push: Faktoren, die aus dem Herkunftsgebiet wegtreiben","Pull: Faktoren, die ins Zielgebiet locken","Auch Hindernisse zählen, die vom Zielgebiet fernhalten"],
+     terms:[["le pays d'origine","das Herkunftsland"],["le pays d'accueil","das Zielland, Aufnahmeland"],["les facteurs de répulsion (m.)","die Push-Faktoren"],["les facteurs d'attraction (m.)","die Pull-Faktoren"],["un obstacle","ein Hindernis"]],
+     ask:"Was hat die Person aus ihrem Land weggedrängt, und was hat sie in das Zielland gezogen?",starter:"Weggedrängt hat sie … Angezogen hat sie …",
+     frStarter:"Il/Elle est parti(e) à cause de … Il/Elle a été attiré(e) par …",
+     bins:[["push","Push-Faktoren","les facteurs de répulsion","stoßen aus dem Herkunftsgebiet ab"],["pull","Pull-Faktoren","les facteurs d'attraction","ziehen ins Zielgebiet"],["hind","Hindernisse","les obstacles","halten vom Zielgebiet fern"]]},
+  B:{name:"Netzwerk-Theorie",fr:"la théorie des réseaux migratoires",short:"Wer kennt wen, und wie hilft das bei der Migration?",
+     points:["Beziehungen zu Familie, Freunden und Unterstützern","Netzwerke senken Risiken und Kosten","Drei Typen: familiär/persönlich, arbeitsbezogen, „illegal“"],
+     terms:[["le réseau migratoire","das Migrationsnetzwerk"],["les proches (m.)","die Angehörigen"],["le passeur","der Schlepper"],["le soutien","die Unterstützung"],["réduire les risques","die Risiken verringern"]],
+     ask:"Welche Menschen haben der Person bei der Migration geholfen?",starter:"Geholfen hat …, denn …",
+     frStarter:"… l'a aidé(e) à partir, parce que …",
+     bins:[["fam","Familiäre & persönliche Netzwerke","les réseaux familiaux et personnels","Familie, Freunde, Partner"],["arb","Arbeitsbezogene Netzwerke","les réseaux professionnels","Jobs, Arbeitgeber, Kolleg:innen"],["ill","„Illegale“ Netzwerke","les réseaux « illégaux »","Schlepper, Fluchtrouten"],["info","Was Netzwerke vermitteln","l'aide des réseaux","Infos, Kontakte, Geld, Unterstützung"]]},
+  C:{name:"Transnationale Migration",fr:"la migration transnationale",short:"Leben Menschen in mehr als einer Gesellschaft gleichzeitig?",
+     points:["Migration ist nicht immer ein einmaliger Wechsel für immer","Viele gehören zwei oder mehr Gesellschaften an","Bindungen ans Herkunftsland bleiben stark"],
+     terms:[["transnational(e)","grenzüberschreitend"],["les liens (m.)","die Verbindungen, Bindungen"],["appartenir à deux sociétés","zwei Gesellschaften angehören"],["s'installer","sich niederlassen, Fuß fassen"],["retourner au pays","in die Heimat zurückkehren"]],
+     ask:"Mit welchen Ländern ist die Person verbunden, und wie?",starter:"Die Person ist verbunden mit …, weil …",
+     frStarter:"Il/Elle est lié(e) à … parce que …",
+     bins:[["herk","Bindung ans Herkunftsland","les liens avec le pays d'origine","Familie, Kontakte, Rückkehrpläne"],["ziel","Fuß fassen im Zielland","s'installer dans le pays d'accueil","Arbeit, Ausbildung, Alltag"],["grenz","Über Grenzen hinweg","au-delà des frontières","Politik, Religion, Medien, mehrere Orte"]]},
+  D:{name:"Bestreben und Fähigkeiten",fr:"aspirations et capacités",short:"Will die Person migrieren, und kann sie es auch?",
+     points:["Migration braucht ein aktives Bestreben …","… und Fähigkeiten und Ressourcen (Geld, Bildung, Infos, Kontakte)","Bilder vom „guten Leben“, oft aus dem Internet, wecken das Bestreben"],
+     terms:[["l'aspiration (f.)","das Bestreben"],["la capacité","die Fähigkeit"],["les ressources (f.)","die Ressourcen, Mittel"],["une vie meilleure","ein besseres Leben"],["avoir les moyens de partir","die Mittel haben, um wegzugehen"]],
+     ask:"Wollte die Person migrieren, und hatte sie die Mittel dazu?",starter:"Gewollt hat sie …, weil … Mittel dazu waren …",
+     frStarter:"Il/Elle voulait … Pour partir, il/elle avait …",
+     bins:[["str","Bestreben","les aspirations","Wünsche, Bilder vom guten Leben"],["fae","Fähigkeiten & Ressourcen","les capacités et les ressources","Geld, Bildung, Infos, Kontakte"]]}
+};
+const OUTBIN=["out","Passt nicht in unseren Ansatz","hors de notre approche","Warum lässt sich das nicht einordnen?"];
+const CASES=[
+  {id:1,name:"Yaman Fares",meta:"22 · aus Damaskus, Syrien",facts:"Als Jugendlicher durch eine Bombe verletzt, dann drohte die Einberufung als Soldat. Der Vater besorgt Pässe und Flugtickets in die Türkei. Nach mehreren Versuchen im Schlauchboot nach Griechenland; das Ziel war unklar. Heute: Ausbildung in Düsseldorf."},
+  {id:2,name:"Maarja Tamm",meta:"26 · aus Tallinn, Estland",facts:"Nach dem Bachelor ein Traumjob in Irland, weil sie das Leben im Ausland kennenlernen wollte. Nach dem Jobverlust mit ihrem Freund (deutsche Mutter) nach Deutschland, in der Hoffnung auf bessere Jobs. Möchte irgendwann zurück nach Tallinn."},
+  {id:3,name:"Isaac Musa",meta:"24 · aufgewachsen in Nigeria",facts:"Studierte Maschinenbau in Charkiw, Ukraine, wo Studierende aus aller Welt lernten. Nach dem ersten Raketeneinschlag über Ungarn nach Bonn. Wie es weitergeht, ist offen."}
+];
+const DEFS=[
+  ["Migration","la migration","Der Lebensmittelpunkt wird an einen anderen Ort verlegt."],
+  ["Binnenmigration","la migration interne","Umzug des Lebensmittelpunkts innerhalb desselben Landes."],
+  ["Internationale Migration","la migration internationale","Der neue Lebensmittelpunkt liegt jenseits einer Staatsgrenze."],
+  ["Fluchtmigration","la migration forcée","Auslöser ist eine bedrohliche Lage, etwa Krieg, Terror oder Diskriminierung."],
+  ["Arbeitsmigration","la migration de travail","Hauptgrund ist eine Beschäftigung am neuen Ort."],
+  ["Familienmigration","la migration familiale","Man folgt Familienmitgliedern, die schon migriert sind."]];
+const FACTORS=[
+  ["Arbeitskräftebedarf","le besoin de main-d'œuvre"],["Terror","le terrorisme"],["Höhere Löhne","des salaires plus élevés"],["Krieg","la guerre"],
+  ["Soziales Prestige","le prestige social"],["Politische Verfolgung","la persécution politique"],["Wirtschaftliche Not","la misère économique"],
+  ["Geld/Erspartes","l'argent (m.) / les économies (f.)"],["Erwartungsdruck","la pression des attentes"],["Familienangehörige im Ausland","des membres de la famille à l'étranger"],
+  ["Naturkatastrophen","les catastrophes naturelles (f.)"],["Abenteuerlust","l'esprit d'aventure (m.)"],["Smartphones","les smartphones (m.)"],
+  ["Menschenrechtsverletzungen","les violations des droits de l'homme (f.)"],["Demokratie","la démocratie"],["Religionsfreiheit","la liberté religieuse"],
+  ["Familiale Gewalt","les violences familiales (f.)"],["Meinungsfreiheit","la liberté d'expression"],["Klimawandel/Umweltkatastrophen","le changement climatique / les catastrophes environnementales"],
+  ["Partnerschaft","la vie de couple"],["Folter","la torture"],["Frieden","la paix"],["Diskriminierung","la discrimination"],
+  ["Krankenversicherung","l'assurance maladie (f.)"],["Sozialleistungen","les prestations sociales (f.)"],["Bildungsmöglichkeiten","les possibilités de formation (f.)"],
+  ["Soziale Medien","les réseaux sociaux (m.)"],["Kriegsdienst","le service militaire"],["Arbeitsangebot","une offre d'emploi"],
+  ["Erfahrungssuche","la recherche de nouvelles expériences"],["Fremdsprachenkenntnisse","les connaissances en langues étrangères (f.)"],["Persönliche Beziehungen","les relations personnelles (f.)"],
+  ["Diktatur","la dictature"],["Informationen über Kulturen und Zielländer","les informations sur les cultures et les pays de destination (f.)"],["Menschenrechte","les droits de l'homme (m.)"]];
+const EXTRA=[["quitter son pays","sein Land verlassen"],["fuir","fliehen"],["le réfugié / la réfugiée","der/die Geflüchtete"],["le migrant / la migrante","der Migrant / die Migrantin"],["volontaire","freiwillig"],["forcé(e)","erzwungen, unfreiwillig"]];
+const FIT=["passt kaum","passt teilweise","passt gut","passt sehr gut"];
+const LEXN=10;
+
+const KEY="migrationsbrillen-9f-v1";
+const REV={
+  0:["Habt ihr die drei wichtigsten Ideen eures Ansatzes mündlich formuliert?","Zusammenfassung aufdecken"],
+  1:["Habt ihr euch alle drei Personen gegenseitig vorgestellt?","Kurzinfos aufdecken"]};
+const blank=()=>({group:"",members:"",lens:null,step:0,rev:{},lang:"fr",custom:"",fazit:"",factors:{},binWhy:{},
+  lexSel:[],
+  cases:Object.fromEntries(CASES.map(c=>[c.id,{defs:[],why:"",vol:50,see:"",fit:0}]))});
+let S=blank();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw));}catch(e){}
+let sel=null;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const getK=k=>k.split(".").reduce((o,p)=>o?.[p],S);
+const setK=(k,v)=>{const p=k.split(".");let o=S;p.slice(0,-1).forEach(x=>o=o[x]);o[p.at(-1)]=v;save();};
+const IDS=[...FACTORS.map((_,i)=>i+1),36];
+const fFR=n=>n===36?(S.custom.trim()||"eigener Faktor"):FACTORS[n-1][1];
+const fDE=n=>n===36?"":FACTORS[n-1][0];
+function fLabel(n){
+  if(n===36)return esc(fFR(36));
+  if(S.lang==="de")return esc(fDE(n));
+  if(S.lang==="both"||sel===n)return `${esc(fFR(n))} <small>${esc(fDE(n))}</small>`;
+  return esc(fFR(n));
+}
+const binsFor=()=>{const L=LENSES[S.lens];return L?[...L.bins,OUTBIN]:[]};
+
+function renderReveal(){[0,1].forEach(n=>{const on=!!S.rev[n];document.body.classList.toggle("rev"+n,on);
+  $("#rev"+n).innerHTML=(n===0&&!S.lens)?`<div class="reveal"><p class="note">Tippt zuerst unten den Ansatz an, den euch eure Lehrkraft zugeteilt hat. Danach könnt ihr seine Zusammenfassung aufdecken.</p></div>`:on?`<div class="reveal"><p class="note">Aufgedeckt.</p><button class="btn ghost" data-rev="${n}">Wieder zuklappen</button></div>`
+    :`<div class="reveal"><p>${REV[n][0]}</p><button class="btn" data-rev="${n}">Ja – ${REV[n][1]}</button></div>`;});}
+function renderLenses(){
+  $("#lenses").innerHTML=Object.entries(LENSES).map(([k,l])=>`
+    <button class="lens" data-l="${k}" aria-pressed="${S.lens===k}">
+      <div class="top"><span class="glass" aria-hidden="true"><i></i></span><div><h3><span class="letter">${k}</span> · ${l.name}</h3><div class="lfr">${l.fr}</div></div></div>
+      <p>${l.short}</p><ul>${l.points.map(p=>`<li>${p}</li>`).join("")}</ul>
+      <div class="terms"><b>Mots-clés</b>${l.terms.map(([f,d])=>`<span><i>${esc(f)}</i> – ${esc(d)}</span>`).join("")}</div>
+      <span class="pick">Unser Ansatz</span>
+    </button>`).join("");
+}
+function renderGloss(){$("#glossList").innerHTML=DEFS.map(([d,f,t])=>`<dt>${d}<i>${f}</i></dt><dd>${t}</dd>`).join("");}
+function renderCases1(){
+  $("#cases1").innerHTML=CASES.map(c=>{const d=S.cases[c.id];return `
+    <article class="case">
+      <div class="who"><span class="num">${c.id}</span><h3>${c.name}</h3><span class="note">${c.meta}</span></div>
+      <p class="facts">${c.facts}</p>
+      <div class="sub">Passende Definitionen · les définitions</div>
+      <div class="chips">${DEFS.map(([x,f])=>`<button class="chip" data-def="${c.id}|${x}" aria-pressed="${d.defs.includes(x)}">${x}<small>${f}</small></button>`).join("")}</div>
+      <label class="f">Begründung<textarea id="why${c.id}" data-k="cases.${c.id}.why" placeholder="Im Fall von ${c.name} spielen die folgenden Definitionen von Migration eine Rolle: … Denn ${c.id===2?"sie":"er"} …"></textarea></label>
+      <div class="scale"><span class="sub">Wie freiwillig war die Entscheidung?</span>
+        <input type="range" id="vol${c.id}" min="0" max="100" step="5" data-k="cases.${c.id}.vol" data-num aria-label="Freiwilligkeit Fall ${c.id}">
+        <div class="ends"><span>eher freiwillig<br><i class="fr">plutôt volontaire</i></span><span>eher unfreiwillig<br><i class="fr">plutôt forcé</i></span></div></div>
+    </article>`}).join("");
+}
+function lensMissing(){return `<div class="warn">Tippt zuerst unter <strong>Start</strong> den Ansatz an, den euch eure Lehrkraft zugeteilt hat.</div>`}
+function renderCases2(){
+  const L=LENSES[S.lens];
+  if(!L){$("#lensQ").innerHTML=lensMissing();$("#cases2").innerHTML="";return;}
+  $("#lensQ").innerHTML=`<div class="case"><div class="eyebrow">Frage eures Ansatzes · ${S.lens} · ${L.name} · <i class="fr">${L.fr}</i></div><h3>${L.ask}</h3></div>`;
+  $("#cases2").innerHTML=CASES.map(c=>{const d=S.cases[c.id];return `
+    <article class="case">
+      <div class="who"><span class="num">${c.id}</span><h3>${c.name}</h3><span class="note">${c.meta}</span></div>
+      <label class="f">${L.ask}<textarea id="see${c.id}" data-k="cases.${c.id}.see" placeholder="${L.starter}"></textarea></label>
+      <p class="frhelp"><b>En français ?</b><i>${esc(L.frStarter)}</i></p>
+      <div class="sub">Wie gut erklärt unser Ansatz diesen Fall?</div>
+      <div class="dots">${FIT.map((t,i)=>`<button class="dot" data-fit="${c.id}|${i+1}" aria-pressed="${d.fit===i+1}">${t}</button>`).join("")}</div>
+    </article>`}).join("");
+}
+function renderFactors(){
+  const L=LENSES[S.lens];
+  $("#lensNeed").innerHTML=L?"":lensMissing();
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===S.lang));
+  $("#pool").innerHTML=IDS.map(n=>`<button class="fchip${S.factors[n]?" placed":""}" data-f="${n}" aria-pressed="${sel===n}"><em>${n}</em>${fLabel(n)}</button>`).join("");
+  const tray=$("#tray");
+  if(sel){tray.hidden=false;
+    const word=sel===36?`<i>${esc(fFR(36))}</i>`:`<i>${esc(fFR(sel))}</i> = ${esc(fDE(sel))}`;
+    tray.innerHTML=`<div class="word"><em>${sel}</em> · ${word}</div>`+(L?`<b>Einordnen in:</b>`+binsFor().map(([k,t,f])=>`<button data-bin="${k}">${t}<small>${f}</small></button>`).join("")
+      +(S.factors[sel]?`<button class="no" data-bin="">herausnehmen</button>`:""):`<span>Wählt zuerst unter Start euren Ansatz.</span>`)+`<button class="no" data-bin="__x">schließen</button>`;
+  }else tray.hidden=true;
+  $("#bins").innerHTML=binsFor().map(([k,t,f,h])=>{
+    const inn=IDS.filter(n=>S.factors[n]===k);
+    return `<div class="bin${k==="out"?" out":""}"><h3>${t}</h3><div class="fr">${f}</div><p class="hint">${h}</p>
+      <div class="in">${inn.length?inn.map(n=>`<button class="fchip" data-f="${n}"><em>${n}</em>${fLabel(n)}</button>`).join(""):`<span class="empty">noch leer</span>`}</div>
+      <textarea id="bw-${S.lens}-${k}" data-k="binWhy.${S.lens}-${k}" placeholder="Begründungen mit Nummer, z. B. „4: …“ (Deutsch oder français)">${esc(S.binWhy[`${S.lens}-${k}`]||"")}</textarea></div>`}).join("");
+}
+/* Lexique */
+function bank(){
+  const L=LENSES[S.lens];const g=[];
+  if(L)g.push(["Mots-clés eures Ansatzes",L.terms]);
+  const placed=IDS.filter(n=>n!==36&&S.factors[n]&&S.factors[n]!=="out").map(n=>[fFR(n),fDE(n)]);
+  g.push(["Eure eingeordneten Faktoren aus 1c",placed]);
+  g.push(["Arten von Migration",DEFS.map(([d,f])=>[f,d])]);
+  g.push(["Allgemeine Wörter",EXTRA]);
+  return g;
+}
+const LEXMAX=10,LEXMIN=8;
+function deOf(f){for(const [,ws] of bank())for(const [x,d] of ws)if(x===f)return d;const a=allPool().find(x=>x.fr===f);return a?a.de:"";}
+function renderLex(){
+  const sel=S.lexSel;
+  const g=bank();const seen=new Set();const words=[];
+  g.forEach(([,ws])=>ws.forEach(w=>{if(!seen.has(w[0])){seen.add(w[0]);words.push(w);}}));
+  const h=s=>{let x=2166136261;for(const c of (S.lens||"")+s){x^=c.charCodeAt(0);x=Math.imul(x,16777619);}return x>>>0;};
+  words.sort((a,b)=>h(a[0])-h(b[0]));
+  const noPlaced=!IDS.some(n=>n!==36&&S.factors[n]&&S.factors[n]!=="out");
+  $("#bank").innerHTML=`${noPlaced?`<p class="warn">Ordnet zuerst in 1c Faktoren in die Felder eures Ansatzes ein. Dann erscheinen sie hier zusätzlich zur Auswahl.</p>`:""}<div class="lex bankgrp"><div class="chips">${
+    words.map(([f,d])=>`<button class="wchip" data-w="${encodeURIComponent(f)}" aria-pressed="${sel.includes(f)}"><span lang="fr">${esc(f)}</span><small>${esc(d)}</small></button>`).join("")}</div></div>`;
+  renderCounter();
+}
+function renderCounter(msg){
+  const n=S.lexSel.length;
+  const st=n<LEXMIN?`Wählt noch ${LEXMIN-n} bis ${LEXMAX-n} Wörter.`:n<LEXMAX?"Gut so. Ihr könnt noch bis zu "+(LEXMAX-n)+" Wörter ergänzen.":"Fertig: 10 Wörter ausgewählt.";
+  $("#counter").innerHTML=`<b>${n} / ${LEXMAX}</b><span class="st">${msg||st}</span>`;
+}
+/* Quiz */
+let Q={pool:"all",items:[],i:0,res:[],picked:null};
+function allPool(){
+  const m=new Map();
+  FACTORS.forEach(([d,f])=>m.set(f,d));
+  Object.values(LENSES).forEach(l=>l.terms.forEach(([f,d])=>m.set(f,d)));
+  DEFS.forEach(([d,f])=>m.set(f,d));
+  EXTRA.forEach(([f,d])=>m.set(f,d));
+  return [...m].map(([fr,de])=>({fr,de}));
+}
+function ourPool(){
+  const m=new Map();
+  S.lexSel.forEach(f=>m.set(f,deOf(f)));
+  if(S.lens)LENSES[S.lens].terms.forEach(([f,d])=>m.set(f,d));
+  return [...m].map(([fr,de])=>({fr,de}));
+}
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function newRound(){
+  let pool=Q.pool==="ours"?ourPool():allPool();
+  Q.small=Q.pool==="ours"&&pool.length<4;
+  if(Q.small)pool=allPool();
+  const all=allPool();
+  Q.items=shuffle(pool).slice(0,8).map(it=>{
+    const wrong=shuffle([...pool,...all].filter(x=>x.de!==it.de)).map(x=>x.de).filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
+    return {...it,opts:shuffle([it.de,...wrong])};});
+  Q.i=0;Q.res=[];Q.picked=null;renderQuiz();
+}
+function renderQuiz(){
+  document.querySelectorAll("[data-qpool]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.qpool===Q.pool));
+  if(!Q.items.length)newRound();
+  const n=Q.items.length;
+  const prog=`<div class="progress">${Q.items.map((_,k)=>`<i class="${Q.res[k]===true?"ok":Q.res[k]===false?"bad":k===Q.i?"now":""}"></i>`).join("")}</div>`;
+  if(Q.i>=n){const s=Q.res.filter(Boolean).length;
+    $("#quiz").innerHTML=`${prog}<div class="score">${s} / ${n}</div><p>${s===n?"Parfait ! Alle Wörter sitzen.":s>=n-2?"Très bien ! Nur wenige Wörter fehlen noch.":"Übt die Wörter noch einmal, dann startet eine neue Runde."}</p>
+      <div><button class="btn" data-qnew>Neue Runde</button></div>`;return;}
+  const it=Q.items[Q.i];
+  $("#quiz").innerHTML=`${Q.small?`<p class="warn">Für „Nur unsere Wörter“ braucht ihr mindestens 4 Wörter. Diese Runde nutzt deshalb alle Wörter.</p>`:""}
+    <div class="qbar">${prog}<span class="note">Wort ${Q.i+1} von ${n}</span></div>
+    <div class="qword" lang="fr">${esc(it.fr)}</div>
+    <div class="opts">${it.opts.map((o,k)=>{let c="";if(Q.picked!==null){if(o===it.de)c="ok";else if(k===Q.picked)c="bad";}
+      return `<button class="opt ${c}" data-opt="${k}" ${Q.picked!==null?"disabled":""}>${esc(o)}</button>`}).join("")}</div>
+    ${Q.picked!==null?`<div class="qbar"><span class="fb ${Q.res[Q.i]?"ok":"bad"}">${Q.res[Q.i]?"Richtig ! C'est juste.":`Leider falsch. Richtig ist: ${esc(it.de)}`}</span>
+      <button class="btn" data-qnext>${Q.i+1<n?"Nächstes Wort":"Auswertung"}</button></div>`:""}`;
+}
+/* Poster */
+function renderPoster(){
+  const L=LENSES[S.lens];
+  const rows=CASES.map(c=>{const d=S.cases[c.id];const defs=d.defs.map(x=>{const f=DEFS.find(z=>z[0]===x);return `${esc(x)} <i class="fr">(${f?f[1]:""})</i>`});return `<tr>
+    <td><strong>${c.id} · ${c.name}</strong></td>
+    <td>${defs.length?defs.join(", "):"–"}${d.why?`<br><span class="note">${esc(d.why)}</span>`:""}</td>
+    <td><div class="vol"><i style="left:${d.vol}%"></i></div></td>
+    <td>${esc(d.see)||"–"}</td>
+    <td><span class="fit">${"●".repeat(d.fit)}${"○".repeat(4-d.fit)}</span><br><span class="note">${d.fit?FIT[d.fit-1]:"nicht bewertet"}</span></td></tr>`}).join("");
+  const pb=binsFor().map(([k,t,f])=>{const inn=IDS.filter(n=>S.factors[n]===k).map(n=>`${n}: <i class="fr">${esc(fFR(n))}</i>${n===36?"":` (${esc(fDE(n))})`}`);const why=S.binWhy[`${S.lens}-${k}`];
+    return `<div class="${k==="out"?"out":""}"><b>${t} · <i>${f}</i></b>${inn.length?inn.join(" · "):"–"}${why?`<p class="note">${esc(why)}</p>`:""}</div>`}).join("");
+  const lex=S.lexSel.map(f=>({fr:f,de:deOf(f)}));
+  $("#poster").innerHTML=`
+    <div class="head"><div><div class="eyebrow">Ergebnis · Résultats · ${esc(S.group)||"Gruppe"}</div><h2>${L?`${L.name} <span class="fr">· ${L.fr}</span>`:"Noch kein Ansatz gewählt"}</h2>
+      ${S.members?`<p class="note">${esc(S.members)}</p>`:""}</div>${L?`<span class="stamp">Brille ${S.lens}</span>`:""}</div>
+    <div class="tablewrap"><table><thead><tr><th>Fall</th><th>Definition & Begründung</th><th>freiwillig ↔ unfreiwillig</th><th>Erklärung mit unserem Ansatz</th><th>Passung</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${L?`<div class="pbins">${pb}</div>`:""}
+    <div><h3>Notre lexique</h3>${lex.length?`<div class="plex">${lex.map((r,i)=>`<div>${i+1}. <i lang="fr">${esc(r.fr)}</i> – ${esc(r.de)}</div>`).join("")}</div>`:`<p class="note">Hier erscheinen eure 8 bis 10 Wörter aus dem Lexique.</p>`}</div>
+    <p class="fazit">${esc(S.fazit)||'<span class="note">Hier erscheint euer Fazit.</span>'}</p>`;
+}
+function fillInputs(){document.querySelectorAll("[data-k]").forEach(el=>{if(el.tagName==="TEXTAREA"&&el.id.startsWith("bw-"))return;const v=getK(el.dataset.k);el.value=v??""});}
+function show(n){
+  S.step=n;save();sel=null;
+  if(S.lens)document.body.dataset.lens=S.lens;else delete document.body.dataset.lens;
+  document.querySelectorAll("section.step").forEach(s=>s.hidden=+s.dataset.step!==n);
+  document.querySelectorAll("nav.steps button").forEach(b=>b.setAttribute("aria-current",+b.dataset.go===n?"step":"false"));
+  renderReveal();renderLenses();renderCases1();renderCases2();renderFactors();renderLex();renderPoster();fillInputs();
+  if(n===5){Q.items=[];renderQuiz();}
+  $("#prev").style.visibility=n===0?"hidden":"visible";
+  $("#next").style.visibility=n===LAST?"hidden":"visible";
+}
+document.addEventListener("input",e=>{const k=e.target.dataset?.k;if(!k)return;
+  setK(k,e.target.hasAttribute("data-num")?+e.target.value:e.target.value);
+  if(k==="custom")renderFactors();
+  if(S.step===LAST||k==="group"||k==="members")renderPoster();});
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  const go=n=>{show(n);window.scrollTo({top:0});};
+  if(t.dataset.go){go(+t.dataset.go);return;}
+  if(t.id==="next"){go(Math.min(LAST,S.step+1));return;}
+  if(t.id==="prev"){go(Math.max(0,S.step-1));return;}
+  if(t.dataset.rev){const n=t.dataset.rev;S.rev[n]=!S.rev[n];save();renderReveal();return;}
+  if(t.dataset.l){S.lens=t.dataset.l;save();show(0);return;}
+  if(t.dataset.lang){S.lang=t.dataset.lang;save();renderFactors();return;}
+  if(t.dataset.def){const[id,x]=t.dataset.def.split("|");const a=S.cases[id].defs;const i=a.indexOf(x);i<0?a.push(x):a.splice(i,1);save();t.setAttribute("aria-pressed",i<0);return;}
+  if(t.dataset.fit){const[id,v]=t.dataset.fit.split("|");S.cases[id].fit=S.cases[id].fit===+v?0:+v;save();
+    t.parentElement.querySelectorAll(".dot").forEach(b=>b.setAttribute("aria-pressed",b===t&&S.cases[id].fit===+v));return;}
+  if(t.dataset.f){const n=+t.dataset.f;sel=sel===n?null:n;renderFactors();return;}
+  if("bin" in t.dataset){const b=t.dataset.bin;if(b!=="__x"&&sel){if(b)S.factors[sel]=b;else delete S.factors[sel];save();}
+    sel=null;renderFactors();return;}
+  if(t.dataset.w){const f=decodeURIComponent(t.dataset.w);const i=S.lexSel.indexOf(f);
+    if(i>=0)S.lexSel.splice(i,1);
+    else if(S.lexSel.length>=LEXMAX){renderCounter("Ihr habt schon 10 Wörter. Nehmt erst ein Wort heraus, um ein anderes zu wählen.");return;}
+    else S.lexSel.push(f);
+    save();document.querySelectorAll(".wchip").forEach(b=>b.setAttribute("aria-pressed",S.lexSel.includes(decodeURIComponent(b.dataset.w))));renderCounter();return;}
+  if(t.dataset.qpool){Q.pool=t.dataset.qpool;newRound();return;}
+  if(t.dataset.qnew!==undefined){newRound();return;}
+  if(t.dataset.opt!==undefined&&Q.picked===null){const k=+t.dataset.opt;const it=Q.items[Q.i];Q.picked=k;Q.res[Q.i]=it.opts[k]===it.de;renderQuiz();return;}
+  if(t.dataset.qnext!==undefined){Q.i++;Q.picked=null;renderQuiz();return;}
+  if(t.id==="reset"){$("#resetBox").innerHTML=`<span class="note">Wirklich alle Eingaben löschen?</span><button class="btn" id="resetYes">Ja, löschen</button><button class="btn ghost" id="resetNo">Abbrechen</button>`;return;}
+  if(t.id==="resetNo"){$("#resetBox").innerHTML=`<button class="btn ghost" id="reset">Alles löschen</button>`;return;}
+  if(t.id==="resetYes"){S=blank();try{localStorage.removeItem(KEY)}catch(e){};$("#resetBox").innerHTML=`<button class="btn ghost" id="reset">Alles löschen</button>`;show(0);}
+});
+renderGloss();
+show(S.step||0);
+</script>
+</body>
+</html>
