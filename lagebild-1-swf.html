@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1. Lagebild SWf – Menaces et conflits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#f2eee5; --surface:#fffdf8; --surface-2:#f8f4ec; --ink:#1b2230; --muted:#5d6370; --rule:#ddd4c3;
+  --accent:#1d5fa6; --accent-ink:#ffffff; --accent-soft:#dde8f5;
+  --head:#1f2a3d; --head-ink:#f4efe6; --head-muted:#b9c1cf;
+  --ok:#2e6a45; --ok-soft:#dcefe2; --bad:#a3352a; --bad-soft:#f6dcd8;
+  --lock:#e9e3d6;
+  --s1:#3f8f8a; --s2:#d9a62e; --s3:#24365a; --s4:#4b1f55; --s5:#b0337a;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171e; --surface:#1b212b; --surface-2:#212835; --ink:#ebe6db; --muted:#a6adb9; --rule:#333b49;
+    --accent:#6ea6e6; --accent-ink:#0f1620; --accent-soft:#1c2a3d;
+    --head:#0e1219; --head-ink:#ebe6db; --head-muted:#98a2b3;
+    --ok:#6cc08b; --ok-soft:#1f3328; --bad:#ef8a7c; --bad-soft:#3a2220;
+    --lock:#262d39;
+    --s1:#5fb3ad; --s2:#e2b64a; --s3:#7f98c8; --s4:#b07fc0; --s5:#e06aa9;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#13171e; --surface:#1b212b; --surface-2:#212835; --ink:#ebe6db; --muted:#a6adb9; --rule:#333b49;
+    --accent:#6ea6e6; --accent-ink:#0f1620; --accent-soft:#1c2a3d;
+    --head:#0e1219; --head-ink:#ebe6db; --head-muted:#98a2b3;
+    --ok:#6cc08b; --ok-soft:#1f3328; --bad:#ef8a7c; --bad-soft:#3a2220;
+    --lock:#262d39;
+    --s1:#5fb3ad; --s2:#e2b64a; --s3:#7f98c8; --s4:#b07fc0; --s5:#e06aa9;
+    color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.06rem/1.6 "Source Serif 4",Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+h1,h2,h3,.sans{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+h1,h2,h3{text-wrap:balance;line-height:1.2;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--accent)}
+button,input{font:inherit;color:inherit}
+
+/* Kopf */
+header.top{background:var(--head);color:var(--head-ink);padding-block:2.2rem 2rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top-in{max-width:1180px;margin:0 auto}
+.kicker{font:600 .78rem/1.3 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--head-muted);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
+.kicker b{color:var(--accent);font-weight:600}
+header.top h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:800;letter-spacing:-.01em;margin:.7rem 0 .6rem}
+header.top h1 .num{color:var(--accent)}
+.leit{font-size:1.15rem;font-style:italic;color:var(--head-ink);max-width:46rem;margin:0}
+.onenote{margin-top:1.2rem;display:inline-flex;gap:.6rem;align-items:baseline;border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:.5rem .8rem;font-size:.95rem;color:var(--head-muted)}
+.onenote strong{color:var(--head-ink);font-family:Archivo,Arial,sans-serif;font-weight:600}
+
+/* Raster */
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:2.4rem;
+  padding-block:2rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.ablauf{position:sticky;top:1rem;align-self:start}
+nav.ablauf h2{font:700 .75rem/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .9rem}
+nav.ablauf ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+nav.ablauf li a{display:grid;grid-template-columns:auto 1fr;gap:.1rem .6rem;padding:.55rem 0 .55rem .9rem;margin-left:-2px;border-left:2px solid transparent;text-decoration:none;color:var(--ink)}
+nav.ablauf li a:hover{border-left-color:var(--muted)}
+nav.ablauf li a.aktiv{border-left-color:var(--accent)}
+nav.ablauf .t{font:600 .72rem/1.4 "IBM Plex Mono",monospace;color:var(--muted);grid-column:1/-1}
+nav.ablauf .n{font:800 1rem/1.3 Archivo,Arial,sans-serif;color:var(--accent)}
+nav.ablauf .l{font:600 .98rem/1.3 Archivo,Arial,sans-serif}
+.dot{display:inline-block;width:.55rem;height:.55rem;border-radius:50%;background:var(--rule);margin-left:.35rem;vertical-align:middle}
+.dot.frei{background:var(--ok)}
+.hint-side{margin-top:1.3rem;font-size:.85rem;color:var(--muted);line-height:1.45}
+
+main{min-width:0;display:flex;flex-direction:column;gap:2.4rem}
+section.phase{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.6rem clamp(1rem,3vw,2rem) 1.8rem;min-width:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem 1rem;border-bottom:1px solid var(--rule);padding-bottom:.8rem;margin-bottom:1.2rem}
+.phase-head .big{font:800 2.4rem/1 Archivo,Arial,sans-serif;color:var(--accent)}
+.phase-head h2{font-size:1.45rem;font-weight:700;flex:1 1 16rem}
+.meta{font:600 .78rem/1.3 "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.04em}
+.tag{display:inline-block;font:600 .74rem/1 "IBM Plex Mono",monospace;padding:.28rem .45rem;border-radius:4px;background:var(--accent-soft);color:var(--ink);margin-right:.3rem}
+h3{font-size:1.08rem;font-weight:700;margin:1.6rem 0 .6rem}
+p{margin:.5rem 0}
+.auftrag{background:var(--surface-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1rem 0}
+.auftrag .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}
+.auftrag ol,.auftrag ul{margin:.3rem 0;padding-left:1.3rem}
+.auftrag li{margin:.25rem 0}
+.info{border:1px dashed var(--rule);border-radius:8px;padding:.85rem 1rem;margin:1rem 0;font-size:.97rem}
+.info .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.quelle{font-size:.82rem;color:var(--muted)}
+
+/* Ranking */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
+.chip{border:1.5px solid var(--rule);background:var(--surface);border-radius:999px;padding:.45rem .9rem;cursor:pointer;font:600 .95rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.chip .rk{display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.8rem;margin-right:.4rem}
+.eigen{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0 .8rem}
+.eigen input{flex:1 1 14rem;min-width:0;border:1.5px solid var(--rule);background:var(--surface);border-radius:8px;padding:.5rem .7rem}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:.8rem 0}
+.podium > div{border:1px solid var(--rule);border-radius:8px;padding:.6rem .7rem;min-height:4.2rem;background:var(--surface-2)}
+.podium .p{font:700 .72rem/1 "IBM Plex Mono",monospace;color:var(--muted)}
+.podium .w{font:700 1rem/1.25 Archivo,Arial,sans-serif;margin-top:.35rem;overflow-wrap:anywhere}
+
+/* Knöpfe */
+.knopf{border:1.5px solid var(--ink);background:transparent;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font:600 .92rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.knopf.voll{background:var(--ink);color:var(--bg)}
+.knopf:disabled{opacity:.45;cursor:default}
+.reihe{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.6rem 0}
+
+/* Quiz */
+.quiz{display:flex;flex-direction:column;gap:.6rem;margin:.6rem 0}
+.q{border:1px solid var(--rule);border-radius:8px;padding:.75rem .9rem;background:var(--surface)}
+.q .s{margin:0 0 .5rem}
+.q .btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.q .btns button{border:1.5px solid var(--rule);background:var(--surface-2);border-radius:6px;padding:.35rem .8rem;cursor:pointer;font:600 .88rem/1.2 Archivo,Arial,sans-serif;min-height:40px}
+.q .btns button.wahl.richtig{border-color:var(--ok);background:var(--ok-soft)}
+.q .btns button.wahl.falsch{border-color:var(--bad);background:var(--bad-soft)}
+.q .fb{margin:.5rem 0 0;font-size:.93rem}
+.q .fb.ok{color:var(--ok)}
+.q .fb.no{color:var(--bad)}
+
+/* Treppe */
+.pool{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.pool button{border:1.5px dashed var(--muted);background:var(--surface);border-radius:6px;padding:.45rem .8rem;cursor:pointer;font:600 .92rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.treppe{display:flex;flex-direction:column;gap:.35rem;margin:.6rem 0;min-height:3rem}
+.stufe{display:flex;align-items:center;gap:.6rem;border-radius:6px;padding:.45rem .7rem;font:600 .95rem/1.2 Archivo,Arial,sans-serif;background:var(--surface-2);border:1px solid var(--rule)}
+.stufe .i{font:600 .78rem/1 "IBM Plex Mono",monospace;color:var(--muted);width:1.4rem}
+.stufe.ok{border-color:var(--ok);background:var(--ok-soft)}
+.stufe.no{border-color:var(--bad);background:var(--bad-soft)}
+.leer{color:var(--muted);font-size:.9rem;font-style:italic}
+
+/* Zuordnung */
+.fall{border:1px solid var(--rule);border-radius:8px;padding:.75rem .9rem;margin:.5rem 0}
+.fall .btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.45rem}
+.fall .btns button{border:1.5px solid var(--rule);background:var(--surface-2);border-radius:6px;padding:.35rem .7rem;cursor:pointer;font:600 .86rem/1.2 Archivo,Arial,sans-serif;min-height:40px}
+.fall .btns button.wahl.richtig{border-color:var(--ok);background:var(--ok-soft)}
+.fall .btns button.wahl.falsch{border-color:var(--bad);background:var(--bad-soft)}
+
+/* Schritte Kartenanalyse */
+.schritte{counter-reset:s;list-style:none;padding:0;margin:.6rem 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.schritte li{border:1px solid var(--rule);border-radius:8px;padding:.75rem .85rem;background:var(--surface-2);font-size:.95rem;min-width:0}
+.schritte li::before{counter-increment:s;content:"Schritt " counter(s);display:block;font:700 .72rem/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.skala{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin:.7rem 0 .3rem}
+.skala div{padding:.45rem .3rem;color:#fff;font:600 .74rem/1.2 Archivo,Arial,sans-serif;text-align:center;border-radius:3px;overflow-wrap:anywhere}
+.skala div:nth-child(2){color:#1b1b1b}
+.zahlen{list-style:none;padding:0;margin:.5rem 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.5rem}
+.zahlen li{border-top:3px solid var(--accent);padding:.4rem .1rem 0;font-size:.95rem}
+.zahlen strong{display:block;font:800 1.5rem/1.1 Archivo,Arial,sans-serif}
+
+/* Sperre */
+.sperre{margin-top:1.6rem;border-radius:10px;border:1.5px solid var(--rule);overflow:hidden}
+.sperre .kopf{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;justify-content:space-between;padding:.8rem 1rem;background:var(--lock)}
+.sperre .kopf .tt{font:700 1rem/1.2 Archivo,Arial,sans-serif}
+.sperre .kopf .tt small{display:block;font:500 .82rem/1.3 "Source Serif 4",serif;color:var(--muted);margin-top:.15rem}
+.codeform{display:flex;gap:.4rem;align-items:center}
+.codeform input{width:6.2rem;border:1.5px solid var(--rule);background:var(--surface);border-radius:6px;padding:.45rem .55rem;font-family:"IBM Plex Mono",monospace;letter-spacing:.15em;text-align:center}
+.codeform[hidden]{display:none}
+.codeform .msg{font-size:.82rem;color:var(--bad)}
+.loesung{padding:1rem 1.2rem 1.2rem;background:var(--surface)}
+.loesung[hidden]{display:none!important}
+.sperre.offen{border-color:var(--ok)}
+.sperre.offen .kopf{background:var(--ok-soft)}
+
+/* Tafelbild */
+.tafel{background:var(--surface);border:2px solid var(--ink);border-radius:4px;padding:1.4rem clamp(1rem,3vw,1.8rem)}
+.tafel h3{margin:0 0 .2rem;font-size:1.3rem}
+.tafel .unter{color:var(--muted);font-size:.9rem;margin:0 0 1rem}
+.tblock{border-top:1px solid var(--rule);padding:.9rem 0 .4rem}
+.tblock h4{margin:0 0 .45rem;font:700 .95rem/1.2 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.tblock ul{margin:.2rem 0;padding-left:1.2rem}
+.tblock li{margin:.2rem 0}
+.tblock.zu{color:var(--muted);font-style:italic}
+.pfeil{font-family:"IBM Plex Mono",monospace}
+.esk{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;margin:.4rem 0;font:600 .86rem/1.2 Archivo,Arial,sans-serif}
+.esk span{padding:.3rem .5rem;border-radius:4px;background:var(--surface-2);border:1px solid var(--rule)}
+.esk i{font-style:normal;color:var(--muted)}
+
+footer{max-width:1180px;margin:0 auto;padding-block:0 2.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));color:var(--muted);font-size:.85rem}
+
+@media (max-width: 900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:1.4rem;padding-block:0 3rem}
+  nav.ablauf{position:sticky;top:0;z-index:5;background:var(--bg);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:.6rem max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--rule)}
+  nav.ablauf h2,.hint-side{display:none}
+  nav.ablauf ol{display:flex;gap:.4rem;border:0;overflow-x:auto;scrollbar-width:none}
+  nav.ablauf li a{border:1px solid var(--rule);border-radius:999px;padding:.35rem .8rem;margin:0;display:flex;gap:.35rem;white-space:nowrap;align-items:center}
+  nav.ablauf li a.aktiv{border-color:var(--accent);background:var(--accent-soft)}
+  nav.ablauf .t{display:none}
+  .podium{grid-template-columns:minmax(0,1fr)}
+  .schritte{grid-template-columns:minmax(0,1fr)}
+}
+@media print{nav.ablauf{display:none}.wrap{grid-template-columns:1fr}}
+
+/* v2: Sozialform/Bearbeitung */
+.mk{display:inline-block;color:#1b1b1b;font:700 .78rem/1 Archivo,Arial,sans-serif;padding:.28rem .5rem;border-radius:4px;margin-right:.35rem;vertical-align:.08em}
+.steps{list-style:none;margin:.3rem 0 0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+.steps>li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.2rem .7rem;align-items:start}
+.steps .nr{font:800 .95rem/1.5 Archivo,Arial,sans-serif;color:var(--accent);min-width:1.2rem}
+.badges{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.25rem}
+.b{display:inline-block;font:600 .7rem/1 "IBM Plex Mono",monospace;letter-spacing:.03em;padding:.3rem .45rem;border-radius:4px;border:1px solid var(--rule);background:var(--surface)}
+.b.pa{background:var(--accent-soft);border-color:var(--accent)}
+.b.mu{border-style:dashed}
+.b.sc{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.b.le{background:var(--ok-soft);border-color:var(--ok)}
+.b.zeit{color:var(--muted)}
+.legende{display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:center;font-size:.85rem;color:var(--muted);margin:1rem 0 0}
+.extra{font-size:.9rem;color:var(--muted);font-style:italic}
+.rollen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:.7rem 0}
+.rollen>div{border:1px solid var(--rule);border-radius:8px;padding:.7rem .85rem;background:var(--surface-2);min-width:0;font-size:.95rem}
+.rollen .rt{font:700 .78rem/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+/* Tafelbild-Schalter */
+.tafelzugang{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;background:var(--lock);border-radius:8px;padding:.75rem 1rem;margin:0 0 1rem}
+.tafelzugang .tt{font:700 1rem/1.2 Archivo,Arial,sans-serif}
+.tafelzugang .tt small{display:block;font:500 .82rem/1.3 "Source Serif 4",serif;color:var(--muted);margin-top:.15rem}
+.tafelzugang.offen{background:var(--ok-soft)}
+.tblock .kopfzeile{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.tblock .kopfzeile h4{margin:0}
+.schalter{display:inline-flex;align-items:center;gap:.5rem;border:0;background:transparent;cursor:pointer;font:600 .85rem/1 Archivo,Arial,sans-serif;color:var(--muted);min-height:44px;padding:0}
+.schalter .bahn{width:2.6rem;height:1.45rem;border-radius:999px;background:var(--rule);position:relative;transition:background .2s}
+.schalter .bahn::after{content:"";position:absolute;top:.16rem;left:.18rem;width:1.13rem;height:1.13rem;border-radius:50%;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}
+.schalter[aria-checked="true"] .bahn{background:var(--ok)}
+.schalter[aria-checked="true"] .bahn::after{transform:translateX(1.15rem)}
+.schalter:disabled{opacity:.4;cursor:default}
+.tinhalt{margin-top:.5rem}
+.tinhalt[hidden]{display:none!important}
+.tblock .platz{color:var(--muted);font-style:italic;font-size:.92rem;margin:.4rem 0 0}
+.gruppe{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0}
+.gruppe select{font:inherit;border:1.5px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:6px;padding:.45rem .6rem;min-height:44px}
+.gruppe .erg{font:700 1rem/1.3 Archivo,Arial,sans-serif}
+@media (max-width:900px){.rollen{grid-template-columns:minmax(0,1fr)}}
+
+/* SWf */
+.trou{display:inline-block;margin:.1rem 0}
+.trou select{font:600 .9rem/1.2 Archivo,Arial,sans-serif;border:1.5px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:5px;padding:.25rem .35rem;min-height:36px;max-width:100%}
+.trou select.ok{border-color:var(--ok);background:var(--ok-soft)}
+.trou select.no{border-color:var(--bad);background:var(--bad-soft)}
+.lueckentext{line-height:2.2;font-size:1.02rem;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem}
+.redemittel{border:1px solid var(--rule);border-radius:8px;background:var(--surface-2);padding:.75rem 1rem;margin:1rem 0;font-size:.95rem}
+.redemittel .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}
+.redemittel ul{margin:.2rem 0;padding-left:1.2rem}
+.redemittel li{margin:.2rem 0}
+.redemittel em{font-style:normal;font-weight:600}
+.lex-wrap{overflow-x:auto;margin:.6rem 0;border:1px solid var(--rule);border-radius:8px}
+table.lex{border-collapse:collapse;width:100%;min-width:30rem;font-size:.95rem}
+table.lex th{font:700 .74rem/1.2 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;text-align:left;color:var(--muted);background:var(--surface-2);padding:.55rem .7rem;border-bottom:1px solid var(--rule)}
+table.lex td{padding:.45rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top}
+table.lex tr.grp td{font:700 .82rem/1.2 Archivo,Arial,sans-serif;color:var(--accent);background:var(--surface);padding-top:.8rem}
+table.lex td.fr{font-weight:600}
+table.lex .ex{display:block;font-size:.85rem;color:var(--muted);font-style:italic;font-weight:400}
+.paires{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:.6rem 0}
+.paires .col{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.paires button{border:1.5px solid var(--rule);background:var(--surface);border-radius:6px;padding:.5rem .6rem;cursor:pointer;font:600 .9rem/1.25 Archivo,Arial,sans-serif;min-height:44px;text-align:left;overflow-wrap:anywhere}
+.paires button.sel{border-color:var(--accent);background:var(--accent-soft)}
+.paires button.fait{border-color:var(--ok);background:var(--ok-soft);opacity:.7;cursor:default}
+.paires button.err{border-color:var(--bad);background:var(--bad-soft)}
+.chips-mini{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0 0}
+.chips-mini span{font:600 .8rem/1.2 Archivo,Arial,sans-serif;border:1px solid var(--rule);border-radius:999px;padding:.25rem .6rem;background:var(--surface)}
+.chips-mini span i{font-style:normal;color:var(--muted);font-weight:500}
+.schritte[data-label] li::before{content:"Étape " counter(s)}
+
+/* v2 SWf 90 min */
+.vok{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem 1.4rem}
+.vok>*{min-width:0}
+.vok ul{margin:.2rem 0;padding-left:1.2rem}
+.redemittel .vt{font:700 .85rem/1.3 Archivo,Arial,sans-serif;margin:.2rem 0 .2rem;color:var(--ink)}
+.redemittel i{color:var(--muted)}
+.fragen{display:flex;flex-direction:column;gap:.4rem;margin:.6rem 0 0}
+.fragen>div{border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:.55rem .75rem;font-weight:600}
+.zaehler{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;font:700 1rem/1.3 Archivo,Arial,sans-serif;margin:1rem 0 .3rem}
+.zaehler #lexZahl{font-size:1.5rem;color:var(--accent)}
+.zaehler.ziel #lexZahl{color:var(--ok)}
+table.lex th.chk,table.lex td.chk{width:4.5rem;text-align:center}
+table.lex td.chk input{width:1.3rem;height:1.3rem;accent-color:var(--accent);cursor:pointer}
+table.lex tr.an td{background:var(--accent-soft)}
+@media (max-width:700px){.vok{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="kicker"><span>Sciences sociales bilingue · Q2 SWf</span><span>IF 7 · Politique internationale de paix et de sécurité</span><span><b>Séance 1</b> · 90 min</span></div>
+    <h1><span class="num">1.</span> Lagebild SWf – Menaces et conflits</h1>
+    <p class="leit">Qu’est-ce qui menace notre sécurité aujourd’hui – et qu’est-ce qu’un conflit (international) ?</p>
+    <div class="onenote"><span>Photos et documents M1–M4a :</span> <strong>OneNote → « 1. Lagebild SWf – Menaces et conflits »</strong></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="ablauf" aria-label="Déroulement de la séance">
+    <h2>Déroulement</h2>
+    <ol>
+      <li><a href="#photos"><span class="t">0–10 min</span><span class="n">1</span><span class="l">Deux photos</span></a></li>
+      <li><a href="#entree"><span class="t">10–28 min</span><span class="n">2</span><span class="l">Les menaces <span class="dot" data-dot="A"></span></span></a></li>
+      <li><a href="#conflit"><span class="t">28–50 min</span><span class="n">3</span><span class="l">Qu’est-ce qu’un conflit ? <span class="dot" data-dot="B"></span></span></a></li>
+      <li><a href="#monde"><span class="t">50–70 min</span><span class="n">4</span><span class="l">Les conflits dans le monde <span class="dot" data-dot="C"></span></span></a></li>
+      <li><a href="#synthese"><span class="t">70–80 min</span><span class="n">5</span><span class="l">Mise en commun &amp; synthèse</span></a></li>
+      <li><a href="#lexique"><span class="t">80–90 min</span><span class="n">6</span><span class="l">Écrire avec le lexique</span></a></li>
+    </ol>
+    <p class="hint-side">Les documents du manuel sont en allemand – tu travailles, tu parles et tu écris en français. Tous les mots clés de la séance se trouvent dans le lexique (6).</p>
+  </nav>
+
+  <main>
+    <!-- 1 PHOTOS -->
+    <section class="phase" id="photos">
+      <div class="phase-head"><span class="big">1</span><h2>Deux photos, une question</h2><span class="meta">0–10 min · photos dans OneNote</span></div>
+      <div class="auftrag">
+        <div class="label">Consigne · les deux photos se trouvent dans OneNote</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b pa">travail en binôme</span><span class="b mu">à l’oral, en français</span><span class="b zeit">4 min</span></div>Partenaire A décrit la photo 1, partenaire B la photo 2 : que voit-on ? Que s’est-il (probablement) passé ? Utilisez les expressions ci-dessous.</div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">en classe</span><span class="b mu">à l’oral</span><span class="b zeit">6 min</span></div>Qu’ont ces deux photos en commun ? Quelle menace pour notre sécurité montrent-elles – et pourquoi est-elle si difficile à saisir, alors qu’aucun pays n’a déclaré la guerre ?</div></li>
+        </ol>
+      </div>
+      <div class="redemittel">
+        <div class="label">Expressions utiles · décrire et formuler des hypothèses</div>
+        <div class="vok">
+          <div>
+            <p class="vt">Photo 1 · un drone en Bavière</p>
+            <ul>
+              <li><em>un drone</em> (militaire) <i>– die Drohne</i></li>
+              <li><em>s’écraser / tomber au sol</em> <i>– abstürzen</i></li>
+              <li><em>les débris</em> (m.) <i>– die Trümmer</i></li>
+              <li><em>les policiers / les forces de l’ordre</em></li>
+              <li><em>sécuriser les lieux, boucler un périmètre</em> <i>– absperren</i></li>
+              <li><em>le ruban de signalisation</em> <i>– das Absperrband</i></li>
+              <li><em>violer l’espace aérien</em> d’un pays</li>
+              <li><em>ouvrir une enquête</em> <i>– ermitteln</i></li>
+              <li><em>probablement d’origine russe</em></li>
+            </ul>
+          </div>
+          <div>
+            <p class="vt">Photo 2 · un supermarché en Suède</p>
+            <ul>
+              <li><em>le rayon frais, les réfrigérateurs</em> (m.)</li>
+              <li><em>les employé(e)s vident les rayons</em></li>
+              <li><em>le système de réfrigération est tombé en panne</em></li>
+              <li><em>les denrées</em> (f.) <em>alimentaires se sont avariées</em> <i>– verderben</i></li>
+              <li><em>jeter des produits périssables</em></li>
+              <li><em>un acte de sabotage, saboter</em></li>
+              <li><em>une cyberattaque, des pirates informatiques</em></li>
+              <li><em>les infrastructures critiques, l’approvisionnement</em> (m.) <i>– die Versorgung</i></li>
+              <li><em>être vulnérable, la vulnérabilité</em></li>
+            </ul>
+          </div>
+        </div>
+        <div class="vok" style="margin-top:.5rem">
+          <div>
+            <p class="vt">Décrire</p>
+            <ul>
+              <li><em>La photo montre … / On y voit …</em></li>
+              <li><em>Au premier plan / à l’arrière-plan / au centre …</em></li>
+              <li><em>À gauche / à droite, on aperçoit …</em></li>
+            </ul>
+          </div>
+          <div>
+            <p class="vt">Formuler des hypothèses</p>
+            <ul>
+              <li><em>Il s’agirait de …</em> (conditionnel : information non confirmée)</li>
+              <li><em>On soupçonne … d’être derrière cet acte.</em></li>
+              <li><em>Il est probable que … / Il se peut que …</em> (+ subjonctif)</li>
+              <li><em>une menace hybride : entre la guerre et la paix</em></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 MENACES -->
+    <section class="phase" id="entree">
+      <div class="phase-head"><span class="big">2</span><h2>Qu’est-ce qui menace notre sécurité ?</h2><span class="meta">10–28 min · M1</span></div>
+      <div class="auftrag">
+        <div class="label">Consigne</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b">travail individuel</span><span class="b mu">sur la page</span><span class="b zeit">3 min</span></div>Choisis ci-dessous les <strong>trois menaces</strong> qui te semblent actuellement les plus graves – dans l’ordre (1<sup>re</sup>, 2<sup>e</sup>, 3<sup>e</sup> place). S’il en manque une, ajoute-la.</div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">travail individuel</span><span class="b sc">à l’écrit dans OneNote</span><span class="b zeit">8 min</span></div>Justifie ton classement en <strong>5 à 6 phrases</strong> : pourquoi ta 1<sup>re</sup> place est-elle la menace la plus grave ? Pourquoi as-tu placé une autre menace plus bas ? Utilise au moins <strong>deux critères</strong> et les expressions utiles ci-dessous.</div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b pa">travail en binôme</span><span class="b mu">à l’oral</span><span class="b zeit">4 min</span></div>Présentez-vous vos classements sans lire votre texte mot à mot et mettez-vous d’accord sur <strong>la</strong> menace la plus grave.</div></li>
+          <li><span class="nr">d</span><div><div class="badges"><span class="b">en classe</span><span class="b mu">à l’oral</span><span class="b zeit">3 min</span></div>Pourquoi évaluons-nous les menaces de façon si différente ? Compare aussi avec le Munich Security Index (encadré en bas).</div></li>
+        </ol>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Menaces"></div>
+      <div class="eigen">
+        <input id="eigenIn" maxlength="40" placeholder="Ajouter une autre menace …" aria-label="Ajouter une menace">
+        <button class="knopf" id="eigenBtn" type="button">Ajouter</button>
+      </div>
+      <div class="podium" aria-live="polite">
+        <div><div class="p">1<sup>re</sup> PLACE</div><div class="w" id="p1">–</div></div>
+        <div><div class="p">2<sup>e</sup> PLACE</div><div class="w" id="p2">–</div></div>
+        <div><div class="p">3<sup>e</sup> PLACE</div><div class="w" id="p3">–</div></div>
+      </div>
+      <div class="reihe"><button class="knopf" id="rankReset" type="button">Recommencer le classement</button></div>
+      <div class="redemittel">
+        <div class="label">Expressions utiles · hiérarchiser et justifier (pour b et c)</div>
+        <ul>
+          <li><em>À mes yeux, la menace la plus grave est …, dans la mesure où …</em></li>
+          <li><em>Je place … en tête de mon classement, car …</em></li>
+          <li><em>… me paraît moins inquiétant(e) que …, puisque …</em></li>
+          <li><em>Certes, … ; toutefois, …</em></li>
+          <li><em>Je ne partage pas ton avis : … touche beaucoup plus de personnes.</em></li>
+          <li><em>Nous nous sommes mis d’accord sur … / Nous ne sommes pas parvenus à un consensus.</em></li>
+        </ul>
+        <p class="vt" style="margin-top:.7rem">Critères pour évaluer une menace</p>
+        <ul>
+          <li><em>la probabilité</em> (qu’elle se produise) · <em>l’ampleur des dégâts</em> (m.) · <em>le nombre de personnes touchées</em></li>
+          <li><em>à court / à long terme</em> · <em>directement / indirectement</em> · <em>des conséquences irréversibles</em></li>
+          <li><em>toucher l’Allemagne / l’Europe / le monde entier</em> · <em>être (in)évitable</em></li>
+        </ul>
+        <p class="vt" style="margin-top:.7rem">Vocabulaire par menace</p>
+        <div class="vok">
+          <ul>
+            <li><em>les conflits violents, les guerres :</em> faire des victimes, détruire, déplacer des populations, l’escalade</li>
+            <li><em>le terrorisme :</em> un attentat, la radicalisation, semer la peur</li>
+            <li><em>les cyberattaques :</em> pirater, paralyser les infrastructures critiques (hôpitaux, réseau électrique), le vol de données</li>
+            <li><em>le changement climatique :</em> le réchauffement, les catastrophes naturelles, la sécheresse, la pénurie d’eau</li>
+          </ul>
+          <ul>
+            <li><em>les pandémies :</em> la propagation d’un virus, la surcharge des hôpitaux, le confinement</li>
+            <li><em>les inégalités :</em> la pauvreté, la cohésion sociale, les tensions sociales</li>
+            <li><em>les migrations :</em> les flux migratoires, fuir la guerre ou la misère, l’accueil et l’intégration</li>
+            <li><em>la désinformation :</em> les fausses informations, manipuler l’opinion publique</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info">
+        <div class="label">À titre de comparaison</div>
+        Dans le <strong>Munich Security Index 2026</strong> (sondage réalisé en novembre 2025 auprès d’environ 1 000 adultes par pays, publié pour la Conférence de Munich sur la sécurité en février 2026), les personnes interrogées en Allemagne ont cité les <strong>cyberattaques</strong> comme le principal risque pour leur pays. Est-ce que cela correspond à ton classement ?
+      </div>
+    </section>
+
+    <!-- 3 CONFLIT -->
+    <section class="phase" id="conflit">
+      <div class="phase-head"><span class="big">3</span><h2>Qu’est-ce qu’un conflit (politique) ?</h2><span class="meta">28–50 min · M2</span></div>
+      <div class="auftrag">
+        <div class="label">Consigne · M2 (Pfetsch, en allemand)</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b le">lire &amp; surligner dans OneNote</span><span class="b">travail individuel</span><span class="b zeit">7 min</span></div>
+            Lis M2 et surligne avec les surligneurs de OneNote dans ces trois couleurs :
+            <ul style="margin:.3rem 0 0;padding-left:1.2rem">
+              <li><span class="mk" style="background:#fff36b">jaune</span> la définition d’un « conflit politique » (l. 1–14)</li>
+              <li><span class="mk" style="background:#ef5fc0">rose</span> ce qui distingue un conflit international d’un match (l. 14–29) – ce passage sera important dans les prochaines séances, quand nous parlerons des théories des relations internationales</li>
+              <li><span class="mk" style="background:#8ef0fb">bleu clair</span> les types de conflits et le schéma d’escalade (l. 29–44)</li>
+            </ul></div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">travail individuel</span><span class="b mu">sur la page</span><span class="b zeit">5 min</span></div>Complète le <strong>texte à trous</strong> ci-dessous : il résume M2 en français. Tu y trouves le vocabulaire dont tu as besoin pour l’étape c.</div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b pa">travail en binôme</span><span class="b mu">à l’oral, en français</span><span class="b zeit">5 min</span></div>Expliquez-vous le texte mutuellement – sans lire vos notes :</div></li>
+        </ol>
+        <div class="rollen">
+          <div><div class="rt">Partenaire A</div>explique ce qu’est un conflit politique et pourquoi un conflit international ne se déroule pas comme un match de football.</div>
+          <div><div class="rt">Partenaire B</div>explique les trois types de conflits et comment un conflit peut dégénérer jusqu’à la guerre.</div>
+        </div>
+        <ol class="steps" start="4">
+          <li><span class="nr">d</span><div><div class="badges"><span class="b pa">en binôme, sur un iPad</span><span class="b mu">sur la page</span><span class="b zeit">5 min</span></div>Vérifiez vos connaissances avec les auto-évaluations A et B.</div></li>
+        </ol>
+      </div>
+
+      <h3>Texte à trous · M2 en français</h3>
+      <div class="lueckentext" id="trous"></div>
+      <div class="reihe"><button class="knopf voll" id="trousCheck" type="button">Vérifier</button><button class="knopf" id="trousReset" type="button">Effacer</button><span id="trousMsg" class="sans" role="status"></span></div>
+
+      <h3>Auto-évaluation A · L’escalier de l’escalade</h3>
+      <p>Touche les étapes dans le bon ordre – de l’état de paix (en bas) à la guerre (en haut).</p>
+      <div class="pool" id="pool"></div>
+      <div class="treppe" id="treppe"><span class="leer">Aucune étape choisie.</span></div>
+      <div class="reihe"><button class="knopf voll" id="trCheck" type="button" disabled>Vérifier</button><button class="knopf" id="trReset" type="button">Recommencer</button><span id="trMsg" class="sans" role="status"></span></div>
+
+      <h3>Auto-évaluation B · Quel type de conflit ?</h3>
+      <div id="faelle"></div>
+    </section>
+
+    <!-- 4 MONDE -->
+    <section class="phase" id="monde">
+      <div class="phase-head"><span class="big">4</span><h2>Où y a-t-il des conflits – et comment ont-ils évolué ?</h2><span class="meta">50–70 min · M3 + M4a</span></div>
+      <div class="auftrag">
+        <div class="label">Consigne générale</div>
+        <p style="margin:0 0 .6rem">Analysez la carte des conflits (M3) et vérifiez dans quelle mesure elle confirme les constats de Werkner (M4a).</p>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b pa">en binôme, travail partagé</span><span class="b zeit">6 min</span></div>Répartissez-vous le travail :</div></li>
+        </ol>
+        <div class="rollen">
+          <div><div class="rt">Partenaire A · la carte M3</div><span class="b mu" style="margin-bottom:.4rem">préparer à l’oral</span><br>Observe la carte (étapes 1 et 2 ci-dessous) : qui l’a réalisée, quand les données ont-elles été collectées, que signifient les couleurs ? Où se concentrent les guerres et les guerres limitées ?</div>
+          <div><div class="rt">Partenaire B · le texte M4a</div><span class="b le" style="margin-bottom:.4rem">lire &amp; surligner dans OneNote</span><br>Lis M4a (Werkner) et surligne en <span class="mk" style="background:#a8f56d">vert</span> les <strong>quatre évolutions</strong> des conflits depuis la fin de la guerre froide.</div>
+        </div>
+        <ol class="steps">
+          <li><span class="nr">b</span><div><div class="badges"><span class="b pa">en binôme</span><span class="b mu">à l’oral, en français</span><span class="b zeit">4 min</span></div>Présentez-vous vos résultats.</div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b pa">en binôme</span><span class="b sc">à l’écrit dans OneNote</span><span class="b zeit">10 min</span></div>Rédigez ensemble sous M3 une <strong>courte analyse de la carte</strong> (6 à 8 phrases) en suivant les étapes 1 à 4 : présentation, répartition, comparaison avec Werkner et au moins une limite de la carte. Les expressions utiles et les noms de régions et de pays se trouvent plus bas.</div></li>
+        </ol>
+      </div>
+      <ol class="schritte" data-label="Étape">
+        <li><strong>Présentation :</strong> titre, auteur/source des données (HIIK), date de la collecte des données et de la carte, type de document, niveaux d’intensité 1–5.</li>
+        <li><strong>Répartition :</strong> où se concentrent les guerres (niveau 5) et les guerres limitées (niveau 4) ? Quelles régions sont (presque) épargnées ?</li>
+        <li><strong>Comparaison :</strong> quels constats de Werkner retrouve-t-on sur la carte ?</li>
+        <li><strong>Limites :</strong> qu’est-ce que la carte <em>ne</em> montre <em>pas</em> ? Quels constats de Werkner ne peut-on pas du tout vérifier avec elle ?</li>
+      </ol>
+      <p class="sans" style="font-size:.85rem;font-weight:600;margin-top:1rem">Niveaux d’intensité du HIIK</p>
+      <div class="skala" aria-label="Niveaux d’intensité 1 à 5">
+        <div style="background:var(--s1)">1 conflit (différend)</div><div style="background:var(--s2)">2 crise non violente</div><div style="background:var(--s3)">3 crise violente</div><div style="background:var(--s4)">4 guerre limitée</div><div style="background:var(--s5)">5 guerre</div>
+      </div>
+      <p class="quelle">Niveaux 1–2 : conflits non violents · niveau 3 : intensité moyenne · niveaux 4–5 : haute intensité</p>
+
+      <div class="redemittel">
+        <div class="label">Expressions utiles · analyser une carte</div>
+        <ul>
+          <li><em>La carte, réalisée par … d’après les données de …, représente …</em></li>
+          <li><em>Les données datent de … ; la carte a été publiée en …</em></li>
+          <li><em>La légende distingue cinq niveaux d’intensité, allant de … à …</em></li>
+          <li><em>On constate que les guerres se concentrent en / au … ; en revanche, …</em></li>
+          <li><em>… est particulièrement touché(e) par … / … est (presque) épargné(e) par les conflits.</em></li>
+          <li><em>Ce constat confirme / nuance l’affirmation de Werkner selon laquelle …</em></li>
+          <li><em>La carte ne permet pas de savoir si … / Il faut toutefois relativiser, car …</em></li>
+        </ul>
+        <p class="vt" style="margin-top:.7rem">Décrire la carte</p>
+        <ul>
+          <li><em>la légende, l’échelle de couleurs</em> · <em>plus la couleur est foncée, plus le conflit est intense</em></li>
+          <li><em>un foyer de conflits, une zone de conflit</em> <i>– ein Konfliktherd</i> · <em>une région instable</em></li>
+          <li><em>dans le nord / le sud / l’est / l’ouest de …</em> · <em>dans le centre de …</em> · <em>le long de la frontière entre … et …</em></li>
+        </ul>
+        <p class="vt" style="margin-top:.7rem">Continents et régions</p>
+        <div class="chips-mini">
+          <span>l’Afrique subsaharienne</span><span>le Sahel</span><span>la Corne de l’Afrique</span><span>l’Afrique du Nord</span>
+          <span>le Proche-Orient</span><span>le Moyen-Orient</span><span>l’Asie du Sud</span><span>l’Asie du Sud-Est</span><span>l’Asie de l’Est</span><span>l’Asie centrale</span>
+          <span>l’Europe de l’Est</span><span>l’Europe occidentale</span><span>l’Amérique du Nord</span><span>l’Amérique centrale</span><span>l’Amérique du Sud</span><span>l’Amérique latine</span>
+          <span>l’Océanie</span><span>l’Australie</span><span>le Groenland</span>
+        </div>
+        <p class="vt" style="margin-top:.7rem">Pays – avec la bonne préposition <i>(en + pays féminin ou commençant par une voyelle · au + pays masculin · aux + pluriel)</i></p>
+        <div class="chips-mini">
+          <span>en Ukraine</span><span>en Russie</span><span>en Israël</span><span>dans la bande de Gaza</span><span>au Liban</span><span>en Syrie</span><span>en Irak</span><span>en Iran</span><span>au Yémen</span>
+          <span>au Soudan</span><span>en Éthiopie</span><span>en Somalie</span><span>au Mali</span><span>au Burkina Faso</span><span>au Niger</span><span>au Nigeria</span><span>au Cameroun</span><span>en République démocratique du Congo (RDC)</span>
+          <span>en Afghanistan</span><span>au Pakistan</span><span>en Inde</span><span>au Myanmar</span><span>en Chine</span>
+          <span>au Mexique</span><span>en Colombie</span><span>en Haïti</span><span>aux États-Unis</span>
+        </div>
+        <p class="quelle" style="margin-top:.5rem">Cette liste t’aide à nommer les pays – elle ne dit pas dans quels pays il y a une guerre. Pour cela, regarde la carte.</p>
+      </div>
+
+      <div class="info">
+        <div class="label">Actualisation : Baromètre des conflits 2025 (HIIK, paru en juillet 2026)</div>
+        <p style="margin:.2rem 0 .5rem">La carte du manuel repose sur des données de 2023. L’édition actuelle recense pour l’année 2025 :</p>
+        <ul class="zahlen">
+          <li><strong>359</strong>conflits au total</li>
+          <li><strong>221</strong>dont violents (niveaux 3–5)</li>
+          <li><strong>28</strong>guerres</li>
+          <li><strong>25</strong>guerres limitées</li>
+        </ul>
+        <p style="margin:.5rem 0 0">C’est en Afrique subsaharienne qu’on compte le plus de guerres (13). En Europe, le HIIK recense une guerre : celle de la Russie contre l’Ukraine. Par rapport à l’année précédente, le nombre total de conflits a légèrement baissé, mais celui des conflits violents a augmenté.</p>
+        <p class="quelle" style="margin-top:.4rem">Source : Heidelberger Institut für Internationale Konfliktforschung (HIIK) : Conflict Barometer 2025, hiik.de</p>
+      </div>
+
+      <h3>Auto-évaluation · Vrai ou faux selon M4a (Werkner) ?</h3>
+      <p class="extra">Pour ceux qui ont fini plus tôt – le/la partenaire A peut ainsi vérifier si B a bien expliqué.</p>
+      <div class="quiz" data-quiz="m4"></div>
+    </section>
+
+    <!-- 5 SYNTHESE -->
+    <section class="phase" id="synthese">
+      <div class="phase-head"><span class="big">5</span><h2>Mise en commun &amp; synthèse</h2><span class="meta">70–80 min · en classe · à l’oral</span></div>
+      <p>Nous mettons les résultats en commun. Après le code, vous découvrez les trois parties l’une après l’autre – avec l’interrupteur à droite du titre. À la fin, fais une <strong>capture d’écran</strong> et colle-la dans OneNote sur la page « 1. Lagebild SWf – Menaces et conflits ».</p>
+      <div class="tafelzugang" id="tafelzugang">
+        <div class="tt">Débloquer la synthèse<small>Ton professeur te donne le code pendant la mise en commun.</small></div>
+        <form class="codeform" id="codeForm"><input inputmode="numeric" maxlength="4" autocomplete="off" aria-label="Code pour la synthèse"><button class="knopf voll" type="submit">Débloquer</button><span class="msg" role="status"></span></form>
+      </div>
+      <div class="tafel" id="tafel">
+        <h3>Menaces et conflits : état des lieux</h3>
+        <p class="unter">Q2 SWf · IF 7 · Séance 1</p>
+        <div id="tafelInhalt"></div>
+      </div>
+    </section>
+
+    <!-- 6 LEXIQUE -->
+    <section class="phase" id="lexique">
+      <div class="phase-head"><span class="big">6</span><h2>Écrire avec le lexique du jour</h2><span class="meta">80–90 min · OneNote</span></div>
+      <div class="auftrag">
+        <div class="label">Consigne</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b">travail individuel</span><span class="b sc">à l’écrit dans OneNote</span><span class="b zeit">10 min</span></div>Choisis <strong>une</strong> des deux questions et réponds-y en <strong>8 à 10 phrases</strong>. Utilise au moins <strong>8 expressions</strong> du lexique ci-dessous et souligne-les dans ton texte.
+            <div class="fragen">
+              <div><span class="tag">Question 1</span>Pourquoi est-il si difficile de régler les conflits internationaux ?</div>
+              <div><span class="tag">Question 2</span>Le monde est-il devenu plus dangereux depuis la fin de la guerre froide ?</div>
+            </div>
+          </div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">travail individuel</span><span class="b mu">sur la page</span></div>Coche dans le tableau les expressions que tu as utilisées – le compteur te montre si tu as atteint ton objectif.</div></li>
+        </ol>
+      </div>
+      <div class="zaehler" aria-live="polite"><span id="lexZahl">0</span> / 8 expressions utilisées <button class="knopf" id="lexReset" type="button">Tout décocher</button></div>
+      <div class="lex-wrap"><table class="lex" id="lexTab"><thead><tr><th>Deutsch</th><th>Français</th><th class="chk">utilisé</th></tr></thead><tbody></tbody></table></div>
+
+      <h3>Pour réviser · jeu d’association</h3>
+      <p class="extra">Si tu as fini plus tôt – ou plus tard pour réviser.</p>
+      <p>Touche un mot allemand, puis sa traduction française. « Nouvelle série » tire huit autres mots au hasard.</p>
+      <div class="paires" id="paires"><div class="col" id="colDe"></div><div class="col" id="colFr"></div></div>
+      <div class="reihe"><button class="knopf voll" id="pairNew" type="button">Nouvelle série</button><span id="pairMsg" class="sans" role="status"></span></div>
+    </section>
+  </main>
+</div>
+
+<footer>Base : photos dans OneNote · documents du manuel M1–M4a (chap. 14.1) · HIIK Conflict Barometer 2025 · Munich Security Index 2026 · textes en français rédigés pour le cours</footer>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "lagebild-1-swf-v1";
+  var CODE = "7241";
+  var state = { rank: [], extra: [], tafel: false, shown: [], used: [] };
+  try { var raw = localStorage.getItem(KEY); if (raw) { var s = JSON.parse(raw); if (s && typeof s === "object") { state.rank = s.rank || []; state.extra = s.extra || []; state.tafel = !!s.tafel; state.shown = s.shown || []; state.used = s.used || []; } } } catch (e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, html){ var n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; }
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function mischen(a){ a = a.slice(); for (var i = a.length-1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  /* ---------- 1 Classement ---------- */
+  var BASE = ["les conflits violents","les guerres interétatiques","les inégalités","le terrorisme","les cyberattaques","le changement climatique","les pandémies","les migrations"];
+  function renderChips(){
+    var box = $("chips"); box.innerHTML = "";
+    BASE.concat(state.extra).forEach(function(name){
+      var i = state.rank.indexOf(name);
+      var b = el("button","chip"); b.type = "button";
+      b.setAttribute("aria-pressed", i > -1 ? "true" : "false");
+      b.innerHTML = (i > -1 ? '<span class="rk">'+(i+1)+'</span>' : "") + esc(name);
+      b.addEventListener("click", function(){
+        var k = state.rank.indexOf(name);
+        if (k > -1) state.rank.splice(k,1); else if (state.rank.length < 3) state.rank.push(name);
+        save(); renderChips();
+      });
+      box.appendChild(b);
+    });
+    for (var p = 0; p < 3; p++) $("p"+(p+1)).textContent = state.rank[p] || "–";
+  }
+  function addEigen(){
+    var v = $("eigenIn").value.trim(); if (!v) return;
+    if (BASE.indexOf(v) === -1 && state.extra.indexOf(v) === -1) state.extra.push(v);
+    if (state.rank.indexOf(v) === -1 && state.rank.length < 3) state.rank.push(v);
+    $("eigenIn").value = ""; save(); renderChips();
+  }
+  $("eigenBtn").addEventListener("click", addEigen);
+  $("eigenIn").addEventListener("keydown", function(e){ if (e.key === "Enter") { e.preventDefault(); addEigen(); } });
+  $("rankReset").addEventListener("click", function(){ state.rank = []; save(); renderChips(); });
+
+  /* ---------- 2 Texte à trous ---------- */
+  var TEXTE = [
+    "Selon Pfetsch, un conflit politique est un état de ", ["tension"], " entre deux ou plusieurs ", ["parties"],
+    " – des États ou des groupes organisés – qui ont des intérêts ou des valeurs ", ["incompatibles"],
+    " concernant un bien précis, par exemple des frontières, des territoires ou des ", ["ressources"],
+    ". Contrairement à un match de football, les conflits internationaux n’ont ni règles fixes ni ", ["arbitre"],
+    ". Certes, il existe le ", ["droit international"], " et une Cour internationale de justice, mais ils ne peuvent pas imposer de ",
+    ["sanctions"], " contraignantes. La plupart des guerres récentes ont d’ailleurs commencé sans ", ["déclaration de guerre"],
+    ". Entre le niveau national et le niveau interétatique se situent les conflits ", ["internationalisés"],
+    ", par exemple par des ", ["livraisons d’armes"], " ou une intervention militaire étrangère. Enfin, un conflit peut suivre un schéma d’",
+    ["escalade"], " : d’un conflit ", ["latent"], " on passe à un conflit manifeste, puis à la crise, à la crise grave et finalement à la guerre."
+  ];
+  var MOTS = TEXTE.filter(function(x){ return Array.isArray(x); }).map(function(x){ return x[0]; });
+  function renderTrous(){
+    var box = $("trous"); box.innerHTML = "";
+    var opts = mischen(MOTS);
+    TEXTE.forEach(function(part){
+      if (!Array.isArray(part)) { box.appendChild(document.createTextNode(part)); return; }
+      var w = el("span","trou"); var s = document.createElement("select");
+      s.setAttribute("aria-label","mot manquant"); s.dataset.r = part[0];
+      var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "…"; s.appendChild(o0);
+      opts.forEach(function(m){ var o = document.createElement("option"); o.value = m; o.textContent = m; s.appendChild(o); });
+      s.addEventListener("change", function(){ s.className = ""; $("trousMsg").textContent = ""; });
+      w.appendChild(s); box.appendChild(w);
+    });
+  }
+  $("trousCheck").addEventListener("click", function(){
+    var all = document.querySelectorAll("#trous select"), n = 0;
+    all.forEach(function(s){ var ok = s.value === s.dataset.r; s.className = s.value ? (ok ? "ok" : "no") : "no"; if (ok) n++; });
+    $("trousMsg").textContent = n + " / " + all.length + " correct(s)" + (n === all.length ? " – bravo !" : " – vérifie les cases rouges dans M2.");
+    $("trousMsg").style.color = n === all.length ? "var(--ok)" : "var(--bad)";
+  });
+  $("trousReset").addEventListener("click", function(){ $("trousMsg").textContent = ""; renderTrous(); });
+
+  /* ---------- Escalier ---------- */
+  var STUFEN = ["état de paix","conflit latent","conflit manifeste","crise","crise grave","guerre"];
+  var gewaehlt = [], reihenfolge = mischen(STUFEN);
+  function renderTreppe(geprueft){
+    var pool = $("pool"); pool.innerHTML = "";
+    reihenfolge.forEach(function(s){
+      if (gewaehlt.indexOf(s) > -1) return;
+      var b = el("button","",esc(s)); b.type = "button";
+      b.addEventListener("click", function(){ gewaehlt.push(s); $("trMsg").textContent = ""; renderTreppe(false); });
+      pool.appendChild(b);
+    });
+    var tr = $("treppe"); tr.innerHTML = "";
+    if (!gewaehlt.length) tr.appendChild(el("span","leer","Aucune étape choisie."));
+    gewaehlt.slice().reverse().forEach(function(s){
+      var idx = gewaehlt.indexOf(s);
+      var d = el("div", "stufe" + (geprueft ? (STUFEN[idx] === s ? " ok" : " no") : ""), '<span class="i">'+(idx+1)+'</span>'+esc(s));
+      d.style.marginLeft = (idx*0.9) + "rem"; tr.appendChild(d);
+    });
+    $("trCheck").disabled = gewaehlt.length !== STUFEN.length;
+  }
+  $("trCheck").addEventListener("click", function(){
+    var ok = gewaehlt.every(function(s,i){ return STUFEN[i] === s; });
+    $("trMsg").textContent = ok ? "Tout est correct (M2, l. 38–44)." : "Les étapes en rouge ne sont pas encore à la bonne place.";
+    $("trMsg").style.color = ok ? "var(--ok)" : "var(--bad)";
+    renderTreppe(true);
+  });
+  $("trReset").addEventListener("click", function(){ gewaehlt = []; reihenfolge = mischen(STUFEN); $("trMsg").textContent = ""; renderTreppe(false); });
+
+  /* ---------- Types de conflits ---------- */
+  var TYPEN = ["interétatique","intra-étatique","internationalisé"];
+  var FAELLE = [
+    ["Un État attaque militairement le territoire de son voisin.", 0, "deux États s’opposent en tant que parties au conflit."],
+    ["Des troupes gouvernementales et un groupe rebelle armé se battent pour le pouvoir dans le pays ; aucun autre État n’intervient.", 1, "les parties au conflit appartiennent au même État (on parle aussi de guerre civile)."],
+    ["Dans une guerre civile, un pays voisin livre des armes aux rebelles et envoie des conseillers militaires.", 2, "un conflit interne est internationalisé par des livraisons d’armes et une influence extérieure (M2, l. 29–35)."],
+    ["Un groupe terroriste dirigé depuis l’étranger commet des attentats pour renverser le gouvernement d’un pays.", 2, "des actions concertées au niveau international, comme le terrorisme international (M2, l. 36–37)."]
+  ];
+  mischen(FAELLE).forEach(function(f){
+    var box = el("div","fall"); box.appendChild(el("div","",esc(f[0])));
+    var btns = el("div","btns"); var fb = el("p","fb"); fb.style.margin = ".45rem 0 0"; fb.style.fontSize = ".93rem"; fb.setAttribute("role","status");
+    TYPEN.forEach(function(t,i){
+      var b = el("button","",t); b.type = "button";
+      b.addEventListener("click", function(){
+        btns.querySelectorAll("button").forEach(function(x){ x.className = ""; });
+        var ok = i === f[1];
+        b.className = "wahl " + (ok ? "richtig" : "falsch");
+        fb.style.color = ok ? "var(--ok)" : "var(--bad)";
+        fb.textContent = ok ? "Exact : " + f[2] : "Pas encore. Qui sont les parties au conflit – et y a-t-il une intervention extérieure ?";
+      });
+      btns.appendChild(b);
+    });
+    box.appendChild(btns); box.appendChild(fb); $("faelle").appendChild(box);
+  });
+
+  /* ---------- Vrai / faux M4a ---------- */
+  var QUIZ = { m4: [
+    ["Selon Werkner, les États-Unis, l’UE et la Chine forment un « triangle stratégique ».", false, "l. 7–11 : le triangle stratégique est formé par les États-Unis, la Russie et la Chine."],
+    ["Depuis la fin de la guerre froide, la stabilité relative de l’ordre bipolaire a laissé place à un nouveau désordre.", true, "l. 1–6."],
+    ["Malgré la guerre en Ukraine, les guerres interétatiques ne dominent plus aujourd’hui.", true, "l. 11–17 : la grande majorité des guerres sont intra-, sub- et transétatiques."],
+    ["La fragilité des États a perdu de l’importance depuis les années 1990.", false, "l. 20–25 : elle a gagné en importance et s’accompagne souvent de conflits internes de pouvoir et de domination."],
+    ["La fin de l’affrontement entre les blocs a fait ressurgir des tensions ethniques et des conflits identitaires.", true, "l. 17–20."]
+  ]};
+  document.querySelectorAll("[data-quiz]").forEach(function(box){
+    mischen(QUIZ[box.getAttribute("data-quiz")]).forEach(function(it){
+      var q = el("div","q"); q.appendChild(el("p","s",esc(it[0])));
+      var btns = el("div","btns"); var fb = el("p","fb"); fb.setAttribute("role","status");
+      [["vrai",true],["faux",false]].forEach(function(o){
+        var b = el("button","",o[0]); b.type = "button";
+        b.addEventListener("click", function(){
+          btns.querySelectorAll("button").forEach(function(x){ x.className = ""; });
+          var ok = (o[1] === it[1]);
+          b.className = "wahl " + (ok ? "richtig" : "falsch");
+          fb.className = "fb " + (ok ? "ok" : "no");
+          fb.textContent = ok ? (it[1] ? "Exact – " : "Exact, l’affirmation est fausse – ") + it[2] : "Pas encore – relis le passage du texte.";
+        });
+        btns.appendChild(b);
+      });
+      q.appendChild(btns); q.appendChild(fb); box.appendChild(q);
+    });
+  });
+
+  /* ---------- Lexique ---------- */
+  var LEX = [
+    ["Hybride Bedrohungen (Fotos)", null],
+    ["die Drohne", "le drone", "un drone s’est écrasé"],
+    ["den Luftraum verletzen", "violer l’espace aérien", ""],
+    ["die Sabotage", "le sabotage", "un acte de sabotage"],
+    ["kritische Infrastruktur", "les infrastructures (f.) critiques", ""],
+    ["die hybride Bedrohung", "la menace hybride", ""],
+    ["verwundbar", "vulnérable", "une société vulnérable"],
+    ["Bedrohungen und Sicherheit", null],
+    ["die Bedrohung", "la menace", "menacer la sécurité d’un pays"],
+    ["die Sicherheit", "la sécurité", "garantir la sécurité nationale"],
+    ["der erweiterte Sicherheitsbegriff", "la conception élargie de la sécurité", ""],
+    ["der Cyberangriff", "la cyberattaque", "être la cible de cyberattaques"],
+    ["der Klimawandel", "le changement climatique", ""],
+    ["die Ungleichheit", "l’inégalité (f.)", "les inégalités sociales et économiques"],
+    ["die Wahrnehmung", "la perception", "la perception des menaces est subjective"],
+    ["Konflikt (M2)", null],
+    ["der (politische) Konflikt", "le conflit (politique)", ""],
+    ["der Spannungszustand", "l’état (m.) de tension", ""],
+    ["die Konfliktpartei", "la partie au conflit", "les parties au conflit"],
+    ["unvereinbare Gegensätze", "des intérêts/valeurs incompatibles", ""],
+    ["der Schiedsrichter", "l’arbitre (m.)", ""],
+    ["das Völkerrecht", "le droit international", "violer le droit international"],
+    ["der Internationale Gerichtshof", "la Cour internationale de justice (CIJ)", ""],
+    ["verbindliche Sanktionen verhängen", "imposer des sanctions contraignantes", ""],
+    ["die Kriegserklärung", "la déclaration de guerre", ""],
+    ["Konflikttypen und Eskalation", null],
+    ["zwischenstaatlich", "interétatique", "une guerre interétatique"],
+    ["innerstaatlich", "intra-étatique / interne", "un conflit intra-étatique"],
+    ["der Bürgerkrieg", "la guerre civile", ""],
+    ["internationalisiert", "internationalisé(e)", "un conflit internationalisé"],
+    ["die Waffenlieferung", "la livraison d’armes", ""],
+    ["die militärische Intervention", "l’intervention (f.) militaire", ""],
+    ["die Eskalation", "l’escalade (f.)", "un conflit dégénère en guerre"],
+    ["latent / manifest", "latent(e) / manifeste", ""],
+    ["Konflikte weltweit (M3, M4a)", null],
+    ["die Intensität", "l’intensité (f.)", "un conflit de haute intensité"],
+    ["der begrenzte Krieg", "la guerre limitée", ""],
+    ["der Kalte Krieg", "la guerre froide", "depuis la fin de la guerre froide"],
+    ["die bipolare Ordnung", "l’ordre (m.) bipolaire", ""],
+    ["die (neue) Unordnung", "le (nouveau) désordre mondial", ""],
+    ["die Machtkonstellation", "le rapport de forces", ""],
+    ["fragile Staatlichkeit", "la fragilité de l’État / l’État fragile", ""],
+    ["der Identitätskonflikt", "le conflit identitaire", ""],
+    ["nichtstaatliche Akteure", "les acteurs (m.) non étatiques", ""]
+  ];
+  var tb = document.querySelector("#lexTab tbody");
+  LEX.forEach(function(r){
+    var tr = document.createElement("tr");
+    if (r[1] === null) { tr.className = "grp"; tr.innerHTML = '<td colspan="3">' + esc(r[0]) + "</td>"; }
+    else tr.innerHTML = "<td>" + esc(r[0]) + '</td><td class="fr">' + esc(r[1]) + (r[2] ? '<span class="ex">' + esc(r[2]) + "</span>" : "") + '</td><td class="chk"><input type="checkbox" aria-label="utilisé : ' + esc(r[1]) + '"></td>';
+      var cb = tr.querySelector("input");
+      if (cb) { cb.checked = state.used.indexOf(r[1]) > -1; tr.classList.toggle("an", cb.checked);
+        cb.addEventListener("change", function(){ var i = state.used.indexOf(r[1]); if (cb.checked && i === -1) state.used.push(r[1]); if (!cb.checked && i > -1) state.used.splice(i,1); tr.classList.toggle("an", cb.checked); save(); zaehle(); }); }
+    tb.appendChild(tr);
+  });
+  function zaehle(){ var n = state.used.length; $("lexZahl").textContent = n; document.querySelector(".zaehler").classList.toggle("ziel", n >= 8); }
+  $("lexReset").addEventListener("click", function(){ state.used = []; save(); document.querySelectorAll("#lexTab input").forEach(function(c){ c.checked = false; c.closest("tr").classList.remove("an"); }); zaehle(); });
+  zaehle();
+  var PAARE = LEX.filter(function(r){ return r[1] !== null; });
+  var selDe = null, fertig = 0, fehler = 0;
+  function neueSerie(){
+    var serie = mischen(PAARE).slice(0,8); selDe = null; fertig = 0; fehler = 0; $("pairMsg").textContent = "";
+    var cd = $("colDe"), cf = $("colFr"); cd.innerHTML = ""; cf.innerHTML = "";
+    serie.forEach(function(p){
+      var b = el("button","",esc(p[0])); b.type = "button"; b.dataset.k = p[1];
+      b.addEventListener("click", function(){ if (b.classList.contains("fait")) return; cd.querySelectorAll("button").forEach(function(x){ x.classList.remove("sel"); }); b.classList.add("sel"); selDe = b; });
+      cd.appendChild(b);
+    });
+    mischen(serie).forEach(function(p){
+      var b = el("button","",esc(p[1])); b.type = "button";
+      b.addEventListener("click", function(){
+        if (b.classList.contains("fait") || !selDe) return;
+        if (selDe.dataset.k === p[1]) {
+          selDe.className = "fait"; b.className = "fait"; selDe = null; fertig++;
+          if (fertig === serie.length) { $("pairMsg").textContent = fehler === 0 ? "Série réussie sans faute !" : "Série terminée avec " + fehler + " erreur(s)."; $("pairMsg").style.color = fehler === 0 ? "var(--ok)" : "var(--ink)"; }
+        } else {
+          fehler++; b.classList.add("err"); setTimeout(function(){ b.classList.remove("err"); }, 600);
+        }
+      });
+      cf.appendChild(b);
+    });
+  }
+  $("pairNew").addEventListener("click", neueSerie);
+
+  /* ---------- Synthèse ---------- */
+  var SOL = {
+    A: { titel: "Les menaces",
+      html: '<ul>' +
+        '<li>Les menaces pour la sécurité sont <strong>multiples</strong> : militaires (guerres, terrorisme) et non militaires (changement climatique, pandémies, cyberattaques, inégalités).</li>' +
+        '<li>Leur <strong>perception est subjective</strong> : elle dépend entre autres de notre situation personnelle, de notre lieu de vie, des médias et de nos convictions politiques .</li>' +
+        '<li><strong>Nouvelles menaces hybrides</strong> (photos du début) : drones au-dessus du territoire, sabotage, cyberattaques contre les infrastructures critiques – sans déclaration de guerre, entre la guerre et la paix.</li>' +
+        '<li>En Allemagne (Munich Security Index 2026), les cyberattaques sont perçues comme le principal risque.</li>' +
+        '<li><strong>Question directrice :</strong> à quoi doit ressembler une politique de sécurité face à des menaces aussi différentes ?</li></ul>' },
+    B: { titel: "Qu’est-ce qu’un conflit (politique) ? (M2)",
+      html: '<ul>' +
+        '<li><strong>Conflit :</strong> état de tension entre deux ou plusieurs parties (États, groupes organisés) qui ont des <strong>intérêts ou des valeurs incompatibles</strong> concernant un bien (p. ex. frontières, territoires, ressources, indépendance), d’une certaine durée et portée.</li>' +
+        '<li><strong>Particularité des conflits internationaux :</strong> ni règles fixes ni arbitre comme dans le sport ; le droit international et la Cour internationale de justice ne peuvent pas <strong>imposer</strong> le droit → pas d’autorité supérieure dotée d’un pouvoir de contrainte (notion importante pour les théories des relations internationales : l’« anarchie » du système international). Les guerres commencent le plus souvent sans déclaration de guerre.</li>' +
+        '<li><strong>Types de conflits :</strong> intra-étatique · interétatique · <strong>internationalisé</strong> (livraisons d’armes, influence politique étrangère, actions concertées comme le terrorisme international, intervention militaire).</li></ul>' +
+        '<p style="margin:.6rem 0 .2rem"><strong>Schéma d’escalade :</strong></p>' +
+        '<div class="esk"><span>état de paix</span><i>→</i><span>conflit latent</span><i>→</i><span>conflit manifeste</span><i>→</i><span>crise</span><i>→</i><span>crise grave</span><i>→</i><span>guerre</span></div>' +
+        '<p class="quelle">Le HIIK mesure de façon similaire en 5 niveaux : différend · crise non violente · crise violente · guerre limitée · guerre.</p>' },
+    C: { titel: "Les conflits dans le monde et leur évolution (M3 + M4a)",
+      html: '<ul>' +
+        '<li><strong>M3 – présentation :</strong> carte du monde du HIIK (Institut de Heidelberg pour la recherche sur les conflits internationaux), réalisée en 2025 avec des données de 2023 ; chaque pays est coloré selon un niveau d’intensité de 1 à 5.</li>' +
+        '<li><strong>Répartition :</strong> guerres et guerres limitées surtout en Afrique subsaharienne, au Proche- et Moyen-Orient, en Asie du Sud et du Sud-Est, mais aussi p. ex. au Mexique et en Colombie ; en Europe, la guerre en Ukraine. Peu de conflits p. ex. en Australie et au Groenland.</li>' +
+        '<li><strong>Évolution depuis 1990 (Werkner) :</strong> ordre bipolaire → « nouveau désordre » ; triangle stratégique États-Unis–Russie–Chine ; la majorité des guerres sont intra-, sub- et transétatiques ; conflits ethniques et identitaires ; <strong>fragilité des États</strong>.</li>' +
+        '<li><strong>Comparaison :</strong> la concentration des guerres dans des régions où les États sont fragiles (p. ex. Afrique subsaharienne) confirme Werkner.</li>' +
+        '<li><strong>Limites de la carte :</strong> elle ne distingue pas les conflits intra- et interétatiques ; chaque pays n’a qu’une couleur (niveau le plus élevé), les conflits multiples et les différences régionales restent invisibles ; les données datent de 2023 (actuellement : Baromètre 2025 avec 359 conflits, dont 28 guerres).</li></ul>' }
+  };
+  var KEYS = ["A","B","C"];
+  function renderTafel(){
+    var zug = $("tafelzugang");
+    zug.classList.toggle("offen", state.tafel);
+    $("codeForm").hidden = state.tafel;
+    zug.querySelector(".tt small").textContent = state.tafel ? "Débloquée – découvrez les parties l’une après l’autre avec les interrupteurs." : "Ton professeur te donne le code pendant la mise en commun.";
+    var t = $("tafelInhalt"); t.innerHTML = "";
+    KEYS.forEach(function(k, n){
+      var offen = state.tafel && state.shown.indexOf(k) > -1;
+      var blk = el("div","tblock"); var kz = el("div","kopfzeile");
+      kz.appendChild(el("h4","", (n+1) + " · " + esc(SOL[k].titel)));
+      var sw = el("button","schalter",'<span class="sl">' + (offen ? "masquer" : "découvrir") + '</span><span class="bahn" aria-hidden="true"></span>');
+      sw.type = "button"; sw.setAttribute("role","switch"); sw.setAttribute("aria-checked", offen ? "true" : "false");
+      sw.setAttribute("aria-label", "Découvrir : " + SOL[k].titel); sw.disabled = !state.tafel;
+      sw.addEventListener("click", function(){ var i = state.shown.indexOf(k); if (i > -1) state.shown.splice(i,1); else state.shown.push(k); save(); renderTafel(); });
+      kz.appendChild(sw); blk.appendChild(kz);
+      var inh = el("div","tinhalt", SOL[k].html); inh.hidden = !offen; blk.appendChild(inh);
+      if (!offen) blk.appendChild(el("p","platz", state.tafel ? "Encore masqué." : "Sera débloqué pendant la mise en commun."));
+      t.appendChild(blk);
+      var dot = document.querySelector('[data-dot="'+k+'"]'); if (dot) dot.classList.toggle("frei", offen);
+    });
+  }
+  $("codeForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var inp = this.querySelector("input"), msg = this.querySelector(".msg");
+    if (inp.value.trim() === CODE) { state.tafel = true; save(); renderTafel(); }
+    else { msg.textContent = "Code incorrect."; inp.select(); }
+  });
+
+  /* ---------- section active ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav.ablauf a"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting) links.forEach(function(a){ a.classList.toggle("aktiv", a.getAttribute("href") === "#" + en.target.id); }); });
+    }, { rootMargin: "-35% 0px -55% 0px" });
+    document.querySelectorAll("section.phase").forEach(function(s){ io.observe(s); });
+  }
+
+  renderChips(); renderTrous(); renderTreppe(false); neueSerie(); renderTafel();
+})();
+</script>
+</body>
+</html>
