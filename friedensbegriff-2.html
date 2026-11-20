@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2. Friedensbegriff – Galtung und Senghaas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@500;600&family=Kalam:wght@400;700&family=Cabin+Sketch:wght@700&display=swap">
+<style>
+:root{
+  --bg:#f2eee5; --surface:#fffdf8; --surface-2:#f8f4ec; --ink:#1b2230; --muted:#5d6370; --rule:#ddd4c3;
+  --accent:#1f6a78; --accent-ink:#ffffff; --accent-soft:#dbecef;
+  --head:#1f2a3d; --head-ink:#f4efe6; --head-muted:#b9c1cf;
+  --ok:#2e6a45; --ok-soft:#dcefe2; --bad:#a3352a; --bad-soft:#f6dcd8;
+  --lock:#e9e3d6;
+  --s1:#3f8f8a; --s2:#d9a62e; --s3:#24365a; --s4:#4b1f55; --s5:#b0337a;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171e; --surface:#1b212b; --surface-2:#212835; --ink:#ebe6db; --muted:#a6adb9; --rule:#333b49;
+    --accent:#6cc3d2; --accent-ink:#0f1a1d; --accent-soft:#1b3036;
+    --head:#0e1219; --head-ink:#ebe6db; --head-muted:#98a2b3;
+    --ok:#6cc08b; --ok-soft:#1f3328; --bad:#ef8a7c; --bad-soft:#3a2220;
+    --lock:#262d39;
+    --s1:#5fb3ad; --s2:#e2b64a; --s3:#7f98c8; --s4:#b07fc0; --s5:#e06aa9;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#13171e; --surface:#1b212b; --surface-2:#212835; --ink:#ebe6db; --muted:#a6adb9; --rule:#333b49;
+    --accent:#6cc3d2; --accent-ink:#0f1a1d; --accent-soft:#1b3036;
+    --head:#0e1219; --head-ink:#ebe6db; --head-muted:#98a2b3;
+    --ok:#6cc08b; --ok-soft:#1f3328; --bad:#ef8a7c; --bad-soft:#3a2220;
+    --lock:#262d39;
+    --s1:#5fb3ad; --s2:#e2b64a; --s3:#7f98c8; --s4:#b07fc0; --s5:#e06aa9;
+    color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.06rem/1.6 "Source Serif 4",Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+h1,h2,h3,.sans{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+h1,h2,h3{text-wrap:balance;line-height:1.2;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--accent)}
+button,input{font:inherit;color:inherit}
+
+/* Kopf */
+header.top{background:var(--head);color:var(--head-ink);padding-block:2.2rem 2rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top-in{max-width:1180px;margin:0 auto}
+.kicker{font:600 .78rem/1.3 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--head-muted);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
+.kicker b{color:var(--accent);font-weight:600}
+header.top h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:800;letter-spacing:-.01em;margin:.7rem 0 .6rem}
+header.top h1 .num{color:var(--accent)}
+.leit{font-size:1.15rem;font-style:italic;color:var(--head-ink);max-width:46rem;margin:0}
+.onenote{margin-top:1.2rem;display:inline-flex;gap:.6rem;align-items:baseline;border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:.5rem .8rem;font-size:.95rem;color:var(--head-muted)}
+.onenote strong{color:var(--head-ink);font-family:Archivo,Arial,sans-serif;font-weight:600}
+
+/* Raster */
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:2.4rem;
+  padding-block:2rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.ablauf{position:sticky;top:1rem;align-self:start}
+nav.ablauf h2{font:700 .75rem/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .9rem}
+nav.ablauf ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+nav.ablauf li a{display:grid;grid-template-columns:auto 1fr;gap:.1rem .6rem;padding:.55rem 0 .55rem .9rem;margin-left:-2px;border-left:2px solid transparent;text-decoration:none;color:var(--ink)}
+nav.ablauf li a:hover{border-left-color:var(--muted)}
+nav.ablauf li a.aktiv{border-left-color:var(--accent)}
+nav.ablauf .t{font:600 .72rem/1.4 "IBM Plex Mono",monospace;color:var(--muted);grid-column:1/-1}
+nav.ablauf .n{font:800 1rem/1.3 Archivo,Arial,sans-serif;color:var(--accent)}
+nav.ablauf .l{font:600 .98rem/1.3 Archivo,Arial,sans-serif}
+.dot{display:inline-block;width:.55rem;height:.55rem;border-radius:50%;background:var(--rule);margin-left:.35rem;vertical-align:middle}
+.dot.frei{background:var(--ok)}
+.hint-side{margin-top:1.3rem;font-size:.85rem;color:var(--muted);line-height:1.45}
+
+main{min-width:0;display:flex;flex-direction:column;gap:2.4rem}
+section.phase{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.6rem clamp(1rem,3vw,2rem) 1.8rem;min-width:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem 1rem;border-bottom:1px solid var(--rule);padding-bottom:.8rem;margin-bottom:1.2rem}
+.phase-head .big{font:800 2.4rem/1 Archivo,Arial,sans-serif;color:var(--accent)}
+.phase-head h2{font-size:1.45rem;font-weight:700;flex:1 1 16rem}
+.meta{font:600 .78rem/1.3 "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.04em}
+.tag{display:inline-block;font:600 .74rem/1 "IBM Plex Mono",monospace;padding:.28rem .45rem;border-radius:4px;background:var(--accent-soft);color:var(--ink);margin-right:.3rem}
+h3{font-size:1.08rem;font-weight:700;margin:1.6rem 0 .6rem}
+p{margin:.5rem 0}
+.auftrag{background:var(--surface-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1rem 0}
+.auftrag .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}
+.auftrag ol,.auftrag ul{margin:.3rem 0;padding-left:1.3rem}
+.auftrag li{margin:.25rem 0}
+.info{border:1px dashed var(--rule);border-radius:8px;padding:.85rem 1rem;margin:1rem 0;font-size:.97rem}
+.info .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.quelle{font-size:.82rem;color:var(--muted)}
+
+/* Ranking */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
+.chip{border:1.5px solid var(--rule);background:var(--surface);border-radius:999px;padding:.45rem .9rem;cursor:pointer;font:600 .95rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.chip .rk{display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.8rem;margin-right:.4rem}
+.eigen{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0 .8rem}
+.eigen input{flex:1 1 14rem;min-width:0;border:1.5px solid var(--rule);background:var(--surface);border-radius:8px;padding:.5rem .7rem}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:.8rem 0}
+.podium > div{border:1px solid var(--rule);border-radius:8px;padding:.6rem .7rem;min-height:4.2rem;background:var(--surface-2)}
+.podium .p{font:700 .72rem/1 "IBM Plex Mono",monospace;color:var(--muted)}
+.podium .w{font:700 1rem/1.25 Archivo,Arial,sans-serif;margin-top:.35rem;overflow-wrap:anywhere}
+
+/* Knöpfe */
+.knopf{border:1.5px solid var(--ink);background:transparent;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font:600 .92rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.knopf.voll{background:var(--ink);color:var(--bg)}
+.knopf:disabled{opacity:.45;cursor:default}
+.reihe{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.6rem 0}
+
+/* Quiz */
+.quiz{display:flex;flex-direction:column;gap:.6rem;margin:.6rem 0}
+.q{border:1px solid var(--rule);border-radius:8px;padding:.75rem .9rem;background:var(--surface)}
+.q .s{margin:0 0 .5rem}
+.q .btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.q .btns button{border:1.5px solid var(--rule);background:var(--surface-2);border-radius:6px;padding:.35rem .8rem;cursor:pointer;font:600 .88rem/1.2 Archivo,Arial,sans-serif;min-height:40px}
+.q .btns button.wahl.richtig{border-color:var(--ok);background:var(--ok-soft)}
+.q .btns button.wahl.falsch{border-color:var(--bad);background:var(--bad-soft)}
+.q .fb{margin:.5rem 0 0;font-size:.93rem}
+.q .fb.ok{color:var(--ok)}
+.q .fb.no{color:var(--bad)}
+
+/* Treppe */
+.pool{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.pool button{border:1.5px dashed var(--muted);background:var(--surface);border-radius:6px;padding:.45rem .8rem;cursor:pointer;font:600 .92rem/1.2 Archivo,Arial,sans-serif;min-height:44px}
+.treppe{display:flex;flex-direction:column;gap:.35rem;margin:.6rem 0;min-height:3rem}
+.stufe{display:flex;align-items:center;gap:.6rem;border-radius:6px;padding:.45rem .7rem;font:600 .95rem/1.2 Archivo,Arial,sans-serif;background:var(--surface-2);border:1px solid var(--rule)}
+.stufe .i{font:600 .78rem/1 "IBM Plex Mono",monospace;color:var(--muted);width:1.4rem}
+.stufe.ok{border-color:var(--ok);background:var(--ok-soft)}
+.stufe.no{border-color:var(--bad);background:var(--bad-soft)}
+.leer{color:var(--muted);font-size:.9rem;font-style:italic}
+
+/* Zuordnung */
+.fall{border:1px solid var(--rule);border-radius:8px;padding:.75rem .9rem;margin:.5rem 0}
+.fall .btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.45rem}
+.fall .btns button{border:1.5px solid var(--rule);background:var(--surface-2);border-radius:6px;padding:.35rem .7rem;cursor:pointer;font:600 .86rem/1.2 Archivo,Arial,sans-serif;min-height:40px}
+.fall .btns button.wahl.richtig{border-color:var(--ok);background:var(--ok-soft)}
+.fall .btns button.wahl.falsch{border-color:var(--bad);background:var(--bad-soft)}
+
+/* Schritte Kartenanalyse */
+.schritte{counter-reset:s;list-style:none;padding:0;margin:.6rem 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.schritte li{border:1px solid var(--rule);border-radius:8px;padding:.75rem .85rem;background:var(--surface-2);font-size:.95rem;min-width:0}
+.schritte li::before{counter-increment:s;content:"Schritt " counter(s);display:block;font:700 .72rem/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.skala{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin:.7rem 0 .3rem}
+.skala div{padding:.45rem .3rem;color:#fff;font:600 .74rem/1.2 Archivo,Arial,sans-serif;text-align:center;border-radius:3px;overflow-wrap:anywhere}
+.skala div:nth-child(2){color:#1b1b1b}
+.zahlen{list-style:none;padding:0;margin:.5rem 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.5rem}
+.zahlen li{border-top:3px solid var(--accent);padding:.4rem .1rem 0;font-size:.95rem}
+.zahlen strong{display:block;font:800 1.5rem/1.1 Archivo,Arial,sans-serif}
+
+/* Sperre */
+.sperre{margin-top:1.6rem;border-radius:10px;border:1.5px solid var(--rule);overflow:hidden}
+.sperre .kopf{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;justify-content:space-between;padding:.8rem 1rem;background:var(--lock)}
+.sperre .kopf .tt{font:700 1rem/1.2 Archivo,Arial,sans-serif}
+.sperre .kopf .tt small{display:block;font:500 .82rem/1.3 "Source Serif 4",serif;color:var(--muted);margin-top:.15rem}
+.codeform{display:flex;gap:.4rem;align-items:center}
+.codeform input{width:6.2rem;border:1.5px solid var(--rule);background:var(--surface);border-radius:6px;padding:.45rem .55rem;font-family:"IBM Plex Mono",monospace;letter-spacing:.15em;text-align:center}
+.codeform[hidden]{display:none}
+.codeform .msg{font-size:.82rem;color:var(--bad)}
+.loesung{padding:1rem 1.2rem 1.2rem;background:var(--surface)}
+.loesung[hidden]{display:none!important}
+.sperre.offen{border-color:var(--ok)}
+.sperre.offen .kopf{background:var(--ok-soft)}
+
+/* Tafelbild */
+.tafel{background:var(--surface);border:2px solid var(--ink);border-radius:4px;padding:1.4rem clamp(1rem,3vw,1.8rem)}
+.tafel h3{margin:0 0 .2rem;font-size:1.3rem}
+.tafel .unter{color:var(--muted);font-size:.9rem;margin:0 0 1rem}
+.tblock{border-top:1px solid var(--rule);padding:.9rem 0 .4rem}
+.tblock h4{margin:0 0 .45rem;font:700 .95rem/1.2 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.tblock ul{margin:.2rem 0;padding-left:1.2rem}
+.tblock li{margin:.2rem 0}
+.tblock.zu{color:var(--muted);font-style:italic}
+.pfeil{font-family:"IBM Plex Mono",monospace}
+.esk{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;margin:.4rem 0;font:600 .86rem/1.2 Archivo,Arial,sans-serif}
+.esk span{padding:.3rem .5rem;border-radius:4px;background:var(--surface-2);border:1px solid var(--rule)}
+.esk i{font-style:normal;color:var(--muted)}
+
+footer{max-width:1180px;margin:0 auto;padding-block:0 2.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));color:var(--muted);font-size:.85rem}
+
+@media (max-width: 900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:1.4rem;padding-block:0 3rem}
+  nav.ablauf{position:sticky;top:0;z-index:5;background:var(--bg);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:.6rem max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--rule)}
+  nav.ablauf h2,.hint-side{display:none}
+  nav.ablauf ol{display:flex;gap:.4rem;border:0;overflow-x:auto;scrollbar-width:none}
+  nav.ablauf li a{border:1px solid var(--rule);border-radius:999px;padding:.35rem .8rem;margin:0;display:flex;gap:.35rem;white-space:nowrap;align-items:center}
+  nav.ablauf li a.aktiv{border-color:var(--accent);background:var(--accent-soft)}
+  nav.ablauf .t{display:none}
+  .podium{grid-template-columns:minmax(0,1fr)}
+  .schritte{grid-template-columns:minmax(0,1fr)}
+}
+@media print{nav.ablauf{display:none}.wrap{grid-template-columns:1fr}}
+
+/* v2: Sozialform/Bearbeitung */
+.mk{display:inline-block;color:#1b1b1b;font:700 .78rem/1 Archivo,Arial,sans-serif;padding:.28rem .5rem;border-radius:4px;margin-right:.35rem;vertical-align:.08em}
+.steps{list-style:none;margin:.3rem 0 0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+.steps>li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.2rem .7rem;align-items:start}
+.steps .nr{font:800 .95rem/1.5 Archivo,Arial,sans-serif;color:var(--accent);min-width:1.2rem}
+.badges{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.25rem}
+.b{display:inline-block;font:600 .7rem/1 "IBM Plex Mono",monospace;letter-spacing:.03em;padding:.3rem .45rem;border-radius:4px;border:1px solid var(--rule);background:var(--surface)}
+.b.pa{background:var(--accent-soft);border-color:var(--accent)}
+.b.mu{border-style:dashed}
+.b.sc{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.b.le{background:var(--ok-soft);border-color:var(--ok)}
+.b.zeit{color:var(--muted)}
+.legende{display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:center;font-size:.85rem;color:var(--muted);margin:1rem 0 0}
+.extra{font-size:.9rem;color:var(--muted);font-style:italic}
+.rollen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:.7rem 0}
+.rollen>div{border:1px solid var(--rule);border-radius:8px;padding:.7rem .85rem;background:var(--surface-2);min-width:0;font-size:.95rem}
+.rollen .rt{font:700 .78rem/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+/* Tafelbild-Schalter */
+.tafelzugang{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;background:var(--lock);border-radius:8px;padding:.75rem 1rem;margin:0 0 1rem}
+.tafelzugang .tt{font:700 1rem/1.2 Archivo,Arial,sans-serif}
+.tafelzugang .tt small{display:block;font:500 .82rem/1.3 "Source Serif 4",serif;color:var(--muted);margin-top:.15rem}
+.tafelzugang.offen{background:var(--ok-soft)}
+.tblock .kopfzeile{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.tblock .kopfzeile h4{margin:0}
+.schalter{display:inline-flex;align-items:center;gap:.5rem;border:0;background:transparent;cursor:pointer;font:600 .85rem/1 Archivo,Arial,sans-serif;color:var(--muted);min-height:44px;padding:0}
+.schalter .bahn{width:2.6rem;height:1.45rem;border-radius:999px;background:var(--rule);position:relative;transition:background .2s}
+.schalter .bahn::after{content:"";position:absolute;top:.16rem;left:.18rem;width:1.13rem;height:1.13rem;border-radius:50%;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}
+.schalter[aria-checked="true"] .bahn{background:var(--ok)}
+.schalter[aria-checked="true"] .bahn::after{transform:translateX(1.15rem)}
+.schalter:disabled{opacity:.4;cursor:default}
+.tinhalt{margin-top:.5rem}
+.tinhalt[hidden]{display:none!important}
+.tblock .platz{color:var(--muted);font-style:italic;font-size:.92rem;margin:.4rem 0 0}
+.gruppe{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0}
+.gruppe select{font:inherit;border:1.5px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:6px;padding:.45rem .6rem;min-height:44px}
+.gruppe .erg{font:700 1rem/1.3 Archivo,Arial,sans-serif}
+@media (max-width:900px){.rollen{grid-template-columns:minmax(0,1fr)}}
+
+/* Seite 2 */
+.leitfrage{display:flex;gap:.9rem;align-items:flex-start;background:var(--accent-soft);border-radius:8px;padding:.9rem 1.1rem;margin:0 0 1.2rem}
+.leitfrage .lf-l{font:700 .72rem/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap;padding-top:.3rem}
+.leitfrage .lf-q{font:700 clamp(1.1rem,2.4vw,1.35rem)/1.3 Archivo,Arial,sans-serif;text-wrap:balance}
+.gruppen-mini{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 0;font-size:.92rem}
+.verweis{display:flex;gap:.6rem;align-items:baseline;border:1.5px solid var(--accent);border-radius:8px;padding:.6rem .85rem;margin:.6rem 0;font-size:.95rem}
+.verweis b{font-family:Archivo,Arial,sans-serif}
+.pillay{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1rem;margin:1rem 0}
+.pillay>div{min-width:0}
+.pillay ul{margin:.3rem 0;padding-left:1.2rem;font-size:.97rem}
+.pillay li{margin:.2rem 0}
+blockquote.zitat{margin:.2rem 0 .6rem;padding:.8rem 1rem;border-left:4px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;font-size:1.05rem;font-style:italic}
+blockquote.zitat cite{display:block;margin-top:.4rem;font:500 .82rem/1.3 Archivo,Arial,sans-serif;font-style:normal;color:var(--muted)}
+.links{display:flex;flex-direction:column;gap:.35rem;font-size:.92rem;margin-top:.4rem}
+.leitliste{margin:.35rem 0 0;padding-left:1.3rem}
+.leitliste li{margin:.2rem 0}
+.check{list-style:none;padding:0;margin:.4rem 0;display:grid;gap:.3rem}
+.check li::before{content:"☐ ";font-family:"IBM Plex Mono",monospace;color:var(--accent)}
+.hilfen{border:1px solid var(--rule);border-radius:8px;background:var(--surface-2);padding:.7rem 1rem;margin:.8rem 0;font-size:.95rem}
+.hilfen .label{font:700 .74rem/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.hilfen ul{margin:.2rem 0;padding-left:1.2rem}
+.impulse{counter-reset:i;list-style:none;padding:0;margin:.6rem 0;display:grid;gap:.5rem}
+.impulse li{border:1px solid var(--rule);border-radius:8px;padding:.65rem .85rem .65rem 2.6rem;position:relative;background:var(--surface)}
+.impulse li::before{counter-increment:i;content:counter(i);position:absolute;left:.85rem;top:.6rem;font:800 1.05rem/1.2 Archivo,Arial,sans-serif;color:var(--accent)}
+.fall .btns{gap:.35rem}
+
+/* Kreidetafel */
+.tafelsteuer{display:flex;flex-wrap:wrap;gap:.2rem 1.2rem;margin:.2rem 0 .8rem}
+.kreide{--k-bg:#24392f;--k-ink:#f1efe6;--k-gelb:#f5e27d;--k-pink:#f3a6c8;--k-blau:#a6d8f2;--k-gruen:#b9e89a;--k-line:rgba(241,239,230,.55);
+  position:relative;border:14px solid #7a5434;border-radius:6px;box-shadow:inset 0 0 0 2px #5c3e25,0 6px 18px rgba(0,0,0,.25);
+  background-color:var(--k-bg);
+  background-image:radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.07),transparent 55%),radial-gradient(ellipse at 80% 85%,rgba(255,255,255,.05),transparent 50%),radial-gradient(ellipse at 60% 40%,rgba(255,255,255,.035),transparent 40%);
+  color:var(--k-ink);padding:1.4rem clamp(.9rem,3vw,2rem) 1.6rem;
+  font:400 1.12rem/1.45 Kalam,"Chalkboard SE","Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+  text-shadow:0 0 1px rgba(241,239,230,.45)}
+.kreide::after{content:"";position:absolute;left:12%;right:12%;bottom:-14px;height:8px;background:#5c3e25;border-radius:2px 2px 0 0}
+.kreide .k-titel{font:700 clamp(1.35rem,3.2vw,1.9rem)/1.25 "Cabin Sketch",Chalkduster,Kalam,"Chalkboard SE",cursive;color:var(--k-gelb);text-align:center;margin:0 0 .2rem;text-wrap:balance}
+.kreide .k-unter{text-align:center;font-size:.95rem;opacity:.75;margin:0 0 1.1rem}
+.k-raster{display:grid;grid-template-columns:minmax(6.5rem,.6fr) minmax(0,1fr) minmax(0,1fr);border-top:2px solid var(--k-line)}
+.k-raster>div{padding:.55rem .7rem;border-bottom:2px solid var(--k-line);min-width:0}
+.k-raster .k-g{border-left:2px solid var(--k-line);border-right:2px solid var(--k-line)}
+.k-raster .k-span{grid-column:2/4;border-left:2px solid var(--k-line)}
+.k-kopf{font:700 1.3rem/1.2 "Cabin Sketch",Chalkduster,Kalam,cursive}
+.k-kopf.g{color:var(--k-blau)} .k-kopf.s{color:var(--k-pink)}
+.k-label{color:var(--k-gelb);font-weight:700}
+.k-zeile-voll{grid-column:1/-1}
+.k-zelle .k-inhalt{display:block}
+.k-zelle .k-leer{display:block;opacity:.28;letter-spacing:.3em}
+.k-zelle .k-leer[hidden],.k-zelle .k-inhalt[hidden]{display:none!important}
+.k-zelle ul{margin:0;padding-left:1.1rem}
+.k-zelle li{margin:.1rem 0}
+.k-gruen{color:var(--k-gruen)} .k-pinkt{color:var(--k-pink)} .k-blaut{color:var(--k-blau)} .k-gelbt{color:var(--k-gelb)}
+.k-fazit{margin-top:1rem;font-size:1.15rem}
+.k-fazit .k-leer{opacity:.28;letter-spacing:.3em}
+.k-inhalt.neu{animation:schreiben .9s ease-out both}
+@keyframes schreiben{from{clip-path:inset(0 100% 0 0);opacity:.3}to{clip-path:inset(0 0 0 0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.k-inhalt.neu{animation:none}}
+.kreide.zu .k-raster,.kreide.zu .k-fazit{filter:blur(3px);opacity:.35;user-select:none}
+@media (max-width:640px){
+  .pillay{grid-template-columns:minmax(0,1fr)}
+  .leitfrage{flex-direction:column;gap:.3rem}
+  .kreide{border-width:9px}
+  .k-raster{grid-template-columns:minmax(0,1fr)}
+  .k-raster .k-g,.k-raster .k-span{border-left:0;border-right:0;grid-column:auto}
+  .k-raster .k-ecke{display:none}
+  .k-raster .k-kopf{display:none}
+  .k-label{padding-top:.9rem!important;border-bottom:1px dashed var(--k-line)!important}
+  .k-zelle[data-col]::before{content:attr(data-col);display:block;font:700 1.05rem/1.2 "Cabin Sketch",Chalkduster,Kalam,cursive}
+  .k-zelle[data-col="Galtung"]::before{color:var(--k-blau)}
+  .k-zelle[data-col="Senghaas"]::before{color:var(--k-pink)}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="kicker"><span>Sozialwissenschaften · Q2 GK</span><span>IF 7 · Friedens- und Sicherheitspolitik</span><span><b>Stunde 2</b> · Fr 20.11.2026 · 90 Min.</span></div>
+    <h1><span class="num">2.</span> Friedensbegriff – Galtung und Senghaas</h1>
+    <p class="leit">Sicherheit, Frieden, Gewalt: Was meinen wir eigentlich, wenn wir von „Frieden“ sprechen?</p>
+    <div class="onenote"><span>Materialien M7–M10:</span> <strong>OneNote → „2. Friedensbegriff – Galtung und Senghaas“</strong></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="ablauf" aria-label="Ablauf der Stunde">
+    <h2>Ablauf</h2>
+    <ol>
+      <li><a href="#rueckblick"><span class="t">0–40 Min.</span><span class="n">1</span><span class="l">Rückblick &amp; Sicherheit</span></a></li>
+      <li><a href="#frieden"><span class="t">40–50 Min.</span><span class="n">2</span><span class="l">Frieden – was ist das?</span></a></li>
+      <li><a href="#erarbeitung"><span class="t">50–63 Min.</span><span class="n">3</span><span class="l">Galtung oder Senghaas</span></a></li>
+      <li><a href="#austausch"><span class="t">63–73 Min.</span><span class="n">4</span><span class="l">Austausch</span></a></li>
+      <li><a href="#tafelbild"><span class="t">73–85 Min.</span><span class="n">5</span><span class="l">Anwendung &amp; Tafelbild <span class="dot" id="tafelDot"></span></span></a></li>
+      <li><a href="#hausaufgabe"><span class="t">85–90 Min.</span><span class="n">6</span><span class="l">Hausaufgabe</span></a></li>
+    </ol>
+    <p class="hint-side">Die Stunde hat zwei Teile mit je einer Leitfrage. Behalte sie im Blick – am Ende jedes Teils beantworten wir sie.</p>
+  </nav>
+
+  <main>
+    <!-- 1 RUECKBLICK -->
+    <section class="phase" id="rueckblick">
+      <div class="phase-head"><span class="big">1</span><h2>Rückblick: Konflikte und Sicherheit</h2><span class="meta">0–40 Min. · Teil 1</span></div>
+      <div class="leitfrage"><span class="lf-l">Leitfrage Teil 1</span><span class="lf-q">Wie unsicher ist die Welt heute – und was bedeutet dann eigentlich „Sicherheit“?</span></div>
+      <div class="auftrag">
+        <div class="label">Arbeitsaufträge</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b pa">Partnerarbeit</span><span class="b mu">mündlich, ohne Notizen</span><span class="b zeit">5 Min.</span></div>
+            Partner-Check zur letzten Stunde – je 2 Minuten, dann tauscht ihr:
+            <div class="rollen">
+              <div><div class="rt">Partner A</div>erklärt, was ein politischer Konflikt ist und warum ein internationaler Konflikt nicht wie ein Fußballspiel abläuft (M2).</div>
+              <div><div class="rt">Partner B</div>erklärt die drei Konflikttypen und die Eskalationsstufen bis zum Krieg (M2).</div>
+            </div></div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">im Plenum</span><span class="b sc">Abschrift in OneNote</span><span class="b zeit">ca. 17 Min.</span></div>
+            Wir besprechen die Ergebnisse der letzten Stunde und bauen das Tafelbild Schritt für Schritt auf. Übertrage es anschließend in OneNote.
+            <div class="verweis"><b>Tafelbild:</b> auf der Seite „1. Lagebild – Bedrohungen und Konflikte“, Abschnitt 4</div></div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b pa">Gruppenarbeit zu dritt</span><span class="b mu">mündlich</span><span class="b zeit">10 Min.</span></div>
+            Setzt euch in Dreiergruppen zusammen – eine Person aus jeder Hausaufgaben-Gruppe:
+            <div class="gruppen-mini"><span class="tag">A</span>Jan.–Apr.: wehrhaft <span class="tag">B</span>Mai–Aug.: resilient <span class="tag">C</span>Sep.–Dez.: nachhaltig</div>
+            <ol class="leitliste">
+              <li>Jede Person erklärt in einer Minute ihre Säule der Nationalen Sicherheitsstrategie anhand ihres Schaubilds (M6).</li>
+              <li>Ordnet gemeinsam die Bedrohungen aus eurem Ranking der letzten Stunde den drei Säulen zu. Gibt es eine Bedrohung, die keine Säule abdeckt?</li>
+            </ol></div></li>
+          <li><span class="nr">d</span><div><div class="badges"><span class="b pa">Gruppenarbeit zu dritt</span><span class="b mu">mündlich</span><span class="b zeit">5 Min.</span></div>
+            Bleibt in euren Dreiergruppen sitzen und tauscht euch über eure Hausaufgabe zu M5 (Gareis) aus: <strong>Warum ist „Sicherheit“ ein komplexer Begriff?</strong> Vergleicht eure Stichpunkte und ergänzt, was euch fehlt.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 2 FRIEDEN -->
+    <section class="phase" id="frieden">
+      <div class="phase-head"><span class="big">2</span><h2>Frieden – was ist das?</h2><span class="meta">40–50 Min. · M7 · Teil 2</span></div>
+      <div class="leitfrage"><span class="lf-l">Leitfrage Teil 2</span><span class="lf-q">Ist Frieden mehr als die Abwesenheit von Krieg?</span></div>
+      <div class="auftrag">
+        <div class="label">Arbeitsaufträge</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b">Einzelarbeit</span><span class="b sc">schriftlich in OneNote</span><span class="b zeit">1 Min.</span></div>
+            „Frieden bedeutet für mich …“ – notiere <strong>drei Schlagworte</strong>, die du persönlich mit Frieden verbindest (M7).</div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">im Plenum</span><span class="b mu">Video</span><span class="b pa">Partnerarbeit</span><span class="b mu">mündlich</span><span class="b sc">ein Satz in OneNote</span><span class="b zeit">8 Min.</span></div>
+            Wir schauen zunächst gemeinsam das Video von tagesschau.de zum Friedensnobelpreis 2026. Lies dann den Kasten zum Friedensnobelpreis 2026. Navi Pillay hat keinen Krieg beendet – warum erhält sie trotzdem den <em>Friedens</em>nobelpreis? Notiert eure Vermutung in einem Satz. Wir kommen am Ende der Stunde darauf zurück.</div></li>
+        </ol>
+      </div>
+
+      <div class="info">
+        <div class="label">Aktuell · Friedensnobelpreis 2026</div>
+        <div class="pillay">
+          <div>
+            <p style="margin-top:0">Am <strong>9. Oktober 2026</strong> hat das norwegische Nobelkomitee den Friedensnobelpreis an die südafrikanische Juristin <strong>Navanethem „Navi“ Pillay</strong> vergeben. Überreicht wird er am 10. Dezember in Oslo.</p>
+            <ul>
+              <li>Unter dem Apartheid-Regime eröffnete sie 1967 als erste Frau eine Anwaltskanzlei in der damaligen Provinz Natal und verteidigte Gegnerinnen und Gegner der Apartheid.</li>
+              <li>Sie war die erste nicht-weiße Frau, die als Richterin am High Court Südafrikas tätig war.</li>
+              <li>Am Internationalen Strafgerichtshof für Ruanda trug sie dazu bei, dass Vergewaltigung als Mittel des Völkermords und als Verbrechen gegen die Menschlichkeit verurteilt werden kann. Später war sie Richterin am Internationalen Strafgerichtshof in Den Haag.</li>
+              <li>Von 2008 bis 2014 war sie Hochkommissarin der Vereinten Nationen für Menschenrechte.</li>
+            </ul>
+          </div>
+          <div>
+            <blockquote class="zitat">„Ein internationales Rechtssystem, in dem Kriegsverbrecher zur Rechenschaft gezogen werden, ist eine Voraussetzung für eine friedliche Welt.“<cite>Begründung des Nobelkomitees, zitiert nach ZDFheute, 9.10.2026</cite></blockquote>
+            <blockquote class="zitat">„Das Völkerrecht ist nicht mehr nur eine Ergänzung zu Frieden und Sicherheit. Es ist eine absolute Notwendigkeit.“<cite>Nobelkomitee, eigene Übersetzung nach Al Jazeera, 9.10.2026</cite></blockquote>
+            <div class="links">
+              <a href="https://www.zdfheute.de/panorama/friedensnobelpreis-navanethem-pillay-100.html" target="_blank" rel="noopener">ZDFheute: Friedensnobelpreis geht an Navanethem Pillay ↗</a>
+              <a href="https://www.nobelprize.org/prizes/peace/2026/press-release/" target="_blank" rel="noopener">Nobelprize.org: Pressemitteilung (englisch) ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 ERARBEITUNG -->
+    <section class="phase" id="erarbeitung">
+      <div class="phase-head"><span class="big">3</span><h2>Zwei Friedensforscher: Galtung oder Senghaas</h2><span class="meta">50–63 Min. · M8 / M9</span></div>
+      <div class="auftrag">
+        <div class="label">Arbeitsteilige Partnerarbeit · zuerst arbeitet jede Person allein</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b le">lesen &amp; markieren in OneNote</span><span class="b">Einzelarbeit</span><span class="b zeit">7 Min.</span></div>Lies deinen Text und markiere mit den OneNote-Markern in den angegebenen Farben.</div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b">Einzelarbeit</span><span class="b sc">schriftlich in OneNote</span><span class="b zeit">4 Min.</span></div>Erstelle einen <strong>Spickzettel</strong> für deinen Vortrag: höchstens <strong>8 Stichworte</strong> und eine <strong>Skizze</strong> (Gewaltdreieck bzw. Hexagon) mit dem Pencil. Die Leitfragen deiner Rolle helfen dir.</div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b">Einzelarbeit</span><span class="b mu">auf der Seite</span><span class="b zeit">2 Min.</span></div>Teste dich mit dem Selbstcheck deiner Rolle.</div></li>
+        </ol>
+        <div class="rollen">
+          <div>
+            <div class="rt">Partner A · Johan Galtung (M8)</div>
+            <p style="margin:.2rem 0">Text M8 und Grafik „Gewaltdreieck“</p>
+            <ul style="margin:.3rem 0;padding-left:1.1rem">
+              <li><span class="mk" style="background:#8ef0fb">Hellblau</span> die drei Formen von Gewalt (Z. 5–15 und 38–48)</li>
+              <li><span class="mk" style="background:#fff36b">Gelb</span> wann Gewalt nach dem erweiterten Gewaltbegriff vorliegt (Z. 16–28)</li>
+              <li><span class="mk" style="background:#ef5fc0">Pink</span> negativer und positiver Frieden (Z. 28–37)</li>
+            </ul>
+            <p style="margin:.5rem 0 .1rem"><strong>Leitfragen</strong></p>
+            <ol class="leitliste">
+              <li>Wann liegt für Galtung Gewalt vor?</li>
+              <li>Welche drei Formen von Gewalt unterscheidet er – und welche sind sichtbar, welche unsichtbar?</li>
+              <li>Was ist negativer, was positiver Frieden?</li>
+              <li>Finde ein eigenes Beispiel für strukturelle Gewalt.</li>
+            </ol>
+          </div>
+          <div>
+            <div class="rt">Partner B · Dieter Senghaas (M9)</div>
+            <p style="margin:.2rem 0">Kasten (Z. 1–19), Grafik „Hexagon“ und die sechs Bausteine (Z. 1–80)</p>
+            <ul style="margin:.3rem 0;padding-left:1.1rem">
+              <li><span class="mk" style="background:#fff36b">Gelb</span> Senghaas’ Definition von Frieden (Kasten, Z. 1–19)</li>
+              <li><span class="mk" style="background:#8ef0fb">Hellblau</span> pro Baustein den einen Satz, der ihn am besten erklärt</li>
+              <li><span class="mk" style="background:#a8f56d">Grün</span> Stellen, an denen sich Bausteine gegenseitig bedingen (z. B. Z. 17–21, 27–29)</li>
+            </ul>
+            <p style="margin:.5rem 0 .1rem"><strong>Leitfragen</strong></p>
+            <ol class="leitliste">
+              <li>Wie definiert Senghaas Frieden?</li>
+              <li>Welche sechs Bausteine gehören zum zivilisatorischen Hexagon?</li>
+              <li>Wie bedingen sich die Bausteine gegenseitig? Nenne zwei Beispiele.</li>
+              <li>Welchen Baustein hältst du für am schwersten umsetzbar?</li>
+            </ol>
+            <p class="extra" style="margin-top:.4rem">Dein Text ist länger als M8: Lies die Bausteine gezielt – fett gedruckte Überschrift und Kernaussage reichen.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Selbstcheck A · Welche Form von Gewalt nach Galtung?</h3>
+      <div id="faelleA"></div>
+      <h3>Selbstcheck B · Welcher Baustein des Hexagons?</h3>
+      <div id="faelleB"></div>
+    </section>
+
+    <!-- 4 AUSTAUSCH -->
+    <section class="phase" id="austausch">
+      <div class="phase-head"><span class="big">4</span><h2>Austausch: Stellt euch eure Forscher vor</h2><span class="meta">63–73 Min. · M8 + M9</span></div>
+      <div class="auftrag">
+        <div class="label">Partnerarbeit</div>
+        <ol class="steps">
+          <li><span class="nr">a</span><div><div class="badges"><span class="b pa">Partnerarbeit</span><span class="b mu">mündlich</span><span class="b zeit">4 Min.</span></div>
+            <strong>Partner A</strong> stellt Galtung vor und zeigt dabei seine Skizze. <strong>Partner B</strong> hört zu, notiert Stichworte in OneNote und stellt am Ende <strong>eine Rückfrage</strong>.</div></li>
+          <li><span class="nr">b</span><div><div class="badges"><span class="b pa">Partnerarbeit</span><span class="b mu">mündlich</span><span class="b zeit">4 Min.</span></div>
+            Wechsel: <strong>Partner B</strong> stellt Senghaas vor, <strong>Partner A</strong> hört zu, notiert und fragt nach.</div></li>
+          <li><span class="nr">c</span><div><div class="badges"><span class="b pa">Partnerarbeit</span><span class="b sc">schriftlich in OneNote</span><span class="b zeit">2 Min.</span></div>
+            Haltet gemeinsam <strong>eine Gemeinsamkeit</strong> und <strong>zwei Unterschiede</strong> zwischen den beiden Friedensbegriffen fest.</div></li>
+        </ol>
+      </div>
+      <div class="rollen">
+        <div class="hilfen" style="margin:0">
+          <div class="label">Checkliste für deinen Vortrag</div>
+          <ul class="check">
+            <li>Ich sage, wie mein Forscher Frieden definiert.</li>
+            <li>Ich erkläre meine Skizze.</li>
+            <li>Ich nenne mindestens ein Beispiel.</li>
+            <li>Ich spreche frei und schaue nur auf den Spickzettel.</li>
+          </ul>
+        </div>
+        <div class="hilfen" style="margin:0">
+          <div class="label">Formulierungshilfen zum Vergleichen</div>
+          <ul>
+            <li>Beide verstehen Frieden als …</li>
+            <li>Während Galtung von … ausgeht, betont Senghaas …</li>
+            <li>Im Unterschied zu Galtung bezieht sich Senghaas vor allem auf …</li>
+            <li>Gemeinsam ist beiden, dass …</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 TAFELBILD -->
+    <section class="phase" id="tafelbild">
+      <div class="phase-head"><span class="big">5</span><h2>Anwendung &amp; Tafelbild</h2><span class="meta">73–85 Min. · im Plenum</span></div>
+      <div class="auftrag">
+        <div class="label">Im Plenum</div>
+        <div class="badges"><span class="b">im Plenum</span><span class="b mu">mündlich</span><span class="b zeit">7 Min.</span></div>
+        <ol class="impulse">
+          <li><strong>Zurück zu Pillay:</strong> Wie würden Galtung und Senghaas begründen, dass sie den Friedensnobelpreis verdient? Stimmt eure Vermutung vom Anfang?</li>
+          <li><strong>Zurück zu euren Schlagworten:</strong> Welche deiner drei Schlagworte gehören zum negativen, welche zum positiven Frieden?</li>
+          <li><strong>Und zwischen Staaten?</strong> Senghaas’ Hexagon setzt ein kontrolliertes Gewaltmonopol voraus. Gibt es so etwas in der internationalen Politik? Denk an die pinke Stelle in M2 (Fußballspiel ohne Schiedsrichter).</li>
+        </ol>
+        <div class="badges" style="margin-top:.6rem"><span class="b">im Plenum</span><span class="b sc">Abschrift in OneNote</span><span class="b zeit">5 Min.</span></div>
+        <p style="margin:.2rem 0 0">Das Tafelbild entsteht Schritt für Schritt. Übertrage es in OneNote auf die Seite „2. Friedensbegriff – Galtung und Senghaas“.</p>
+      </div>
+
+      <div class="tafelzugang" id="tafelzugang">
+        <div class="tt">Tafelbild freischalten<small>Den Code bekommst du in der Besprechung.</small></div>
+        <form class="codeform" id="codeForm"><input inputmode="numeric" maxlength="4" autocomplete="off" aria-label="Code für das Tafelbild"><button class="knopf voll" type="submit">Freischalten</button><span class="msg" role="status"></span></form>
+      </div>
+      <div class="tafelsteuer" id="tafelSteuer"></div>
+
+      <div class="kreide zu" id="kreide">
+        <p class="k-titel">Ist Frieden mehr als die Abwesenheit von Krieg?</p>
+        <p class="k-unter">Friedensbegriffe im Vergleich</p>
+        <div class="k-raster">
+          <div class="k-ecke"></div>
+          <div class="k-kopf g k-g">Galtung</div>
+          <div class="k-kopf s">Senghaas</div>
+
+          <div class="k-label">Ausgangspunkt</div>
+          <div class="k-zelle k-g" data-col="Galtung" data-teil="1"><span class="k-inhalt">Gewalt: <span class="k-blaut">direkt</span> – <span class="k-blaut">strukturell</span> – <span class="k-blaut">kulturell</span><br>(Gewaltdreieck: sichtbar / unsichtbar)</span></div>
+          <div class="k-zelle" data-col="Senghaas" data-teil="2"><span class="k-inhalt">Zivilisierung des Zusammenlebens von Gruppen und Staaten</span></div>
+
+          <div class="k-label">Frieden ist …</div>
+          <div class="k-zelle k-g" data-col="Galtung" data-teil="1"><span class="k-inhalt">… Abwesenheit von Gewalt
+            <ul><li><span class="k-gelbt">negativer Frieden:</span> keine direkte Gewalt</li><li><span class="k-gelbt">positiver Frieden:</span> keine strukturelle Gewalt</li></ul></span></div>
+          <div class="k-zelle" data-col="Senghaas" data-teil="2"><span class="k-inhalt">… ein <span class="k-gelbt">Prozess</span> gewaltfreier Konfliktbearbeitung<br>→ 6 Bedingungen (Hexagon), die sich gegenseitig stützen</span></div>
+
+          <div class="k-label">Ebene</div>
+          <div class="k-zelle k-g" data-col="Galtung" data-teil="1"><span class="k-inhalt">Gesellschaft <u>und</u> internationale Politik</span></div>
+          <div class="k-zelle" data-col="Senghaas" data-teil="2"><span class="k-inhalt">vor allem <u>innerhalb</u> von Staaten (Modell: moderne westliche Gesellschaften)</span></div>
+
+          <div class="k-label">Gemeinsam</div>
+          <div class="k-zelle k-span" data-teil="3"><span class="k-inhalt"><span class="k-gruen">Frieden ist mehr als die Abwesenheit von Krieg.</span><br>Gerechtigkeit gehört dazu: strukturelle Gewalt ↔ soziale Gerechtigkeit</span></div>
+
+          <div class="k-label">Grenzen</div>
+          <div class="k-zelle k-g" data-col="Galtung" data-teil="4"><span class="k-inhalt">sehr weit gefasst → wird Frieden zur Utopie?</span></div>
+          <div class="k-zelle" data-col="Senghaas" data-teil="4"><span class="k-inhalt">international fehlt das Gewaltmonopol (M2: kein Schiedsrichter)<br>Vorwurf: Eurozentrismus (M10)</span></div>
+        </div>
+        <div class="k-fazit k-zelle" data-teil="4"><span class="k-inhalt"><span class="k-pinkt">➜</span> Wie lässt sich Frieden <u>zwischen</u> Staaten sichern, wenn es keine übergeordnete Instanz gibt? → Theorien der internationalen Beziehungen</span></div>
+      </div>
+    </section>
+
+    <!-- 6 HAUSAUFGABE -->
+    <section class="phase" id="hausaufgabe">
+      <div class="phase-head"><span class="big">6</span><h2>Hausaufgabe</h2><span class="meta">zur nächsten Stunde · OneNote</span></div>
+      <div class="auftrag">
+        <div class="label">Für alle · M8</div>
+        <div class="badges"><span class="b sc">schriftlich in OneNote</span></div>
+        <p style="margin:.2rem 0 .4rem">Prüfe in <strong>6–8 Sätzen</strong>, ob sich Galtungs <strong>positiver Frieden</strong> als Ziel politischen Handelns eignet. Komm am Ende zu einem begründeten Ergebnis.</p>
+        <div class="hilfen">
+          <div class="label">Mögliche Gesichtspunkte</div>
+          <ul>
+            <li><strong>Orientierung:</strong> Gibt der Begriff der Politik eine klare Richtung vor?</li>
+            <li><strong>Erreichbarkeit:</strong> Kann positiver Frieden je vollständig erreicht werden – oder bleibt er eine Utopie?</li>
+            <li><strong>Messbarkeit:</strong> Woran ließe sich erkennen, ob strukturelle Gewalt abnimmt?</li>
+            <li><strong>Verantwortung:</strong> Wer wäre zuständig, wenn strukturelle Gewalt keine einzelnen Täter hat?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info">
+        <div class="label">Zusatz für Interessierte · M10</div>
+        Lies die Kritik am zivilisatorischen Hexagon (M10). Welchen Kritikpunkt hältst du für den gewichtigsten? Begründe kurz in OneNote.
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>Grundlage: Schulbuch Kap. 14.2, M7–M10 · Friedensnobelpreis 2026: ZDFheute (9.10.2026), Al Jazeera (9.10.2026), nobelprize.org</footer>
+<script>
+(function(){
+  "use strict";
+  var KEY = "friedensbegriff-2-v1";
+  var CODE = "4627";
+  var state = { tafel: false, teile: [] };
+  try { var raw = localStorage.getItem(KEY); if (raw) { var s = JSON.parse(raw); if (s && typeof s === "object") { state.tafel = !!s.tafel; state.teile = Array.isArray(s.teile) ? s.teile : []; } } } catch (e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, html){ var n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; }
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function mischen(a){ a = a.slice(); for (var i = a.length-1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  /* ---------- Selbstchecks ---------- */
+  function zuordnung(boxId, optionen, faelle, hinweis){
+    mischen(faelle).forEach(function(f){
+      var box = el("div","fall"); box.appendChild(el("div","",esc(f[0])));
+      var btns = el("div","btns"); var fb = el("p","fb"); fb.style.margin = ".45rem 0 0"; fb.style.fontSize = ".93rem"; fb.setAttribute("role","status");
+      optionen.forEach(function(t,i){
+        var b = el("button","",esc(t)); b.type = "button";
+        b.addEventListener("click", function(){
+          btns.querySelectorAll("button").forEach(function(x){ x.className = ""; });
+          var ok = i === f[1];
+          b.className = "wahl " + (ok ? "richtig" : "falsch");
+          fb.style.color = ok ? "var(--ok)" : "var(--bad)";
+          fb.textContent = ok ? "Richtig – " + f[2] : hinweis;
+        });
+        btns.appendChild(b);
+      });
+      box.appendChild(btns); box.appendChild(fb); $(boxId).appendChild(box);
+    });
+  }
+  zuordnung("faelleA", ["direkte Gewalt","strukturelle Gewalt","kulturelle Gewalt"], [
+    ["Ein Soldat erschießt an einem Kontrollposten einen Zivilisten.", 0, "ein Täter schädigt einen Menschen unmittelbar (M8, Z. 8–11)."],
+    ["Polizisten schlagen bei einer Demonstration auf Demonstrierende ein.", 0, "die Gewalt ist sichtbar und geht von konkreten Personen aus."],
+    ["Bei einem Luftangriff werden Wohnhäuser zerstört und Menschen verletzt.", 0, "Schädigung, Verletzung und Tötung von Personen sind direkte Gewalt."],
+    ["Ein Gesetz verbietet einer Minderheit, an Wahlen teilzunehmen.", 1, "Repression ist eine Hauptform struktureller Gewalt (Z. 14–15) – kein einzelner Täter schlägt zu."],
+    ["Näherinnen arbeiten zwölf Stunden am Tag für einen Lohn, der nicht zum Leben reicht.", 1, "Ausbeutung ist eine Hauptform struktureller Gewalt (Z. 14–15)."],
+    ["Kinder aus armen Familien können nicht zur Schule gehen, weil Schulgeld verlangt wird.", 1, "ihre tatsächliche Entwicklung bleibt hinter der möglichen zurück (Z. 19–28) – verursacht durch Strukturen."],
+    ["Schulbücher stellen eine Volksgruppe als minderwertig dar, um ihre Unterdrückung zu rechtfertigen.", 2, "kulturelle Gewalt dient dazu, direkte oder strukturelle Gewalt zu legitimieren (Z. 42–48)."],
+    ["Eine Ideologie erklärt den Krieg gegen ein Nachbarvolk zur heiligen Pflicht.", 2, "Aspekte einer Kultur rechtfertigen hier direkte Gewalt (Z. 42–48)."]
+  ], "Noch nicht. Frage dich: Gibt es einen konkreten Täter? Steckt ein System dahinter? Oder wird Gewalt gerechtfertigt?");
+  zuordnung("faelleB", ["Gewaltmonopol","Rechtsstaatlichkeit","Interdependenz & Affektkontrolle","Demokratische Beteiligung","Soziale Gerechtigkeit","Konfliktkultur"], [
+    ["Nur Polizei und Armee dürfen Gewalt anwenden – Bürgerinnen und Bürger regeln ihren Streit nicht mit Waffen.", 0, "Entprivatisierung von Gewalt, die „Entwaffnung der Bürger“ (M9, Z. 7–13)."],
+    ["Auch die Polizei ist an Gesetze gebunden; Gerichte und Parlament kontrollieren sie.", 1, "ein Gewaltmonopol ohne Rechtsstaat wäre eine Umschreibung von Diktatur (Z. 14–25)."],
+    ["Weil Menschen in einer arbeitsteiligen Wirtschaft voneinander abhängen, handeln sie berechenbar und beherrschen sich.", 2, "Verflechtungen fördern Selbstkontrolle und Erwartungsverlässlichkeit (Z. 27–47)."],
+    ["Alle Interessen können über Wahlen, Parteien und Verbände in den politischen Prozess eingebracht werden.", 3, "Interessen müssen artikulationsfähig und integrierbar sein (Z. 48–56)."],
+    ["Der Staat sichert die Grundbedürfnisse und sorgt für faire Chancen, damit sich die Mehrheit gerecht behandelt fühlt.", 4, "Chancen-, Verteilungs- und Bedürfnisgerechtigkeit (Z. 58–67)."],
+    ["Streit gilt als normal; er wird tolerant und kompromissorientiert ausgetragen.", 5, "eine konstruktive Konfliktkultur wird verinnerlicht (Z. 68–80)."]
+  ], "Noch nicht. Lies die fett gedruckten Überschriften der Bausteine noch einmal.");
+
+  /* ---------- Kreidetafel ---------- */
+  var TEILE = [["1","Galtung"],["2","Senghaas"],["3","Gemeinsamkeiten"],["4","Grenzen & Ausblick"]];
+  var zuletzt = null;
+  function renderTafel(){
+    var zug = $("tafelzugang");
+    zug.classList.toggle("offen", state.tafel);
+    $("codeForm").hidden = state.tafel;
+    zug.querySelector(".tt small").textContent = state.tafel ? "Freigeschaltet – deckt die Teile mit den Schaltern nacheinander auf." : "Den Code bekommst du in der Besprechung.";
+    $("kreide").classList.toggle("zu", !state.tafel);
+    var st = $("tafelSteuer"); st.innerHTML = "";
+    TEILE.forEach(function(t){
+      var an = state.tafel && state.teile.indexOf(t[0]) > -1;
+      var sw = el("button","schalter",'<span class="bahn" aria-hidden="true"></span><span class="sl">' + t[0] + " · " + esc(t[1]) + "</span>");
+      sw.type = "button"; sw.setAttribute("role","switch"); sw.setAttribute("aria-checked", an ? "true" : "false");
+      sw.disabled = !state.tafel;
+      sw.addEventListener("click", function(){
+        var i = state.teile.indexOf(t[0]);
+        if (i > -1) { state.teile.splice(i,1); zuletzt = null; } else { state.teile.push(t[0]); zuletzt = t[0]; }
+        save(); renderTafel();
+      });
+      st.appendChild(sw);
+    });
+    document.querySelectorAll("#kreide .k-zelle").forEach(function(z){
+      var teil = z.getAttribute("data-teil");
+      var an = state.tafel && state.teile.indexOf(teil) > -1;
+      var inh = z.querySelector(".k-inhalt");
+      var leer = z.querySelector(".k-leer");
+      if (!leer) { leer = el("span","k-leer","· · ·"); leer.setAttribute("aria-hidden","true"); z.appendChild(leer); }
+      inh.hidden = !an; leer.hidden = an;
+      inh.classList.toggle("neu", an && teil === zuletzt);
+    });
+    $("tafelDot").classList.toggle("frei", state.tafel && state.teile.length === TEILE.length);
+  }
+  $("codeForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var inp = this.querySelector("input"), msg = this.querySelector(".msg");
+    if (inp.value.trim() === CODE) { state.tafel = true; save(); renderTafel(); }
+    else { msg.textContent = "Code falsch."; inp.select(); }
+  });
+
+  /* ---------- aktiver Abschnitt ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav.ablauf a"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting) links.forEach(function(a){ a.classList.toggle("aktiv", a.getAttribute("href") === "#" + en.target.id); }); });
+    }, { rootMargin: "-35% 0px -55% 0px" });
+    document.querySelectorAll("section.phase").forEach(function(s){ io.observe(s); });
+  }
+  renderTafel();
+})();
+</script>
+</body>
+</html>
