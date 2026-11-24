@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Märkte überall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f2ea; --card:#fffdf8; --ink:#1f2430; --mut:#5d6472; --line:#ddd5c6;
+  --acc:#1d5c8f; --acc2:#b8412c; --ok:#2f7d4f; --okbg:#e3f2e8; --bad:#b33a2c; --badbg:#f9e3df;
+  --gelb:#fff3c4; --chip:#efe9dd;
+  --serif:"Literata",Georgia,serif; --sans:"IBM Plex Sans Condensed","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a20; --card:#20242c; --ink:#ebe7df; --mut:#a3a9b5; --line:#363b46;
+  --acc:#7fb4e0; --acc2:#ec8a74; --ok:#7ccf9b; --okbg:#1f3a2a; --bad:#f08f80; --badbg:#41231f;
+  --gelb:#3a3420; --chip:#2b3039;}}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.45;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+.wrap{max-width:980px;margin:0 auto;padding:18px 16px 60px}
+header h1{font-family:var(--serif);font-size:clamp(28px,4.4vw,42px);line-height:1.1;margin:.2em 0 .1em}
+header .kicker{font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--acc2);font-size:14px}
+header p{margin:.3em 0 0;color:var(--mut)}
+.name{display:flex;gap:10px;align-items:center;margin:14px 0 4px;flex-wrap:wrap}
+.name input{font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);min-width:200px}
+nav.steps{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 14px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+nav.steps button{font:inherit;font-weight:600;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer}
+nav.steps button[aria-selected="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav.steps button[aria-selected="true"]{color:#111}}
+.tabpanel{display:none}.tabpanel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+h2{font-family:var(--serif);font-size:26px;margin:0 0 .3em}
+h3{font-size:19px;margin:.2em 0 .4em}
+.auftrag{background:var(--gelb);border-radius:10px;padding:12px 16px;margin:0 0 14px}
+.auftrag b.nr{color:var(--acc2)}
+.mut{color:var(--mut)}
+ul.fragen{margin:.3em 0;padding-left:1.2em}
+.zeit{float:right;font-size:14px;color:var(--mut);font-weight:600}
+/* Zuordnen */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:flex;flex-direction:column;gap:8px}
+.match button{font:inherit;text-align:left;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;min-height:44px}
+.match button.sel{outline:3px solid var(--acc);outline-offset:-1px}
+.match button.done{background:var(--okbg);border-color:var(--ok);color:var(--ok);cursor:default}
+.match button.wrong{background:var(--badbg);border-color:var(--bad)}
+.match .fr{font-style:italic}
+.stand{font-weight:600;margin-top:10px}
+/* Lückentext */
+.tafel{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 20px;
+  font-family:"Kalam","Segoe Print","Bradley Hand",cursive;font-size:21px;line-height:1.9}
+.tafel h3{color:var(--acc);font-family:inherit;font-size:25px;margin:0 0 .3em}
+.tafel .luecke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--acc2);margin:0 .15em;text-align:center;color:var(--acc2)}
+.tafel .hilfe{color:var(--mut);font-family:var(--sans);font-size:15px;line-height:1.4}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.bank span{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-style:italic}
+.codezeile{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px}
+.codezeile input{font:inherit;width:110px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);letter-spacing:.2em}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.redemittel{margin:.4em 0 0;padding-left:1.2em}
+.redemittel li{margin:.2em 0;font-style:italic}
+.lt{font-family:var(--serif);font-size:19px;line-height:2}
+.lt select{font:inherit;font-family:var(--sans);font-size:17px;padding:2px 4px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.lt select.ok{border-color:var(--ok);background:var(--okbg)}
+.lt select.no{border-color:var(--bad);background:var(--badbg)}
+.hilfe{font-size:15px;color:var(--mut);margin-top:6px}
+.btn{font:inherit;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:#fff;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#111}}
+.btn.ghost{background:transparent;color:var(--acc)}
+/* Preise */
+.preise{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.preis{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.preis h3{margin-top:0}
+.preis label{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:6px 0}
+.preis input{font:inherit;width:90px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.preis .loes{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--chip);font-size:16px}
+.preis.offen .loes{display:block}
+.preis textarea{display:none}
+.preis.offen textarea{display:block}
+textarea{font:inherit;width:100%;min-height:64px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-top:8px}
+@media (max-width:760px){.preise{grid-template-columns:1fr}.match{gap:6px}}
+/* Vermutung */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chips label{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;user-select:none}
+.chips input{margin-right:6px}
+.ergebnis{border:2px solid var(--acc);border-radius:12px;padding:16px 18px;background:var(--card)}
+.ergebnis h3{color:var(--acc);margin-top:0}
+.ergebnis dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+.ergebnis dt{font-weight:600}
+.ergebnis dd{margin:0}
+.vok{columns:2;column-gap:24px;font-size:16px;margin:8px 0 0;padding-left:1.1em}
+@media (max-width:600px){.vok{columns:1}}
+.weiter{margin-top:6px;display:flex;justify-content:flex-end}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Politik 8f · Markt und Preisbildung · Stunde 1</div>
+  <h1>Märkte überall · <span style="font-style:italic;color:var(--acc)">Des marchés partout</span></h1>
+  <p>Wo wird gekauft und verkauft, und wer bestimmt eigentlich den Preis?</p>
+</header>
+
+<nav class="steps" role="tablist">
+  <button role="tab" data-t="1" aria-selected="true">1 · Bilder</button>
+  <button role="tab" data-t="2" aria-selected="false">2 · Wortschatz</button>
+  <button role="tab" data-t="3" aria-selected="false">3 · Au marché de Noël</button>
+  <button role="tab" data-t="4" aria-selected="false">4 · Preise schätzen</button>
+  <button role="tab" data-t="5" aria-selected="false">5 · Meine Vermutung</button>
+</nav>
+
+<!-- 1 -->
+<section class="tabpanel on" id="t1">
+  <div class="auftrag"><span class="zeit">ca. 8 min</span><b class="nr">Aufgabe 1</b> · Schaut euch die Fotos auf der OneNote-Seite <b>„1. Märkte überall – des marchés partout“</b> an. Besprecht zu zweit:</div>
+  <div class="card">
+    <ul class="fragen">
+      <li>Was wird hier <b>gehandelt</b>, also gekauft und verkauft?</li>
+      <li>Wer <b>verkauft</b>? Wer <b>kauft</b>?</li>
+      <li>Ist das für euch ein <b>Markt</b>? Begründet kurz.</li>
+      <li>Was haben alle Fotos gemeinsam?</li>
+    </ul>
+    <p class="mut" style="margin-bottom:0">Notiert eure Antwort auf die letzte Frage in einem Satz in OneNote.</p>
+  </div>
+  <div class="weiter"><button class="btn" data-go="2">Weiter zu Aufgabe 2 →</button></div>
+</section>
+
+<!-- 2 -->
+<section class="tabpanel" id="t2">
+  <div class="auftrag"><span class="zeit">ca. 8 min</span><b class="nr">Aufgabe 2</b> · Ordne zu: Tippe zuerst auf ein französisches Wort, dann auf die deutsche Bedeutung.</div>
+  <div class="card">
+    <div class="match"><div class="col" id="colFr"></div><div class="col" id="colDe"></div></div>
+    <div class="stand" id="matchStand"></div>
+  </div>
+  <div class="weiter"><button class="btn" data-go="3">Weiter zu Aufgabe 3 →</button></div>
+</section>
+
+<!-- 3 -->
+<section class="tabpanel" id="t3">
+  <div class="auftrag"><span class="zeit">ca. 8 min</span><b class="nr">Aufgabe 3</b> · Léa und Tom sind auf dem Weihnachtsmarkt in Straßburg. Schreibt den Text in OneNote ab und füllt dabei die Lücken mit den passenden Wörtern. Nicht alle Wörter werden gebraucht.</div>
+  <div class="bank">
+    <span>acheter</span><span>la demande</span><span>bon marché</span><span>le prix</span><span>vendre</span><span>les stands</span><span>l’offre</span><span>cher</span><span>le client</span><span>paie</span><span>la vendeuse</span><span>le marché</span>
+  </div>
+  <div class="tafel">
+    <h3>Au marché de Noël de Strasbourg</h3>
+    Léa et Tom visitent le <span class="luecke">(1)</span> de Noël de Strasbourg. Il y a environ 300 <span class="luecke">(2)</span>.
+    Une <span class="luecke">(3)</span> propose des bredele. Tom veut <span class="luecke">(4)</span> un chocolat chaud.
+    Mais le <span class="luecke">(5)</span> est élevé : 4 euros ! « C’est <span class="luecke">(6)</span> ! », dit Tom.
+    Léa explique : « Ici, la <span class="luecke">(7)</span> est très forte : il y a des milliers de touristes. »
+    Finalement, Tom <span class="luecke">(8)</span> avec sa carte.
+    <p class="hilfe" style="margin:.6em 0 0">bredele = kleine Weihnachtsplätzchen aus dem Elsass · un chocolat chaud = ein heißer Kakao · élevé = hoch · des milliers de = Tausende · finalement = schließlich</p>
+  </div>
+  <div class="weiter" style="margin-top:14px"><button class="btn" data-go="4">Weiter zu Aufgabe 4 →</button></div>
+</section>
+
+<!-- 4 -->
+<section class="tabpanel" id="t4">
+  <div class="auftrag"><span class="zeit">ca. 8 min</span><b class="nr">Aufgabe 4</b> · Dasselbe Produkt, ganz unterschiedliche Preise. Schätzt zuerst beide Preise und tragt sie ein. Eure Lehrkraft gibt euch dann den Code zum Aufdecken. Beantwortet anschließend die Frage in OneNote auf Französisch.</div>
+  <div class="codezeile"><label for="code"><b>Code :</b></label><input id="code" inputmode="numeric" maxlength="4" autocomplete="off"><button class="btn ghost" id="codeBtn" type="button">OK</button><span id="codeMsg" class="mut"></span></div>
+  <div class="preise" id="preise"></div>
+  <div class="card" style="margin-top:14px">
+    <h3>Pourquoi le prix est-il si différent ? Choisis un exemple et explique.</h3>
+    <ul class="redemittel">
+      <li>Au marché de Noël / au festival, le prix est plus élevé parce que …</li>
+      <li>En décembre, il y a moins de fraises, alors …</li>
+      <li>Il y a beaucoup de clients / de touristes, donc …</li>
+      <li>Les gens n’ont pas le choix, alors …</li>
+    </ul>
+  </div>
+  <p class="mut" style="font-size:15px">Les prix sont des valeurs approximatives (ungefähre Richtwerte).</p>
+  <div class="weiter"><button class="btn" data-go="5">Weiter zu Aufgabe 5 →</button></div>
+</section>
+
+<!-- 5 -->
+<section class="tabpanel" id="t5">
+  <div class="auftrag"><span class="zeit">ca. 8 min</span><b class="nr">Aufgabe 5</b> · Stellt eine eigene Vermutung auf, wer oder was den Preis bestimmt. Schreibt sie in 2–3 Sätzen auf Französisch in OneNote. In der nächsten Stunde überprüfen wir eure Vermutungen in einem Marktspiel.</div>
+  <div class="card">
+    <h3>Qui ou qu’est-ce qui détermine le prix ?</h3>
+    <p style="margin:.2em 0">Ces facteurs peuvent jouer un rôle :</p>
+    <div class="bank">
+      <span>le vendeur</span><span>les coûts de production</span><span>la demande : combien de personnes veulent acheter</span><span>l’offre : la quantité de produits</span><span>le lieu</span><span>la saison</span><span>la concurrence</span><span>l’État</span>
+    </div>
+    <h3 style="margin-top:12px">Expressions utiles</h3>
+    <ul class="redemittel">
+      <li>À mon avis, le prix dépend surtout de …</li>
+      <li>Je pense que … joue un rôle important parce que …</li>
+      <li>Si beaucoup de gens veulent acheter un produit, le prix …</li>
+      <li>Quand il y a peu de produits, le prix …</li>
+      <li>Le prix augmente (steigt) / baisse (sinkt) quand …</li>
+      <li>Par exemple, …</li>
+    </ul>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+  var P='markt8f_s1_';
+  function $(id){return document.getElementById(id);}
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+  /* Tabs */
+  var tabs=[].slice.call(document.querySelectorAll('nav.steps button'));
+  function show(n){tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.t==n?'true':'false');});
+    [].forEach.call(document.querySelectorAll('.tabpanel'),function(p){p.classList.toggle('on',p.id==='t'+n);});
+    ls(P+'tab',n); window.scrollTo(0,0);}
+  tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.t);});});
+  [].forEach.call(document.querySelectorAll('[data-go]'),function(b){b.addEventListener('click',function(){show(b.dataset.go);});});
+
+  /* 2 Zuordnen */
+  var paare=[
+    ['le marché','der Markt'],['le vendeur / la vendeuse','der Verkäufer / die Verkäuferin'],
+    ['le client / la cliente','der Kunde / die Kundin'],['le prix','der Preis'],
+    ['cher / chère','teuer'],['bon marché / pas cher','billig, günstig'],
+    ['acheter','kaufen'],['vendre','verkaufen'],['payer','bezahlen'],
+    ['la marchandise','die Ware'],['l’offre (f.)','das Angebot'],['la demande','die Nachfrage']
+  ];
+  var done=0, versuche=0, selFr=null;
+  function mk(txt,i,fr){var b=document.createElement('button');b.type='button';b.textContent=txt;b.dataset.i=i;if(fr)b.className='fr';return b;}
+  var cf=$('colFr'), cd=$('colDe');
+  shuffle(paare.map(function(p,i){return i;})).forEach(function(i){cf.appendChild(mk(paare[i][0],i,true));});
+  shuffle(paare.map(function(p,i){return i;})).forEach(function(i){cd.appendChild(mk(paare[i][1],i,false));});
+  function stand(){$('matchStand').textContent=done+' von '+paare.length+' richtig zugeordnet'+(done===paare.length?' · Bravo ! 🎉':'');}
+  cf.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.classList.contains('done'))return;
+    [].forEach.call(cf.children,function(x){x.classList.remove('sel');});b.classList.add('sel');selFr=b;});
+  cd.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.classList.contains('done')||!selFr)return;
+    versuche++;
+    if(b.dataset.i===selFr.dataset.i){b.classList.add('done');selFr.classList.remove('sel');selFr.classList.add('done');selFr=null;done++;}
+    else{b.classList.add('wrong');setTimeout(function(){b.classList.remove('wrong');},600);}
+    stand();});
+  stand();
+
+  /* 4 Preise (Aufdecken nur mit Code) */
+  var ENC=["fHdDju94NwhLGRbs9P/9gZmMytPJ5uvp99fX1RWCry1xbiFMWhhWKDk3P6bOUBfko8LgXjTEi4Oboamj+cDXE3Nvyi3tmrcJAx8XJig+IAgEAgpdD+f+67vIxpXDobCitvU=","fHdDKCF4MRwCGle/p/X9142MnV8/W/j5OWZLyZVyPXR9PHvuhlteJCkmMkVdUBbv9aKvqX0oOI+bJkV5","fHdDLDp4KBwbEQXo5uLwyWAFj4efraWv9cTX2cQw4ZGALDMbHxjZy+doNRdZs9Oh9uKv+/rb39DNpav1+MCChNOPi2xrfTsTC1FZM2lwYIPj/1tdnQon"];
+  function dec(b64,code){try{var bin=atob(b64),k=[],out=new Uint8Array(bin.length);for(var j=0;j<code.length;j++)k.push(code.charCodeAt(j));
+    for(var i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i)^((k[i%k.length]+i*7)&255);
+    var t=new TextDecoder().decode(out);return t.indexOf('OK|')===0?t.slice(3):null;}catch(e){return null;}}
+  var preise=[
+    {t:'Un chocolat chaud',a:'à la maison (une tasse, poudre du supermarché)',b:'au marché de Noël'},
+    {t:'Des fraises (500 g)',a:'en juin (de la région)',b:'en décembre (importées)'},
+    {t:'Une bouteille d’eau (0,5 l)',a:'au supermarché',b:'à un festival ou au stade'}
+  ];
+  var pr=$('preise'), knoepfe=[];
+  preise.forEach(function(p,i){var d=document.createElement('div');d.className='preis';
+    d.innerHTML='<h3>'+p.t+'</h3><label>'+p.a+'<input inputmode="decimal" placeholder="€"></label><label>'+p.b+'<input inputmode="decimal" placeholder="€"></label>'+
+      '<button class="btn ghost" type="button" disabled>Voir les prix</button><div class="loes"></div>';
+    var btn=d.querySelector('button');knoepfe.push({btn:btn,box:d,i:i});
+    pr.appendChild(d);});
+  var codeOk=null;
+  function pruefen(c){if(dec(ENC[0],c)===null)return false;codeOk=c;
+    knoepfe.forEach(function(k){k.btn.disabled=false;k.btn.onclick=function(){k.box.querySelector('.loes').innerHTML='<b>Valeur approximative :</b><br>'+dec(ENC[k.i],codeOk);k.box.classList.add('offen');};});
+    $('codeMsg').textContent='✓ Ihr könnt jetzt aufdecken.';return true;}
+  $('codeBtn').addEventListener('click',function(){var c=$('code').value.trim();
+    if(!pruefen(c)){$('codeMsg').textContent='Falscher Code.';}});
+  $('code').addEventListener('keydown',function(e){if(e.key==='Enter')$('codeBtn').click();});
+
+  var t=ls(P+'tab');if(t&&t!=='1')show(t);
+})();
+</script>
+</body>
+</html>
