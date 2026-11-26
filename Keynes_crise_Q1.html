@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keynes et la crise</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Cabin+Sketch:wght@400;700&family=Architects+Daughter&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Gleiche Optik wie die Say-Seite (Petrol/Oliv). Oben vier Reiter: drei Planches + Synthese. */
+:root{
+  --bg:#eef1ef; --surface:#ffffff; --ink:#1b2b2a; --muted:#56645f; --rule:#d0d8d4; --tint:#f4f6f4;
+  --petrol:#21403f; --olive:#6b7537; --olive-soft:#e8ebd9; --on-petrol:#f2f5ef; --bad:#b4441f; --bad-soft:#f7e4dc;
+  --display:"Zilla Slab",Rockwell,Georgia,serif;
+  --body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --chalk:"Cabin Sketch","Chalkboard SE","Marker Felt","Comic Sans MS",sans-serif;
+  --hand:"Architects Daughter","Chalkboard SE","Marker Felt","Comic Sans MS",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121a19; --surface:#1a2524; --ink:#e3ebe7; --muted:#9db0aa; --rule:#2e3d3b; --tint:#20302e;
+    --petrol:#21403f; --olive:#a9b46a; --olive-soft:#2b3220; --on-petrol:#f2f5ef; --bad:#e58a63; --bad-soft:#3a2219; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121a19; --surface:#1a2524; --ink:#e3ebe7; --muted:#9db0aa; --rule:#2e3d3b; --tint:#20302e;
+  --petrol:#21403f; --olive:#a9b46a; --olive-soft:#2b3220; --on-petrol:#f2f5ef; --bad:#e58a63; --bad-soft:#3a2219; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.05rem;line-height:1.55}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--olive);outline-offset:2px}
+.hero{background:var(--petrol);color:var(--on-petrol);margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 2.2rem);padding-bottom:1.8rem}
+.in{max-width:54rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin:0 0 .6rem}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.08;margin:0;text-wrap:balance}
+.who{margin:.7rem 0 0;opacity:.85}
+.start{margin:1.1rem 0 0;border-left:3px solid var(--on-petrol);padding:.2rem 0 .2rem .8rem;max-width:42rem}
+.start b{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+
+/* Reiter */
+.tabwrap{position:sticky;top:0;z-index:5;background:var(--bg);padding-top:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+nav.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--petrol);background:var(--surface)}
+nav.tabs button{border:0;border-right:1px solid var(--rule);background:transparent;text-align:left;padding:.55rem .75rem .6rem;cursor:pointer;min-width:0}
+nav.tabs button:last-child{border-right:0}
+nav.tabs .n{display:block;font-family:var(--display);font-size:1.35rem;line-height:1;color:var(--olive);font-weight:700}
+nav.tabs .t{display:block;font-weight:600;font-size:.9rem;line-height:1.2;margin-top:.15rem}
+nav.tabs button[aria-selected="true"]{background:var(--petrol);color:var(--on-petrol)}
+nav.tabs button[aria-selected="true"] .n{color:var(--on-petrol)}
+@media (max-width:40rem){nav.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}nav.tabs button:nth-child(2){border-right:0}nav.tabs button:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+
+main.in{padding-block:1.3rem 3rem}
+.panel{display:flex;flex-direction:column;gap:1.1rem}
+.panel[hidden]{display:none}
+section{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:1.1rem 1.2rem}
+h2{font-family:var(--display);font-weight:700;font-size:1.55rem;margin:0 0 .3rem;line-height:1.2}
+h2 .n{font-family:var(--body);font-size:.8rem;font-weight:700;color:var(--olive);letter-spacing:.08em;display:block;text-transform:uppercase}
+h3{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .2rem}
+p{margin:.3rem 0 .7rem}
+.consigne{background:var(--olive-soft);border-left:4px solid var(--olive);padding:.6rem .8rem;border-radius:0 3px 3px 0;margin:.6rem 0 0}
+.de{font-size:.9rem;color:var(--muted)}
+.de b{font-size:.66rem;letter-spacing:.08em;border:1px solid var(--rule);padding:0 .25rem;margin-right:.3rem;font-weight:600}
+.note{font-size:.9rem;color:var(--muted)}
+
+/* Hilfen als Aufklapper */
+details.aide{background:var(--surface);border:1px solid var(--rule);border-radius:4px}
+details.aide>summary{list-style:none;cursor:pointer;padding:.8rem 1.1rem;display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
+details.aide>summary::-webkit-details-marker{display:none}
+details.aide>summary::before{content:"+";font-weight:700;color:var(--olive);width:1rem;flex:none}
+details.aide[open]>summary::before{content:"–"}
+details.aide>summary .k{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--olive)}
+details.aide>summary .t{font-family:var(--display);font-weight:700;font-size:1.2rem}
+details.aide>summary .s{font-size:.88rem;color:var(--muted);margin-left:auto}
+details.aide .body{padding:0 1.1rem 1.1rem;border-top:1px solid var(--rule)}
+details.aide .body>p:first-child{margin-top:.8rem}
+
+/* Vokabeln */
+.voc{display:grid;grid-template-columns:repeat(auto-fill,minmax(14.5rem,1fr));gap:.45rem;margin-top:.6rem}
+.voc button{background:var(--tint);border:0;border-radius:3px;padding:.45rem .7rem;text-align:left;cursor:default}
+.voc b{display:block;font-family:var(--display);font-weight:700;font-size:1.05rem;line-height:1.25}
+.voc span{font-size:.9rem;color:var(--muted)}
+.voc.quiz button{cursor:pointer}
+.voc.quiz button:not(.show) span{visibility:hidden}
+
+/* Fragentreppe */
+ol.qs{list-style:none;padding:0;margin:.6rem 0 0;counter-reset:q}
+ol.qs>li{counter-increment:q;border-top:1px solid var(--rule);padding:.7rem 0 .7rem 2.2rem;position:relative}
+ol.qs>li::before{content:counter(q);position:absolute;left:0;top:.65rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--petrol);color:var(--on-petrol);font-weight:700;font-size:.9rem;display:grid;place-items:center}
+ol.qs .q{font-weight:600;margin:0 0 .4rem}
+.hint{margin:.35rem 0 0;padding:.35rem .6rem;background:var(--tint);border-radius:3px;font-size:.95rem}
+.hint b{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);margin-right:.4rem}
+.hint.h3{font-style:italic}
+.hbtn{border:1px solid var(--olive);background:transparent;color:var(--ink);padding:.2rem .7rem;border-radius:99px;cursor:pointer;font-size:.88rem;font-weight:600;margin-top:.1rem}
+
+/* Kette ordnen */
+.pool,.chain{display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem}
+.pool{flex-direction:row;flex-wrap:wrap}
+.pool button{border:2px solid var(--petrol);background:var(--surface);border-radius:4px;padding:.45rem .7rem;font-weight:600;text-align:left;cursor:pointer;max-width:100%}
+:root[data-theme="dark"] .pool button{border-color:var(--olive)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pool button{border-color:var(--olive)}}
+.chainbox{border:1px dashed var(--muted);border-radius:4px;padding:.6rem;margin-top:.7rem;min-height:3rem}
+.chainbox .ph{color:var(--muted);font-size:.92rem;font-style:italic}
+.chain button{display:flex;gap:.6rem;align-items:baseline;width:100%;border:1px solid var(--rule);background:var(--tint);border-radius:4px;padding:.45rem .7rem;text-align:left;font-weight:600;cursor:pointer}
+.chain button .i{color:var(--olive);font-weight:700;flex:none}
+.chain button.ok{border-color:var(--olive);box-shadow:inset 4px 0 var(--olive)}
+.chain button.no{border-color:var(--bad);box-shadow:inset 4px 0 var(--bad);background:var(--bad-soft)}
+.chain .arr{align-self:flex-start;margin-left:1.2rem;color:var(--muted);line-height:1}
+.loop{margin-top:.4rem;font-weight:600;color:var(--olive)}
+
+/* Redemittel */
+.red{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.red span{background:var(--tint);border-radius:3px;padding:.2rem .55rem;font-size:.95rem}
+.red span i{color:var(--muted);font-size:.85rem;font-style:normal}
+ul.frames{margin:.4rem 0 0;padding-left:1.2rem}
+ul.frames li{margin:.2rem 0}
+
+.row[hidden]{display:none}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.8rem}
+.btn{border:1px solid var(--petrol);background:var(--petrol);color:var(--on-petrol);padding:.45rem .9rem;border-radius:3px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.next{align-self:flex-end}
+textarea.cp{width:100%;margin-top:.5rem;border:1px solid var(--rule);background:var(--surface);color:var(--ink)}
+.fb{font-size:.95rem;font-weight:600}
+.fb.good{color:var(--olive)} .fb.badc{color:var(--bad)}
+
+/* Lösungen */
+.lock input{width:7rem;border:1px solid var(--rule);background:var(--surface);padding:.4rem .6rem;border-radius:3px;letter-spacing:.2em}
+.msg{color:var(--bad);font-size:.9rem}
+.model{border:2px solid var(--petrol);border-radius:6px;padding:.8rem 1rem;margin-top:.6rem}
+:root[data-theme="dark"] .model{border-color:var(--olive)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .model{border-color:var(--olive)}}
+.model p{margin:.25rem 0 .55rem}
+.model .so{color:var(--olive);font-weight:700}
+
+/* Synthese: Karten, Zuordnung, Tafelbild */
+.cards{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+.card{border:2px solid var(--petrol);background:var(--surface);border-radius:4px;padding:.4rem .7rem;font-weight:600}
+.card.c{border-style:dashed;font-style:italic}
+:root[data-theme="dark"] .card{border-color:var(--olive)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .card{border-color:var(--olive)}}
+.sort{margin-top:.5rem}
+.sr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:center;padding:.5rem 0;border-top:1px solid var(--rule)}
+.sr .seg{display:flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.sr .seg button{border:0;background:var(--surface);padding:.35rem .7rem;cursor:pointer;font-weight:600;font-size:.92rem}
+.sr .seg button+button{border-left:1px solid var(--rule)}
+.sr .seg button[aria-pressed="true"]{background:var(--petrol);color:var(--on-petrol)}
+.sr.ok{box-shadow:inset 4px 0 var(--olive);padding-left:.7rem}
+.sr.no{box-shadow:inset 4px 0 var(--bad);padding-left:.7rem}
+.sr .ex{grid-column:1/-1;font-size:.88rem;color:var(--muted)}
+@media (max-width:36rem){.sr{grid-template-columns:1fr}}
+.svgbox{overflow-x:auto;margin-top:.6rem}
+.svgbox svg{display:block;width:100%;min-width:36rem;height:auto}
+svg .box{fill:var(--surface);stroke:var(--petrol);stroke-width:2}
+svg text{fill:var(--ink);font-family:var(--hand);font-size:15px}
+svg text.t{font-family:var(--chalk);font-weight:700;font-size:17px}
+svg text.ctr{font-family:var(--chalk);font-weight:700;font-size:22px;fill:var(--olive)}
+svg .ln{stroke:var(--muted);stroke-width:2.2;fill:none}
+svg .head{fill:var(--muted)}
+svg .burst{stroke:var(--olive);stroke-width:2;stroke-linecap:round}
+:root[data-theme="dark"] svg .box{stroke:var(--olive)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) svg .box{stroke:var(--olive)}}
+.concl{margin:1rem 0 0;border:2px solid var(--petrol);border-radius:6px;padding:.8rem 1rem;font-family:var(--hand);font-size:1.05rem;line-height:1.6}
+.concl h3{font-family:var(--chalk);font-size:1.4rem;letter-spacing:0;text-transform:none;color:var(--ink);margin:0 0 .3rem}
+.concl p{margin:.15rem 0}
+.concl .so{color:var(--olive);font-weight:700}
+.concl u{text-decoration-color:var(--olive);text-decoration-thickness:2px;text-underline-offset:3px}
+:root[data-theme="dark"] .concl{border-color:var(--olive)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .concl{border-color:var(--olive)}}
+.tw{overflow-x:auto;margin-top:.8rem}
+table.cmp{border-collapse:collapse;width:100%;min-width:32rem;font-size:.97rem}
+table.cmp th,table.cmp td{border:1px solid var(--rule);padding:.45rem .6rem;text-align:left;vertical-align:top}
+table.cmp thead th{background:var(--petrol);color:var(--on-petrol);font-family:var(--display);font-size:1.05rem}
+table.cmp tbody th{background:var(--tint);font-weight:600;width:22%}
+footer{font-size:.82rem;color:var(--muted);margin-top:1.6rem}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="in">
+  <p class="eyebrow">Sciences sociales bilingues · Q1 · Le rôle de l'État dans l'économie</p>
+  <h1>Comment sortir d'une crise économique ?</h1>
+  <p class="who">John Maynard Keynes (1883–1946) contre les économistes classiques</p>
+  <p class="start"><b>Pour commencer</b>À la fin de la dernière séance, nous avons posé cette question : que se passe-t-il si les ménages épargnent, mais que les entreprises n'investissent pas ?</p>
+</div></header>
+
+<div class="tabwrap"><div class="in">
+  <nav class="tabs" role="tablist" aria-label="Planches">
+    <button role="tab" id="tab-p1" aria-controls="p1" aria-selected="true"><span class="n">01</span><span class="t">Les classiques : attendre ?</span></button>
+    <button role="tab" id="tab-p2" aria-controls="p2" aria-selected="false" tabindex="-1"><span class="n">02</span><span class="t">La critique de Keynes</span></button>
+    <button role="tab" id="tab-p3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="n">03</span><span class="t">Que se passe-t-il en réalité ?</span></button>
+    <button role="tab" id="tab-syn" aria-controls="syn" aria-selected="false" tabindex="-1"><span class="n">✱</span><span class="t">Synthèse</span></button>
+  </nav>
+</div></div>
+
+<main class="in">
+  <div class="panel" id="p1" role="tabpanel" aria-labelledby="tab-p1"></div>
+  <div class="panel" id="p2" role="tabpanel" aria-labelledby="tab-p2" hidden></div>
+  <div class="panel" id="p3" role="tabpanel" aria-labelledby="tab-p3" hidden></div>
+
+  <div class="panel" id="syn" role="tabpanel" aria-labelledby="tab-syn" hidden>
+    <section>
+      <h2><span class="n">Synthèse · étape 1</span>Construisez la spirale dépressive</h2>
+      <p>Avec les planches 02 et 03, Keynes montre qu'une crise peut s'aggraver toute seule. Voici les cartes pour le schéma.</p>
+      <div class="cards" id="spCards">
+        <span class="card">La demande baisse</span>
+        <span class="card">Réduction de la production</span>
+        <span class="card">Les entreprises licencient et les salaires baissent</span>
+        <span class="card">Le revenu des ménages diminue</span>
+        <span class="card">La consommation baisse</span>
+        <span class="card c">une spirale dépressive</span>
+      </div>
+      <div class="consigne">Dans OneNote : disposez les cinq cartes en cercle et reliez-les par des flèches. Écrivez « une spirale dépressive » au centre.<br>Puis expliquez en deux ou trois phrases pourquoi on parle d'une <i>spirale</i>.</div>
+      <p class="de"><b>DE</b>Tipp: Fang mit „La demande baisse“ an. Was machen die Unternehmen, wenn sie weniger verkaufen?</p>
+      <div class="row"><button class="btn ghost" type="button" id="spCopy">Copier les cartes</button><span class="note" id="spMsg"></span></div>
+    </section>
+
+    <section>
+      <h2><span class="n">Synthèse · étape 2</span>Classiques ou Keynes ?</h2>
+      <p>Qui dit quoi ? Choisissez pour chaque phrase, puis vérifiez.</p>
+      <div class="sort" id="sort"></div>
+      <div class="row"><button class="btn" type="button" id="sortCheck">Vérifier</button><button class="btn ghost" type="button" id="sortReset">Recommencer</button><span class="note" id="sortScore"></span></div>
+      <div class="consigne">Dans OneNote : répondez à la question de la séance en cinq ou six phrases. <b>Comment sortir d'une crise économique ?</b> Donnez d'abord la réponse des classiques, puis celle de Keynes.<br>Utilisez : <i>Selon les classiques, … / Keynes objecte que … / Contrairement aux classiques, … / C'est pourquoi …</i></div>
+    </section>
+
+    <section>
+      <h2><span class="n">Synthèse · étape 3</span>Comparez avec le tableau</h2>
+      <div id="synSol">
+        <form class="lock row" data-code="5893" data-tpl="synTpl"><span>Code de l'enseignant :</span><input type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="Code"><button class="btn" type="submit">Afficher</button><span class="msg"></span></form>
+      </div>
+    </section>
+  </div>
+
+  <footer>BD : Michael Goodwin (texte) et Dan E. Burr (dessin), <i>Economix</i>, chapitre « Tout s'écroule (1914–1945) ». Keynes : <i>Théorie générale de l'emploi, de l'intérêt et de la monnaie</i>, 1936. « À long terme, nous sommes tous morts » : Keynes, <i>La Réforme monétaire</i>, 1923.</footer>
+</main>
+
+<template id="synTpl">
+  <div class="svgbox">
+  <svg viewBox="0 0 720 430" role="img" aria-label="La spirale dépressive : la demande baisse, réduction de la production, les entreprises licencient et les salaires baissent, le revenu des ménages diminue, la consommation baisse, et la demande baisse encore">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+    <rect class="box" x="30" y="40" width="190" height="62" rx="4"/><text class="t" x="125" y="67" text-anchor="middle">La demande</text><text x="125" y="89" text-anchor="middle">baisse / diminue</text>
+    <rect class="box" x="290" y="20" width="200" height="62" rx="4"/><text class="t" x="390" y="47" text-anchor="middle">Réduction</text><text x="390" y="69" text-anchor="middle">de la production</text>
+    <rect class="box" x="480" y="150" width="225" height="62" rx="4"/><text class="t" x="592" y="177" text-anchor="middle">Les entreprises licencient</text><text x="592" y="199" text-anchor="middle">et les salaires baissent</text>
+    <rect class="box" x="400" y="325" width="230" height="62" rx="4"/><text class="t" x="515" y="352" text-anchor="middle">Le revenu des ménages</text><text x="515" y="374" text-anchor="middle">diminue</text>
+    <rect class="box" x="60" y="310" width="200" height="62" rx="4"/><text class="t" x="160" y="337" text-anchor="middle">La consommation</text><text x="160" y="359" text-anchor="middle">baisse / diminue</text>
+    <path class="ln" d="M220,62 Q255,40 288,48" marker-end="url(#ah)"/>
+    <path class="ln" d="M470,82 Q540,105 560,148" marker-end="url(#ah)"/>
+    <path class="ln" d="M600,212 Q600,280 560,323" marker-end="url(#ah)"/>
+    <path class="ln" d="M400,356 Q330,370 262,345" marker-end="url(#ah)"/>
+    <path class="ln" d="M120,310 Q90,220 115,104" marker-end="url(#ah)"/>
+    <text class="ctr" x="345" y="205" text-anchor="middle">une spirale</text>
+    <text class="ctr" x="345" y="232" text-anchor="middle">dépressive</text>
+    <g class="burst"><path d="M345,155 v14"/><path d="M345,255 v14"/><path d="M245,212 h14"/><path d="M431,212 h14"/><path d="M275,165 l10,10"/><path d="M415,165 l-10,10"/><path d="M275,262 l10,-10"/><path d="M415,262 l-10,-10"/></g>
+  </svg>
+  </div>
+  <div class="concl">
+    <h3>La critique de John M. Keynes aux économistes classiques</h3>
+    <p>Pour Keynes, il n'y a pas de mécanisme équilibrant sur le marché.</p>
+    <p><u>Les mauvaises anticipations des entreprises et des ménages</u> engendrent ce que personne n'a voulu : le recul de la demande.</p>
+    <p><span class="so">↳</span> un phénomène de <u>prophétie auto-réalisatrice</u>.</p>
+    <p><span class="so">⇒</span> Contrairement à Say, l'offre ne crée pas automatiquement sa propre demande.</p>
+  </div>
+  <div class="tw"><table class="cmp">
+    <thead><tr><th scope="col"></th><th scope="col">Les économistes classiques</th><th scope="col">Keynes</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">L'épargne</th><td>L'argent qui n'est pas dépensé est épargné et prêté aux entreprises.</td><td>Quand la dépense chute, les revenus chutent aussi : on ne peut pas épargner plus.</td></tr>
+      <tr><th scope="row">Le taux d'intérêt</th><td>Il baisse et relance l'investissement.</td><td>Même bas, il ne suffit pas : on n'investit pas si personne n'achète.</td></tr>
+      <tr><th scope="row">Les acteurs</th><td>Ils calculent de façon rationnelle.</td><td>Ce sont des hommes, pas des machines à calculer : ils agissent selon leur confiance et leurs anticipations.</td></tr>
+      <tr><th scope="row">Le marché</th><td>Il s'autorégule : la crise s'arrête toute seule.</td><td>Pas de mécanisme équilibrant : la crise peut s'aggraver (spirale dépressive).</td></tr>
+      <tr><th scope="row">Que faire en cas de crise ?</th><td>Rien : attendre (laisser-faire).</td><td>Ne pas attendre : « À long terme, nous sommes tous morts. » L'État doit agir.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="model">
+    <p><b>Comment sortir d'une crise économique ?</b></p>
+    <p>Selon les classiques, il suffit d'attendre : l'épargne fait baisser le taux d'intérêt, les entreprises investissent davantage et l'économie se reprend toute seule.</p>
+    <p>Keynes objecte qu'attendre ne suffit pas. Quand la dépense chute, les revenus chutent aussi, et les gens inquiets gardent leur argent. La crise s'auto-entretient : c'est une spirale dépressive.</p>
+    <p><span class="so">⇒</span> Pour sortir de la crise, il faut briser la spirale et relancer la demande. Pour Keynes, c'est le rôle de l'État.</p>
+  </div>
+  <p class="consigne">« Mais la politique, c'est le gouvernement. » – « Exactement. »<br>Prochaine séance : comment l'État peut-il relancer la demande ? → la politique de la demande.</p>
+</template>
+
+<script>
+(function(){
+  const CONN=[["entraîner qc","zur Folge haben"],["provoquer qc","verursachen"],["conduire à qc","führen zu"],["avoir pour conséquence","zur Folge haben"],["par conséquent / donc","folglich / also"],["c'est pourquoi","deshalb"],["car / parce que","denn / weil"],["si …, alors …","wenn …, dann …"],["plus …, moins …","je mehr …, desto weniger …"],["or","nun aber"],["même si","selbst wenn"]];
+  const P={
+  p1:{
+    head:"Planche 01",
+    title:"La réponse des classiques",
+    lq:"Comment sortir d'une crise économique ? La réponse des économistes (néo)classiques.",
+    intro:"Répondez à cette question dans OneNote. Les quatre aides ci-dessous sont facultatives : prenez seulement celles dont vous avez besoin.",
+    voc:[["une récession","eine Rezession"],["la dépense, dépenser","die Ausgabe(n), ausgeben"],["Dépensons plus !","Lasst uns mehr ausgeben!"],["remédier à qc","etw. beheben, abhelfen"],["un demeuré","ein Dummkopf (abwertend)"],["se reprendre (toute seule)","sich (von selbst) erholen"],["épargner, épargné","sparen, gespart"],["les fonds empruntables","das Geld, das man leihen kann (Kreditangebot)"],["un emprunt, emprunter","ein Kredit, sich Geld leihen"],["le taux d'intérêt","der Zinssatz"],["rapporter 5 % par an","5 % Ertrag pro Jahr bringen"],["s'achever","enden"],["déconcerter qn","jdn. verwirren, verunsichern"],["Ça ne saurait tarder !","Das kann nicht mehr lange dauern!"]],
+    qs:[
+      {q:"Quelle est la grande idée de Keynes en cas de récession ? Et que répondent les classiques ?",h:["Première rangée, cases 1 à 3.","dépensons plus · rien · attendre · se reprendre toute seule","Keynes propose de … Les classiques, eux, pensent qu'il ne faut … et qu'il faut attendre que …"]},
+      {q:"Que devient l'argent qui n'est pas dépensé ?",h:["Deuxième rangée, la bulle de gauche.","épargné · l'offre de fonds empruntables · augmente","Selon les classiques, l'argent qui n'est pas dépensé est … Par conséquent, l'offre de …"]},
+      {q:"Pourquoi le taux d'intérêt baisse-t-il ?",h:["Deuxième rangée : la bulle du milieu et le graphique. La courbe de l'offre se déplace vers la droite.","une offre plus importante · le prix des emprunts · chute","Le taux d'intérêt est le … des emprunts. Quand l'offre de fonds empruntables augmente, …"]},
+      {q:"Pourquoi un taux d'intérêt bas entraîne-t-il plus d'investissement ? Expliquez l'exemple avec 5 %, 7 % et 3 %.",h:["Troisième rangée, la grande bulle de gauche.","rapporte 5 % · emprunter à 7 % / à 3 % · investir = une autre forme de dépense","Si un investissement rapporte 5 % et que l'on emprunte à 3 %, on gagne … C'est pourquoi les entreprises …"]},
+      {q:"Quelle théorie que vous connaissez déjà suit la même logique ?",h:["Pensez à la dernière séance.","la loi de Say · l'épargne devient investissement · le marché s'autorégule","Comme la loi de Say, ce raisonnement montre que …"]}
+    ],
+    chain:{items:["Récession : la dépense chute.","L'argent qui n'est pas dépensé est épargné.","L'offre de fonds empruntables augmente.","Le taux d'intérêt (le prix des emprunts) baisse.","Les entreprises empruntent et investissent davantage.","La dépense reprend : la récession s'achève."],mix:[3,0,5,2,4,1],end:"✓ La chaîne des classiques : l'économie se reprend toute seule. L'État ne fait rien."},
+    frames:["Selon les classiques, …","Les économistes classiques pensent que …","Quand la dépense chute, l'argent qui n'est pas dépensé …","Une offre plus importante entraîne …","Un taux d'intérêt bas conduit à …","C'est la même logique que la loi de Say : …"],
+    code:"4127",
+    sol:`<p>Keynes propose de dépenser plus pour sortir d'une récession. Pour les économistes classiques, c'est faux : il ne faut <b>rien faire</b> et attendre que l'économie se reprenne toute seule.</p>
+<p>Leur raisonnement : quand la dépense chute, l'argent qui n'est pas dépensé est épargné. Par conséquent, l'offre de fonds empruntables augmente et le taux d'intérêt, c'est-à-dire le prix des emprunts, baisse.</p>
+<p>Un taux d'intérêt bas entraîne plus d'investissement : si un investissement rapporte 5 % par an, une entreprise n'emprunte pas à 7 %, mais elle emprunte à 3 %. Or, investir est aussi une forme de dépense. Donc la dépense reprend et la récession s'achève.</p>
+<p><span class="so">⇒</span> C'est la logique de la loi de Say : l'épargne est toujours transformée en investissement grâce au taux d'intérêt. Le marché s'autorégule, l'État n'a pas besoin d'intervenir (laisser-faire).</p>
+<p><span class="so">⇒</span> Mais dans la dernière case, la dépression ne s'achève pas …</p>`
+  },
+  p2:{
+    head:"Planche 02",
+    title:"La critique de Keynes",
+    lq:"Quelle est la critique de Keynes aux économistes classiques ? Quel est le problème dans leur argumentation ?",
+    intro:"Répondez à cette question dans OneNote. Les aides sont facultatives.",
+    voc:[["désapprendre qc","etw. verlernen"],["la preuve","der Beweis"],["à peine rédigé","kaum ausformuliert"],["isoler une partie","einen Teil herauslösen, isolieren"],["le tableau","die Tafel"],["un graphique offre-demande","ein Angebot-Nachfrage-Diagramm"],["supposer que","annehmen, dass"],["les goûts","die Vorlieben"],["rester identique","gleich bleiben"],["le revenu","das Einkommen"],["chuter","fallen, stark sinken"],["Je ne peux rien épargner !","Ich kann nichts sparen!"],["agrandir l'usine","die Fabrik vergrößern"],["être sur le point de faire qc","kurz davor sein, etw. zu tun"]],
+    qs:[
+      {q:"Que reproche Keynes à la « preuve » des classiques ?",h:["Première rangée, la bulle de droite.","isoler une partie de l'économie · sur le tableau · pas dans le monde réel","Keynes reproche aux classiques d'isoler … sur le tableau. Mais dans le monde réel, …"]},
+      {q:"À quelle condition un graphique offre-demande fonctionne-t-il ?",h:["Deuxième rangée, la case de gauche.","supposer · tout ce qui n'est pas sur le graphique · les goûts, les revenus · reste identique","Un graphique offre-demande ne fonctionne que si l'on suppose que …"]},
+      {q:"Que se passe-t-il avec le revenu quand la dépense chute ? Pourquoi ?",h:["Deuxième rangée, cases 2 et 3. Regardez le vendeur de pommes.","la dépense d'une personne = le revenu d'une autre · le revenu chute aussi","Quand les gens achètent moins de pommes, le vendeur de pommes gagne … Donc, quand la dépense chute, …"]},
+      {q:"Pourquoi les gens ne peuvent-ils pas épargner plus ?",h:["Deuxième rangée, case 3 : « Je ne peux rien épargner ! »","moins de revenus · épargner plus ?","Avec moins de revenus, les gens ne peuvent pas … Les classiques se trompent donc : …"]},
+      {q:"Pourquoi les entreprises n'investissent-elles pas, même si les taux d'intérêt sont bas ?",h:["Troisième rangée.","qui investit quand personne ne dépense ? · agrandir l'usine · sur le point de la fermer","Même si les taux d'intérêt sont bas, une entreprise n'agrandit pas son usine si … Au contraire, elle …"]}
+    ],
+    chain:{items:["La dépense chute.","La dépense d'une personne est le revenu d'une autre : le revenu chute aussi.","Avec moins de revenus, les gens ne peuvent pas épargner plus.","Personne n'achète : même avec des taux bas, les entreprises n'investissent pas.","Les entreprises produisent moins et ferment des usines.","La dépense ne reprend pas : la crise continue."],mix:[4,2,0,5,1,3],end:"✓ La chaîne de Keynes : la baisse de la dépense ne mène pas à plus d'épargne, mais à moins de revenus."},
+    frames:["Keynes objecte que …","Keynes critique le fait que les classiques …","Contrairement aux classiques, Keynes pense que …","Dans le monde réel, la dépense d'une personne …","Or, avec moins de revenus, …","Même si les taux d'intérêt sont bas, …"],
+    code:"7350",
+    sol:`<p>Keynes critique la « preuve » des classiques. Selon lui, on peut isoler une partie de l'économie sur le tableau, mais pas dans le monde réel : un graphique offre-demande ne fonctionne que si l'on suppose que tout le reste, par exemple les goûts et les revenus, reste identique.</p>
+<p>Or, dans le monde réel, la dépense d'une personne est le revenu d'une autre personne. Quand les gens achètent moins de pommes, le vendeur de pommes gagne moins. Donc, quand la dépense chute, le revenu chute aussi. Avec moins de revenus, les gens ne peuvent pas épargner plus.</p>
+<p>De plus, les entreprises n'investissent pas quand personne ne dépense, même si les taux d'intérêt sont bas : pourquoi agrandir une usine si l'on ne vend pas ses produits ? Au contraire, l'entreprise est sur le point de fermer son usine.</p>
+<p><span class="so">⇒</span> La chaîne des classiques est interrompue : la baisse de la dépense n'entraîne pas plus d'épargne et plus d'investissement, mais moins de revenus.</p>`
+  },
+  p3:{
+    head:"Planche 03",
+    title:"Que se passe-t-il en réalité ?",
+    lq:"Selon Keynes, qu'est-ce qui se passe en réalité dans une crise économique ?",
+    intro:"Répondez à cette question dans OneNote. Les aides sont facultatives.",
+    voc:[["une machine à calculer","eine Rechenmaschine"],["la confiance, être en confiance","das Vertrauen, Vertrauen haben"],["inquiet, inquiète","besorgt"],["conserver / garder son argent","sein Geld behalten"],["un boom","ein Boom, Aufschwung"],["interrompre","unterbrechen"],["une panique bancaire","ein Bankenansturm (Bank Run)"],["un krach boursier","ein Börsencrash"],["l'argent comptant","das Bargeld"],["la trappe de liquidité","die Liquiditätsfalle"],["la disparition de la monnaie","hier: Geld wird nicht mehr ausgegeben"],["adhésif (les prix adhésifs)","klebrig (starre Preise)"],["cesser","aufhören"],["à long terme","langfristig"]],
+    qs:[
+      {q:"Selon Keynes, quand les gens dépensent-ils et investissent-ils ? Quand gardent-ils leur argent ?",h:["Première rangée, la case de gauche.","des hommes, pas des machines à calculer · confiance · inquiets","Selon Keynes, les gens ne sont pas … Ils dépensent quand …, mais ils gardent leur argent quand …"]},
+      {q:"Décrivez le cercle vertueux : que se passe-t-il quand tout va bien ?",h:["Première rangée, case de droite. Suivez les flèches.","confiance → dépensent et investissent → revenus plus hauts → un boom","Quand les gens ont confiance, ils … Cela entraîne … Par conséquent, …"]},
+      {q:"Qu'est-ce qui peut déclencher une récession ? Décrivez le cercle vicieux.",h:["Deuxième rangée, la case de gauche.","panique bancaire · krach boursier · épargner davantage → moins de dépense → revenus plus bas → garder son argent comptant","Si les dépenses sont interrompues, par exemple par …, alors … Cela conduit à …"]},
+      {q:"Pourquoi une récession ne s'arrête-t-elle pas toute seule ?",h:["Deuxième rangée à droite et troisième rangée à gauche.","les prix sont « adhésifs » · les salaires · aucune raison qui l'y force","Les prix ne baissent pas vite, car … Une récession peut donc durer : il n'y a aucune raison …"]},
+      {q:"Que veut dire Keynes avec « À long terme, nous sommes tous morts » ? Qui doit donc agir ?",h:["Troisième rangée, les deux cases.","on ne peut pas attendre · une politique · le gouvernement","Avec cette phrase, Keynes veut dire qu'on ne peut pas … C'est pourquoi …"]}
+    ],
+    chain:{items:["Un choc : une panique bancaire, un krach boursier, ou les gens épargnent davantage.","Les gens sont inquiets.","Moins de dépense.","Revenus plus bas.","Les gens gardent leur argent comptant."],mix:[3,1,4,0,2],loop:"↺ … et encore moins de dépense : le cercle recommence.",end:"✓ Le cercle vicieux de Keynes : la crise s'auto-entretient."},
+    frames:["En réalité, …","Selon Keynes, les gens dépensent quand …","Si les dépenses sont interrompues, alors …","Moins les gens dépensent, plus …","Il en résulte un cercle vicieux : …","C'est pourquoi on ne peut pas attendre : …"],
+    code:"2618",
+    sol:`<p>Pour Keynes, les gens sont « des hommes, pas des machines à calculer » : ils dépensent et investissent quand ils ont confiance, et ils gardent leur argent quand ils sont inquiets.</p>
+<p>Quand tout va bien, il y a un <b>cercle vertueux</b> : les gens ont confiance, ils dépensent et investissent, leurs revenus augmentent, et leur confiance grandit encore. C'est un boom.</p>
+<p>Mais si les dépenses sont interrompues, par exemple par une panique bancaire, un krach boursier, ou parce que les gens décident d'épargner davantage, un <b>cercle vicieux</b> commence : moins de dépense entraîne des revenus plus bas, les gens gardent leur argent comptant, et ils dépensent encore moins. C'est une récession.</p>
+<p>Une récession peut donc durer longtemps. Les prix ne baissent pas assez vite pour rétablir l'équilibre, car ils sont « adhésifs » : les entreprises ne peuvent pas facilement baisser les salaires. Il n'y a aucune raison qui force la récession à cesser.</p>
+<p><span class="so">⇒</span> Les classiques répondent qu'à long terme toutes les récessions cessent. Keynes : « À long terme, nous sommes tous morts. » On ne peut pas attendre : c'est la politique, donc le gouvernement, qui doit agir.</p>`
+  }
+  };
+
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  const HL=["Où chercher ?","Mots-clés","Début de phrase"];
+  const order=["p1","p2","p3","syn"];
+
+  function build(id){
+    const d=P[id], i=order.indexOf(id);
+    const el=document.getElementById(id);
+    el.innerHTML=`
+    <section><h2><span class="n">${d.head}</span>${d.title}</h2><p class="consigne"><b>Votre question :</b> ${esc(d.lq)}</p><p style="margin-top:.7rem">${d.intro}</p></section>
+    <details class="aide"><summary><span class="k">Aide 1</span><span class="t">Vocabulaire</span><span class="s">Wörter nachschlagen</span></summary><div class="body">
+      <p>Les mots difficiles de la planche. Pour vous entraîner, cachez l'allemand et touchez un mot pour voir la traduction.</p>
+      <div class="row"><button class="btn ghost" type="button" data-quiz>Cacher l'allemand</button></div>
+      <div class="voc">${d.voc.map(v=>`<button type="button"><b>${esc(v[0])}</b><span>${esc(v[1])}</span></button>`).join('')}</div>
+    </div></details>
+    <details class="aide"><summary><span class="k">Aide 2</span><span class="t">La question pas à pas</span><span class="s">Kleine Fragen mit Tipps</span></summary><div class="body">
+      <p>La question est trop difficile ? Répondez d'abord à ces petites questions. Sous chaque question, il y a trois indices. Ouvrez-les seulement si vous en avez besoin.</p>
+      <ol class="qs">${d.qs.map((q,k)=>`<li><p class="q">${esc(q.q)}</p><div data-hints="${id}-${k}"></div><button class="hbtn" type="button" data-hint="${id}-${k}">Indice 1 : ${HL[0]}</button></li>`).join('')}</ol>
+    </div></details>
+    <details class="aide"><summary><span class="k">Aide 3</span><span class="t">${d.chain.loop?'Le cercle':'La chaîne'} dans l'ordre</span><span class="s">Wirkungskette ordnen</span></summary><div class="body">
+      <p>Touchez les cartes dans le bon ordre. Toucher une carte dans ${d.chain.loop?'le cercle':'la chaîne'} la remet en place.</p>
+      <div class="pool" data-pool="${id}"></div>
+      <div class="chainbox"><div class="chain" data-chain="${id}"></div><p class="ph" data-ph="${id}">Votre ${d.chain.loop?'cercle':'chaîne'} apparaît ici.</p></div>
+      <div class="row"><button class="btn" type="button" data-check="${id}">Vérifier</button><button class="btn ghost" type="button" data-reset="${id}">Recommencer</button><span class="fb" data-fb="${id}"></span></div>
+      <div class="row" data-cprow="${id}" hidden><button class="btn ghost" type="button" data-copy="${id}">Copier pour OneNote</button><span class="note" data-cpmsg="${id}"></span></div>
+    </div></details>
+    <details class="aide"><summary><span class="k">Aide 4</span><span class="t">Formulations utiles</span><span class="s">Redemittel für Ursache und Folge</span></summary><div class="body">
+      <h3>Cause et conséquence</h3>
+      <div class="red">${CONN.map(c=>`<span>${esc(c[0])} <i>${esc(c[1])}</i></span>`).join('')}</div>
+      <h3>Pour cette planche</h3>
+      <ul class="frames">${d.frames.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+    </div></details>
+    <section><h2><span class="n">${d.head} · réponse modèle</span>Comparez avec votre réponse</h2>
+      <p class="note">D'abord votre réponse dans OneNote, ensuite la réponse modèle.</p>
+      <div><form class="lock row" data-code="${d.code}" data-sol="${id}"><span>Code de l'enseignant :</span><input type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="Code"><button class="btn" type="submit">Afficher</button><span class="msg"></span></form></div>
+    </section>
+    <button class="btn next" type="button" data-go="${order[i+1]}">${i<2?'Planche suivante':'Vers la synthèse'} →</button>`;
+  }
+  ["p1","p2","p3"].forEach(build);
+
+  /* Reiter */
+  const tabs=[...document.querySelectorAll('nav.tabs [role=tab]')];
+  function show(id,focus){
+    tabs.forEach(t=>{const on=t.getAttribute('aria-controls')===id; t.setAttribute('aria-selected',on); t.tabIndex=on?0:-1; if(on&&focus)t.focus();});
+    order.forEach(p=>document.getElementById(p).hidden=(p!==id));
+    try{localStorage.setItem('keynes-tab',id);}catch(e){}
+    const top=document.querySelector('.tabwrap').getBoundingClientRect().top+window.scrollY;
+    if(window.scrollY>top) window.scrollTo({top:top});
+  }
+  tabs.forEach((t,k)=>{
+    t.addEventListener('click',()=>show(t.getAttribute('aria-controls')));
+    t.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ const n=tabs[(k+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length]; show(n.getAttribute('aria-controls'),true);} });
+  });
+  try{const s=localStorage.getItem('keynes-tab'); if(s&&order.includes(s)) show(s);}catch(e){}
+
+  /* Ketten */
+  const ST={};
+  function drawChain(id){
+    const d=P[id].chain, s=ST[id];
+    const pool=document.querySelector(`[data-pool="${id}"]`), ch=document.querySelector(`[data-chain="${id}"]`);
+    pool.innerHTML=d.mix.filter(k=>!s.seq.includes(k)).map(k=>`<button type="button" data-add="${id}:${k}">${esc(d.items[k])}</button>`).join('');
+    ch.innerHTML=s.seq.map((k,n)=>(n?'<span class="arr" aria-hidden="true">↓</span>':'')+`<button type="button" data-del="${id}:${k}" class="${s.mark[n]||''}"><span class="i">${n+1}</span><span>${esc(d.items[k])}</span></button>`).join('')+(s.done&&d.loop?`<p class="loop">${esc(d.loop)}</p>`:'');
+    document.querySelector(`[data-ph="${id}"]`).hidden=s.seq.length>0;
+    document.querySelector(`[data-cprow="${id}"]`).hidden=!s.done;
+  }
+  ["p1","p2","p3"].forEach(id=>{ST[id]={seq:[],mark:[],done:false}; drawChain(id);});
+
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.add){ const [id,k]=b.dataset.add.split(':'); const s=ST[id]; if(s.done) return; s.seq.push(+k); s.mark=[]; document.querySelector(`[data-fb="${id}"]`).textContent=''; drawChain(id); }
+    else if(b.dataset.del){ const [id,k]=b.dataset.del.split(':'); const s=ST[id]; if(s.done) return; s.seq=s.seq.filter(x=>x!==+k); s.mark=[]; document.querySelector(`[data-fb="${id}"]`).textContent=''; drawChain(id); }
+    else if(b.dataset.check){ const id=b.dataset.check, s=ST[id], d=P[id].chain, fb=document.querySelector(`[data-fb="${id}"]`);
+      if(s.seq.length<d.items.length){ fb.className='fb badc'; fb.textContent='Il manque encore '+(d.items.length-s.seq.length)+' carte(s).'; return; }
+      s.mark=s.seq.map((k,n)=>k===n?'ok':'no'); const ok=s.mark.filter(m=>m==='ok').length;
+      if(ok===d.items.length){ s.done=true; fb.className='fb good'; fb.textContent=d.end; }
+      else { fb.className='fb badc'; fb.textContent=ok+' / '+d.items.length+' cartes à la bonne place. Touchez les cartes rouges pour les remettre en place.'; }
+      drawChain(id); }
+    else if(b.dataset.reset){ const id=b.dataset.reset; ST[id]={seq:[],mark:[],done:false}; const fb=document.querySelector(`[data-fb="${id}"]`); fb.textContent=''; document.querySelector(`[data-cpmsg="${id}"]`).textContent=''; drawChain(id); }
+    else if(b.dataset.copy){ const id=b.dataset.copy, d=P[id].chain; copy(d.items.map((t,n)=>(n?'↓ ':'')+t).join('\n')+(d.loop?'\n'+d.loop:''), document.querySelector(`[data-cpmsg="${id}"]`)); }
+    else if(b.dataset.hint){ const key=b.dataset.hint, [id,k]=key.split('-'), q=P[id].qs[+k], box=document.querySelector(`[data-hints="${key}"]`); const n=box.children.length;
+      const p=document.createElement('p'); p.className='hint'+(n===2?' h3':''); p.innerHTML='<b>'+HL[n]+'</b>'+esc(q.h[n]); box.appendChild(p);
+      if(n+1<3) b.textContent='Indice '+(n+2)+' : '+HL[n+1]; else b.remove(); }
+    else if(b.hasAttribute('data-quiz')){ const v=b.closest('.body').querySelector('.voc'); const on=v.classList.toggle('quiz'); v.querySelectorAll('button').forEach(x=>x.classList.remove('show')); b.textContent=on?"Montrer l'allemand":"Cacher l'allemand"; }
+    else if(b.closest('.voc.quiz')){ b.classList.toggle('show'); }
+    else if(b.dataset.go){ show(b.dataset.go); }
+  });
+
+  /* Code-Sperren */
+  document.addEventListener('submit',e=>{
+    const f=e.target.closest('form.lock'); if(!f) return; e.preventDefault();
+    const inp=f.querySelector('input');
+    if(inp.value.trim()===f.dataset.code){
+      const wrap=f.parentNode;
+      if(f.dataset.sol) wrap.innerHTML='<div class="model">'+P[f.dataset.sol].sol+'</div>';
+      else wrap.innerHTML=document.getElementById(f.dataset.tpl).innerHTML;
+    } else { f.querySelector('.msg').textContent='Code incorrect.'; inp.value=''; }
+  });
+
+  function copy(txt,out){
+    const fb=()=>{ out.innerHTML=''; const t=document.createElement('textarea'); t.className='cp'; t.rows=8; t.readOnly=true; t.value=txt; out.appendChild(t); t.focus(); t.select(); };
+    try{ navigator.clipboard.writeText(txt).then(()=>{ out.textContent='Copié ! Collez le texte dans OneNote.'; },fb); }catch(err){ fb(); }
+  }
+
+  /* Synthese: Karten kopieren, Zuordnung */
+  document.getElementById('spCopy').addEventListener('click',()=>{
+    copy([...document.querySelectorAll('#spCards .card')].map(x=>'[ '+x.textContent+' ]').join('\n'), document.getElementById('spMsg'));
+  });
+  const SORT=[
+    ["Il faut attendre : l'économie se reprend toute seule.","C","Planche 01 : « Attendre que l'économie se reprenne toute seule ! »"],
+    ["Quand la dépense chute, le revenu chute aussi.","K","Planche 02 : la dépense d'une personne est le revenu d'une autre."],
+    ["L'argent qui n'est pas dépensé est épargné et prêté aux entreprises.","C","Planche 01 : l'offre de fonds empruntables augmente."],
+    ["Les gens dépensent quand ils ont confiance et gardent leur argent quand ils sont inquiets.","K","Planche 03 : « Nous sommes des hommes, pas des machines à calculer ! »"],
+    ["Un taux d'intérêt bas suffit pour relancer l'investissement.","C","Planche 01 : on emprunte à 3 %, pas à 7 %."],
+    ["Les entreprises n'investissent pas si personne n'achète.","K","Planche 02 : « Qui investit quand personne ne dépense ? »"],
+    ["L'offre crée sa propre demande.","C","C'est la loi de Say, la base des classiques."],
+    ["Une récession peut durer longtemps : rien ne la force à cesser.","K","Planche 03 : il n'y a pas de mécanisme équilibrant."],
+    ["Le marché s'autorégule : l'État ne doit pas intervenir.","C","Le laisser-faire des classiques."],
+    ["À long terme, nous sommes tous morts.","K","Planche 03 : on ne peut pas attendre."]
+  ];
+  const sortBox=document.getElementById('sort');
+  sortBox.innerHTML=SORT.map((s,i)=>`<div class="sr" id="sr${i}"><span>${esc(s[0])}</span><span class="seg" role="group" aria-label="Qui dit cela ?"><button type="button" aria-pressed="false" data-s="${i}:C">Classiques</button><button type="button" aria-pressed="false" data-s="${i}:K">Keynes</button></span><span class="ex" hidden></span></div>`).join('');
+  sortBox.addEventListener('click',e=>{ const b=e.target.closest('[data-s]'); if(!b) return; b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); const r=b.closest('.sr'); r.classList.remove('ok','no'); r.querySelector('.ex').hidden=true; });
+  document.getElementById('sortCheck').addEventListener('click',()=>{
+    let ok=0, n=0;
+    SORT.forEach((s,i)=>{ const r=document.getElementById('sr'+i), p=r.querySelector('[aria-pressed="true"]'), ex=r.querySelector('.ex'); r.classList.remove('ok','no'); ex.hidden=true;
+      if(!p) return; n++; const v=p.dataset.s.split(':')[1];
+      if(v===s[1]){ ok++; r.classList.add('ok'); ex.textContent=s[2]; ex.hidden=false; } else { r.classList.add('no'); } });
+    document.getElementById('sortScore').textContent=ok+' / '+SORT.length+' bonnes réponses'+(n<SORT.length?' (encore '+(SORT.length-n)+' sans réponse)':'');
+  });
+  document.getElementById('sortReset').addEventListener('click',()=>{
+    SORT.forEach((s,i)=>{ const r=document.getElementById('sr'+i); r.classList.remove('ok','no'); r.querySelector('.ex').hidden=true; r.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false')); });
+    document.getElementById('sortScore').textContent='';
+  });
+})();
+</script>
+
+</body>
+</html>
